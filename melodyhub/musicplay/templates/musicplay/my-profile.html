@@ -1,0 +1,47 @@
+{% extends "musicplay/base.html" %}
+
+{% block user-info %}
+<div class="dropdown">
+    <img style="border-radius: 50%; height: 2em;" src="{{ request.session.picture }}" alt="User profile picture"><br>
+    <div class="dropdown-content">
+        {{user.first_name}} {{user.last_name}} <br>
+        <a href="{% url 'musicplay:my_profile' %}">My Profile</a> <br>
+        <a href="{% url 'logout' %}"><button>Logout</button></a>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="col-md-4">
+        <div class="profile-info">
+            <h2>{{user.first_name}} {{user.last_name}}</h2>
+            <p>User Description: {{ user_profile.description }}</p>
+            <p>Joined: {{ user_profile.registration_time|date:"M d, Y" }}</p>
+            <p>Total Favorites: {{ user_profile.total_favorites }}</p>
+            <p>Total Not Favorites: {{ user_profile.total_not_favorites }}</p>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="uploaded-music">
+            <h3>Uploaded Music</h3>
+            <div class="list-group">
+                {% for song in music %}
+                <a href="{% url 'music_detail' song.id %}"
+                    class="list-group-item list-group-item-action flex-column align-items-start">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">{{ song.name }}</h5>
+                        <small>{{ song.upload_date|date:"M d, Y" }}</small>
+                    </div>
+                    <p class="mb-1">{{ song.description }}</p>
+                    <small>Favorites: {{ song.favorites_count }}, Not Favorites: {{ song.not_favorites_count
+                        }}</small>
+                </a>
+                {% empty %}
+                <p class="list-group-item">No music uploaded yet.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

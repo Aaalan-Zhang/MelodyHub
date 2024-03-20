@@ -5,6 +5,7 @@
 	    {% load static %}
 		<link href="{% static 'musicplay/base.css' %}" rel="stylesheet" type="text/css">
 		<title> {% block title %} MelodyHub {% endblock %} </title>
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 	</head>
 
 	<body>
@@ -28,9 +29,9 @@
 	        </div>
 	    {% endif %}
 
-	    <!-- <div class="content">
+	    <div class="content">
 		    {% block content %}
 		    {% endblock %}
-		</div> -->
+		</div>
 	</body>
 </html>
