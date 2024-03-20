@@ -2,6 +2,7 @@
 *.pot
 *.pyc
 local_settings.py
+# config.ini
 
 # Editor backup files
 *~
@@ -14,3 +15,5 @@ db.sqlite3
 
 # Migration files
 00*.py
+
+venv/

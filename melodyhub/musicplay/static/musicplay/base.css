@@ -1,0 +1,142 @@
+.big-heading {
+    font-size: xx-large;
+    font-weight: bold;
+    font-family: sans-serif;
+    text-align: center;
+    padding: 25px 50px;
+}
+
+.user-info {
+    position: absolute;
+    top: 2vw;
+    right: 4vw;
+    text-align: right;
+    font-family: sans-serif; 
+    padding-right: 10px;
+    font-size: x-large;
+}
+
+.message {
+    color:blue;
+    text-align: center;
+    font-weight: bold;
+    font-size: x-large;
+    font-family: sans-serif;
+    padding: 25px 50px;
+}
+
+.search-bar {
+    text-align: center;
+    padding: 25px 50px;
+}
+
+.content {
+    margin-left: auto;
+    margin-right: auto;
+    width: 70%;
+    font-family: sans-serif;
+    font-size: x-large;
+    padding: 25px 50px;
+}
+
+.error {
+    color:red;
+}
+
+.list {
+    padding: 3px;
+}
+
+.list-link {
+    text-decoration: underline;
+    color: blue;
+}
+
+.list-link:hover {
+    background-color:lightgray;
+    text-decoration: none;
+}
+
+th {
+    font-weight: normal;
+    text-align: left;
+}
+
+a {
+     text-decoration: none;
+     color:black;
+}
+
+button {
+    font-size: x-large;
+    padding: 3px;
+}
+
+input {
+    font-size: x-large;
+    width: 300px;
+}
+
+div, form {
+    padding: 4px;
+}
+
+.blue-background {
+    background-color: lightblue;
+}
+
+.navlink {
+    background-color: lightgray;
+}
+
+.letter {
+    padding: 3px;
+    font-family: sans-serif;
+    font-size: x-large;
+
+}
+
+.letter:hover {
+     background-color:lightgray;
+}
+
+.dropbtn {
+  background-color: #04AA6D;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+}
+
+.dropdown {
+    text-align: right;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 2vh;
+    font-size: 1.5vw;
+    background-color: #f1f1f1;
+    min-width: 15vw;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    text-align: right;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a button {
+    font-size: 1.5vw;
+}
+
+.dropdown-content a:hover {background-color: #ddd;}
+
+.dropdown:hover .dropdown-content {display: block;}
+
+.dropdown:hover .dropbtn {background-color: #3e8e41;}

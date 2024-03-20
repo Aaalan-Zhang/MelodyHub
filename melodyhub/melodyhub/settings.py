@@ -11,21 +11,33 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+from configparser import ConfigParser
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+CONFIG = ConfigParser()
+CONFIG.read(BASE_DIR / "config.ini")
+
+# Quick-start development settings - unsuitable for production
+# See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
+
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = CONFIG.get("Django", "Secret")
+
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-z$&fq6ond_#&u_(89ufakypt-feo2nm*+b6h%+m_2#8hl46wc6"
+# SECRET_KEY = "django-insecure-z$&fq6ond_#&u_(89ufakypt-feo2nm*+b6h%+m_2#8hl46wc6"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -37,7 +49,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "musicplay"
+    "musicplay",
+    "social_django"
 ]
 
 MIDDLEWARE = [
@@ -67,6 +80,25 @@ TEMPLATES = [
         },
     },
 ]
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.google.GoogleOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = CONFIG.get("GoogleOAuth2", "client_id")
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = CONFIG.get("GoogleOAuth2", "client_secret")
+SOCIAL_AUTH_GOOGLE_OAUTH2_AUTH_EXTRA_ARGUMENTS = {'prompt': 'select_account'}
+SOCIAL_AUTH_GOOGLE_OAUTH2_EXTRA_DATA = ['fullname', 'picture']
+
+MUSICPLAY_TITLE = CONFIG.get("musicplay", "title")
+MUSICPLAY_USERS = CONFIG.get("musicplay", "users")
+
+# Used by the @login_required decorator to redirect to the login action
+LOGIN_URL = '/oauth/login/google-oauth2/'
+
+# Default URL to redirect to after a user logs in.
+LOGIN_REDIRECT_URL = '/'
 
 WSGI_APPLICATION = "melodyhub.wsgi.application"
 
