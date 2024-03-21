@@ -12,7 +12,7 @@
             <form method="post" enctype="multipart/form-data" action="{% url 'musicplay:upload_profile' %}">
                 {% csrf_token %}
                 {{ profile_form.as_p }}
-                <button type="submit">Submit</button>
+                <button type="submit">Update Profile</button>
             </form>
 
             <p>Joined: {{ user_profile.registration_time|date:"M d, Y" }}</p>
@@ -23,7 +23,7 @@
                 <table>
                     {{ music_upload_form.as_table }}
                 </table>
-                <button type="submit">Submit</button>
+                <button type="submit">Upload Music</button>
             </form>
         </div>
     </div>

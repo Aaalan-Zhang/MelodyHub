@@ -7,7 +7,11 @@ class ProfileForm(forms.ModelForm):
         model = UserProfile
         fields = ['avatar', 'description']
 
-    avatar = forms.FileField(label="Avatar", required=False)
+    avatar = forms.FileField(
+        label="New Avatar",
+        required=False,
+        widget=forms.FileInput  # Use the FileInput widget
+    )
     def clean_avatar(self):
         avatar = self.cleaned_data.get("avatar")
         if avatar:
