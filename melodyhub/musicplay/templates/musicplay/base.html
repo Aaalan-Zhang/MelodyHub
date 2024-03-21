@@ -1,37 +1,44 @@
 <!doctype html>
 <html>
-	<head>
-	    <meta charset="utf-8">
-	    {% load static %}
-		<link href="{% static 'musicplay/base.css' %}" rel="stylesheet" type="text/css">
-		<title> {% block title %} MelodyHub {% endblock %} </title>
-		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-	</head>
 
-	<body>
-		<div class="big-heading">
-            {{ request.session.title }}
-		</div>
+<head>
+    <meta charset="utf-8">
+    {% load static %}
+    <link href="{% static 'musicplay/base.css' %}" rel="stylesheet" type="text/css">
+    <title> {% block title %} MelodyHub {% endblock %} </title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
 
-	    <div class="user-info">
-			{% block user-info %}
-			{% endblock %}
-	    </div>
+<body>
+    <div class="big-heading">
+        {{ request.session.title }}
+    </div>
 
-	    <!-- <div class="search-bar">
-			{% block search-bar %}
-			{% endblock %}
-		</div> -->
+    <div class="user-info">
+        {% block user-info %}
+        <div class="dropdown">
+            <img style="border-radius: 50%; height: 2em;" src="{{ request.session.picture }}"
+                alt="User profile picture"><br>
+            <div class="dropdown-content">
+                {{user.first_name}} {{user.last_name}} <br>
+                <a href="{% url 'musicplay:my_profile' %}">My Profile</a> <br>
+                <a href="{% url 'logout' %}">Logout</a>
+            </div>
+        </div>
+        <a href="{% url 'musicplay:home' %}">Home</a>
+        {% endblock %}
+    </div>
 
-	    {% if message %}
-	        <div class="message">
-	            {{message}}
-	        </div>
-	    {% endif %}
+    {% if message %}
+    <div class="message">
+        {{message}}
+    </div>
+    {% endif %}
 
-	    <div class="content">
-		    {% block content %}
-		    {% endblock %}
-		</div>
-	</body>
+    <div class="content">
+        {% block content %}
+        {% endblock %}
+    </div>
+</body>
+
 </html>
