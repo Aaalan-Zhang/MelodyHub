@@ -17,3 +17,5 @@ db.sqlite3
 00*.py
 
 venv/
+
+melodyhub/media/
