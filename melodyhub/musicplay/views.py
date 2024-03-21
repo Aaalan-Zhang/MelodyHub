@@ -2,12 +2,15 @@ from django.http import HttpResponse
 from django.shortcuts import redirect, render, resolve_url, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
+from django.urls import reverse
 from django.utils import timezone
 
 from melodyhub.settings import BASE_DIR, MUSICPLAY_USERS, MUSICPLAY_TITLE
 from .models import UserProfile, Music
+from .forms import ProfileForm, MusicUploadForm
 
 import time
+
 
 def _known_user_check(action_function):
     def my_wrapper_function(request, *args, **kwargs):
@@ -38,6 +41,7 @@ def _known_user_check(action_function):
 @login_required
 @_known_user_check
 def main_action(request):
+    request.session["title"] = "Main Page"
     return render(request, "musicplay/main-page.html", {"message": "Hello"})
 
 
@@ -45,11 +49,36 @@ def main_action(request):
 def my_profile(request):
     user_profile, created = UserProfile.objects.get_or_create(user=request.user)
     music = Music.objects.filter(user=request.user).order_by("-upload_time")
-
+    request.session["title"] = "My Profile"
+    music_upload_form = MusicUploadForm()
+    profile_form = ProfileForm(instance=user_profile)
     return render(
-        request, "musicplay/my-profile.html", {"user_profile": user_profile, "music": music}
+        request,
+        "musicplay/my-profile.html",
+        {
+            "user_profile": user_profile,
+            "music": music,
+            "music_upload_form": music_upload_form,
+            "profile_form": profile_form,
+        },
     )
+
+
+@login_required
+def upload_profile(request):
+    if request.method == "POST":
+        profile = UserProfile.objects.get(user=request.user)
+        form = ProfileForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            form.save()
+            return redirect(reverse("musicplay:my_profile"))
+
 
 @login_required
 def upload_music(request):
-    pass
+    if request.method == "POST":
+        music = Music(user=request.user, upload_time=timezone.now())
+        form = MusicUploadForm(request.POST, request.FILES, instance=music)
+        if form.is_valid():
+            form.save()
+        return redirect(reverse("musicplay:my_profile"))

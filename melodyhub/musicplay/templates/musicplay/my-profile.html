@@ -1,15 +1,30 @@
 {% extends "musicplay/base.html" %}
 
+{% block title %} MelodyHub {% endblock %}
 
 {% block content %}
 <div class="container mt-5">
     <div class="col-md-4">
         <div class="profile-info">
             <h2>{{user.first_name}} {{user.last_name}}</h2>
-            <p>User Description: {{ user_profile.description }}</p>
+            <img src="{{ user_profile.avatar.url }}" class="img-fluid img-thumbnail rounded-circle"
+                alt="User profile picture">
+            <form method="post" enctype="multipart/form-data" action="{% url 'musicplay:upload_profile' %}">
+                {% csrf_token %}
+                {{ profile_form.as_p }}
+                <button type="submit">Submit</button>
+            </form>
+
             <p>Joined: {{ user_profile.registration_time|date:"M d, Y" }}</p>
             <p>Total Favorites: {{ user_profile.total_favorites }}</p>
             <p>Total Not Favorites: {{ user_profile.total_not_favorites }}</p>
+            <form method="post" enctype="multipart/form-data" action="{% url 'musicplay:upload_music' %}">
+                {% csrf_token %}
+                <table>
+                    {{ music_upload_form.as_table }}
+                </table>
+                <button type="submit">Submit</button>
+            </form>
         </div>
     </div>
     <div class="col-md-8">
@@ -17,15 +32,14 @@
             <h3>Uploaded Music</h3>
             <div class="list-group">
                 {% for song in music %}
-                <a href="{% url 'music_detail' song.id %}"
+                <a href="{% url 'musicplay:music_detail' song.id %}"
                     class="list-group-item list-group-item-action flex-column align-items-start">
                     <div class="d-flex w-100 justify-content-between">
                         <h5 class="mb-1">{{ song.name }}</h5>
-                        <small>{{ song.upload_date|date:"M d, Y" }}</small>
+                        <small>Uploaded Time: {{ song.upload_time|date:"M d, Y" }}</small>
                     </div>
-                    <p class="mb-1">{{ song.description }}</p>
-                    <small>Favorites: {{ song.favorites_count }}, Not Favorites: {{ song.not_favorites_count
-                        }}</small>
+                    <small>Description: {{ song.description }}<small> <br/>
+                    <small>Favorites: {{ song.favorites_count }}, Not Favorites: {{ song.not_favorites_count}}</small>
                 </a>
                 {% empty %}
                 <p class="list-group-item">No music uploaded yet.</p>
