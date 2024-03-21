@@ -1,3 +1,14 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 14px;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f8f8;
+    color: #333;
+    padding-bottom: 50px;
+    box-sizing: border-box;
+}
+
 .big-heading {
     font-size: xx-large;
     font-weight: bold;
@@ -11,22 +22,16 @@
     top: 2vw;
     right: 4vw;
     text-align: right;
-    font-family: sans-serif; 
     padding-right: 10px;
     font-size: x-large;
 }
 
 .message {
-    color:blue;
+    color: blue;
     text-align: center;
     font-weight: bold;
     font-size: x-large;
     font-family: sans-serif;
-    padding: 25px 50px;
-}
-
-.search-bar {
-    text-align: center;
     padding: 25px 50px;
 }
 
@@ -40,7 +45,7 @@
 }
 
 .error {
-    color:red;
+    color: red;
 }
 
 .list {
@@ -53,7 +58,7 @@
 }
 
 .list-link:hover {
-    background-color:lightgray;
+    background-color: lightgray;
     text-decoration: none;
 }
 
@@ -63,8 +68,8 @@ th {
 }
 
 a {
-     text-decoration: none;
-     color:black;
+    text-decoration: none;
+    color: black;
 }
 
 button {
@@ -77,7 +82,8 @@ input {
     width: 300px;
 }
 
-div, form {
+div,
+form {
     padding: 4px;
 }
 
@@ -97,15 +103,15 @@ div, form {
 }
 
 .letter:hover {
-     background-color:lightgray;
+    background-color: lightgray;
 }
 
 .dropbtn {
-  background-color: #04AA6D;
-  color: white;
-  padding: 16px;
-  font-size: 16px;
-  border: none;
+    background-color: #04AA6D;
+    color: white;
+    padding: 16px;
+    font-size: medium;
+    border: none;
 }
 
 .dropdown {
@@ -116,27 +122,192 @@ div, form {
     display: none;
     position: absolute;
     right: 2vh;
-    font-size: 1.5vw;
     background-color: #f1f1f1;
     min-width: 15vw;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 1;
     text-align: right;
 }
 
 .dropdown-content a {
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
 }
 
-.dropdown-content a button {
-    font-size: 1.5vw;
+.dropdown-content a:hover {
+    background-color: #ddd;
 }
 
-.dropdown-content a:hover {background-color: #ddd;}
+.dropdown:hover .dropdown-content {
+    display: block;
+}
 
-.dropdown:hover .dropdown-content {display: block;}
+.dropdown:hover .dropbtn {
+    background-color: #3e8e41;
+}
 
-.dropdown:hover .dropbtn {background-color: #3e8e41;}
+.container {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.search-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: nowrap;
+    margin-bottom: 20px;
+}
+
+.search-bar {
+    width: 85%;
+    /* reduce width to make room for button */
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: medium;
+}
+
+.search-button {
+    width: 10%;
+    /* assign width to button */
+    padding: 10px 0px;
+    border-radius: 5px;
+    border: none;
+    background-color: #ccc;
+    cursor: pointer;
+    font-size: medium;
+    transition: background-color 0.3s ease;
+    border-radius: 10%;
+    text-align: center;
+    /* center the button text */
+}
+
+.music-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.music-list li {
+    padding: 15px;
+    border-radius: 5px;
+    background-color: #fff;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.music-list li:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.play-btn {
+    background-color: #333;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.play-btn:hover {
+    background-color: #555;
+}
+
+.fav-btn {
+    background-color: #ea2c2c;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-right: 10px;
+}
+
+.fav-btn:hover {
+    background-color: #555;
+}
+
+.music-details {
+    flex-grow: 1;
+    margin-left: 20px;
+}
+
+.music-title {
+    font-size: large;
+    font-weight: bold;
+}
+
+.music-artist {
+    font-size: medium;
+    color: #666;
+}
+
+.play-status-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.3);
+    height: 100px;
+}
+
+.play-status-bar p {
+    margin: 5px 0;
+    font-size: medium;
+}
+
+.progress-bar {
+    width: 80%;
+    height: 8px;
+    background-color: #666;
+    margin: 0 auto;
+    border-radius: 5px;
+    position: relative;
+}
+
+.progress {
+    height: 100%;
+    background-color: #4CAF50;
+    border-radius: 5px;
+}
+
+.time-display {
+    margin-top: 5px;
+    font-size: medium;
+}
+
+
+.favoriteMusicBtn {
+    background-color: #f3865f;
+    color: #fff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin: 10px 0;
+    font-size: medium;
+}
+
+.favoriteMusicBtn:hover {
+    background-color: #ffa000;
+}
+
+.favoriteMusicBtn:active {
+    background-color: #ff6f00;
+}
