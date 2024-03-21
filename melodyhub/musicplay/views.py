@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.urls import reverse
 from django.utils import timezone
+from mutagen.mp3 import MP3
 
 from melodyhub.settings import BASE_DIR, MUSICPLAY_USERS, MUSICPLAY_TITLE
 from .models import UserProfile, Music
@@ -70,6 +71,7 @@ def upload_profile(request):
         profile = UserProfile.objects.get(user=request.user)
         form = ProfileForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
+            profile.content_type = form.cleaned_data["avatar"].content_type
             form.save()
             return redirect(reverse("musicplay:my_profile"))
 
@@ -81,4 +83,17 @@ def upload_music(request):
         form = MusicUploadForm(request.POST, request.FILES, instance=music)
         if form.is_valid():
             form.save()
+            music_file = request.FILES.get('file')
+            audio = MP3(music_file)
+            music.length = int(audio.info.length)
+            music.save()
         return redirect(reverse("musicplay:my_profile"))
+
+
+@login_required
+def delete_music(request, song_id):
+    if request.method == "POST":
+        song = get_object_or_404(Music, id=song_id)
+        if request.user == song.user:
+            song.delete()
+            return redirect(reverse("musicplay:my_profile"))

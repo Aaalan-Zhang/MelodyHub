@@ -25,4 +25,5 @@ urlpatterns = [
     path('upload_music', views.upload_music, name='upload_music'),
     path('upload_profile', views.upload_profile, name='upload_profile'),
     path('music_detail/<int:song_id>/', views.my_profile, name='music_detail'),
+    path('delete_music/<int:song_id>/', views.delete_music, name='delete_music'),
 ]

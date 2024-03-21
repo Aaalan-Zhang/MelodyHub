@@ -6,12 +6,11 @@ from django.utils.timezone import now
 # Create your models here.
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
-    avatar = models.ImageField(
-        upload_to="user_avatars/",
+    avatar = models.FileField(upload_to="user_avatars/",
         null=True,
         blank=True,
-        default="default_avatar/default_avatar.jpg",
-    )
+        default="default_avatar/default_avatar.jpg",)
+    content_type = models.CharField(max_length=50, blank=True)
     description = models.TextField(
         null=True, blank=True, default="This guy is too lazy to write a description."
     )
@@ -29,7 +28,7 @@ class Music(models.Model):
     description = models.TextField()
     file = models.FileField(upload_to="music_files/")
     upload_time = models.DateTimeField(auto_now_add=True)
-    length = models.IntegerField(help_text="Length of the song in seconds")
+    length = models.IntegerField(help_text="Length of the song in seconds", default=0)
     favorites_count = models.IntegerField(default=0)
     not_favorites_count = models.IntegerField(default=0)
 
