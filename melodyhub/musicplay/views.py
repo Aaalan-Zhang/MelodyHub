@@ -71,7 +71,8 @@ def upload_profile(request):
         profile = UserProfile.objects.get(user=request.user)
         form = ProfileForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
-            profile.content_type = form.cleaned_data["avatar"].content_type
+            if 'avatar' in request.FILES:
+                profile.content_type = form.cleaned_data["avatar"].content_type
             form.save()
             return redirect(reverse("musicplay:my_profile"))
 
