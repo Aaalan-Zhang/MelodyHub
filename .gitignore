@@ -18,4 +18,4 @@ db.sqlite3
 
 venv/
 
-melodyhub/media/
+melodyhub/media/*

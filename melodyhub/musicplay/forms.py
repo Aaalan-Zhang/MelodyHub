@@ -14,7 +14,7 @@ class ProfileForm(forms.ModelForm):
     )
     def clean_avatar(self):
         avatar = self.cleaned_data.get("avatar")
-        if avatar:
+        if avatar and hasattr(avatar, 'content_type'):
             content_type = avatar.content_type
             if not content_type.startswith("image"):
                 raise forms.ValidationError("Only image files are allowed.")
