@@ -2,7 +2,7 @@
 *.pot
 *.pyc
 local_settings.py
-# config.ini
+config.ini
 
 # Editor backup files
 *~
