@@ -17,7 +17,7 @@
 {% if not hasRoom %}
 <div class="card">
 <form method="POST"> 
-    <label class="app-label">Enter ListenTogether Room Name: </label>
+    <label class="app-label">Enter ListenTogether Room Name: {{form.name}}</label>
     <input type="submit" class="btn btn-dark">
     {% csrf_token %}
 </form>
