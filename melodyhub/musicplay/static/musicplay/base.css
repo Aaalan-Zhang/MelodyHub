@@ -311,3 +311,5 @@ form {
 .favoriteMusicBtn:active {
     background-color: #ff6f00;
 }
+
+.card{font-family:Comfortaa,cursive;color:#fff;box-shadow:2px 2px 8px rgba(0,0,0,.1);border:1px solid hsla(0,0%,76.9%,.3);height:10rem;border-radius:2rem;display:flex;padding:3rem 2rem;align-items:center;justify-content:center;flex-direction:column;background:linear-gradient(75deg,#f17c58,#e94584,#24aadb,#27dbb1,#ffdc18,#ff3706);background-size:600% 100%;-webkit-animation:gradient 16s linear infinite;animation:gradient 16s linear infinite;-webkit-animation-direction:alternate;animation-direction:alternate}

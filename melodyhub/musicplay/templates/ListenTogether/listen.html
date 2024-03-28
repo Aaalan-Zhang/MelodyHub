@@ -1,0 +1,19 @@
+{% extends '../musicplay/base.html' %}
+
+{% block content %}
+<div class="card">
+    <audio controls autoplay controller class="audio audio-control" id="music-bar" src="/media/audio/Mystery_of_Love.mp3"></audio>
+</div>
+
+<br>
+<div>
+    <b> Share the Link </b>
+    <input type="text" value="{{room.room_id}}" id="link" readonly>
+    <button class="btn btn-dark">Copy</button><br><br>
+</div>
+<div>
+    <b> Live Chatting </b>
+    <input type="text" id="comment">
+    <button class="btn btn-dark">Post</button><br><br>
+</div>
+{% endblock%}

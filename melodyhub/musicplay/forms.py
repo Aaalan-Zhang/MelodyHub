@@ -1,5 +1,5 @@
 from django import forms
-from .models import Music, UserProfile
+from .models import Music, UserProfile, ListenTogetherRoom
 from mutagen.mp3 import MP3
 
 class ProfileForm(forms.ModelForm):
@@ -30,3 +30,10 @@ class MusicUploadForm(forms.ModelForm):
         if not file.name.endswith(('.mp3', '.wav', '.ogg')):
             raise forms.ValidationError('Unsupported file type.')
         return file
+    
+class CreateRoomForm(forms.ModelForm):
+    class Meta:
+        model = ListenTogetherRoom
+        fields = [
+            'name'
+        ]

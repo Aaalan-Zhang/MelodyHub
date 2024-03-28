@@ -1,0 +1,26 @@
+{% extends '../musicplay/base.html' %}
+{% block content %}
+
+{% if hasRoom %}
+<div class="card">
+<form method="POST">
+  <b>  Rooms You Created: </b>
+    {% for room in rooms %}
+    <a href="{% url 'musicplay:inside_room' room.room_id %}" class="btn btn-dark" role="button">
+        {{room.name}}
+    </a>
+    {% endfor %}
+    {% csrf_token %}
+</form>
+</div>
+{% endif %}
+{% if not hasRoom %}
+<div class="card">
+<form method="POST"> 
+    <label class="app-label">Enter ListenTogether Room Name: </label>
+    <input type="submit" class="btn btn-dark">
+    {% csrf_token %}
+</form>
+</div>
+{% endif %}
+{% endblock %}

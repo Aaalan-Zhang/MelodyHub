@@ -7,8 +7,11 @@ from django.utils import timezone
 from mutagen.mp3 import MP3
 
 from melodyhub.settings import BASE_DIR, MUSICPLAY_USERS, MUSICPLAY_TITLE
-from .models import UserProfile, Music
-from .forms import ProfileForm, MusicUploadForm
+from .models import UserProfile, Music, ListenTogetherRoom
+from .forms import ProfileForm, MusicUploadForm, CreateRoomForm
+
+import hashlib
+import os
 
 import time
 
@@ -98,3 +101,38 @@ def delete_music(request, song_id):
         if request.user == song.user:
             song.delete()
             return redirect(reverse("musicplay:my_profile"))
+
+@login_required
+def listen_together(request):
+    error = ""
+    myListenTogetherRooms = ListenTogetherRoom.objects.filter(creator=request.user)
+    hasRoom = (len(myListenTogetherRooms) >= 1)
+    if request.method == 'POST':
+        form = CreateRoomForm(request.POST)
+        if form.is_valid():
+            random_data = os.urandom(16)
+            hash_object = hashlib.sha256()
+            hash_object.update(random_data)
+            hash = hash_object.hexdigest()
+
+            link = hash[:16]
+
+            newRoom = ListenTogetherRoom(
+                name=form.cleaned_data['name'],
+                room_id=link,
+                creator=request.user
+            )
+            newRoom.save()
+            return redirect(reverse('musicplay:inside_room', args=[link]))
+
+    context = {'form': CreateRoomForm(), 'error': error, 'hasRoom': hasRoom, 'rooms': myListenTogetherRooms}
+    return render(request, 'ListenTogether/create.html', context)
+
+@login_required
+def inside_room(request, key):
+
+    context = {}
+    thisRoom = get_object_or_404(ListenTogetherRoom, room_id=key)
+    context = {'room': thisRoom}
+    context['isHost'] = (thisRoom.creator.id == request.user.id)
+    return render(request, 'ListenTogether/listen.html', context)
