@@ -1,6 +1,7 @@
 const syncScheme = window.location.protocol === "https:" ? "wss" : "ws";
 const syncSocket = new WebSocket(`${syncScheme}://${window.location.host}/ws${window.location.pathname}`);
 
+
 document.addEventListener('DOMContentLoaded', () => {
     const musicBar = document.getElementById('music-bar');
     const isHost = musicBar.getAttribute('data-isHost') === "True";
@@ -61,7 +62,7 @@ function start_playing(cur) {
     if (isHost === "False") {
         // Checking the current innerHTML of the passed element and updating it accordingly
         if (cur.innerHTML === "Start Listening") {
-            processParticipantSync(); // Assuming process_participant_sync is defined elsewhere
+            processParticipantSync(syncSocket); // Assuming process_participant_sync is defined elsewhere
             document.getElementById('music-bar').muted = false; // Unmuting the music-bar
             cur.innerHTML = "Stop Listening"; // Updating the button text to "Stop"
         } else if (cur.innerHTML === "Stop Listening") {
@@ -107,7 +108,7 @@ function processParticipantSync() {
                 const { volume, is_paused, cur_time, cur_src } = msg_content;
                 console.log(msg_content);
                 console.log(cur_time);
-                // musicBar.setAttribute("src", cur_src);
+                musicBar.setAttribute("src", cur_src);
                 // musicBar.load();
                 musicBar.currentTime = cur_time;
                 musicBar.volume = volume;
