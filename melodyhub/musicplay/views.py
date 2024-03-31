@@ -89,7 +89,7 @@ def log_in(request):
             }
             return render(request, 'login/login.html', context)
 
-# @_known_user_check
+@_known_user_check
 @login_required
 def main_action(request):
     request.session["title"] = "Main Page"

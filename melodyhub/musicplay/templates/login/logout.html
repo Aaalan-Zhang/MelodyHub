@@ -1,11 +1,16 @@
 {% extends "musicplay/base.html" %}
 
 {% block content %}
-<div class="container pt-5">
-    <form method="POST">
-        <h4>You have been logged out!</h6>
-        {% csrf_token %}<hr>
-        <p>Click<a href="{% url 'musicplay:login' %}" class="alert-link"> here</a> to login again.</p>
-    </form>
+<div style="font-family:Comfortaa,cursive; display: flex; justify-content: center;">
+    <h1>MelodyHub</h1>
+</div>
+<div style="width: 60%; height: 80%; margin: 0 auto;">
+    <div class="card">
+        You have been successfully logged out!
+        <br><br>
+        <div>
+            Click <a href="{% url 'musicplay:login' %}" class="alert-link"> here </a> to sign in again.
+        </div>
+    </div>
 </div>
 {% endblock %}
