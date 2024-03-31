@@ -5,7 +5,9 @@ hr{border:0;border-top:1px solid rgba(0,0,0,.1);margin:1em 0}
 body{margin:0;background-color:#f6f6f6;font-family:Montserrat,sans-serif;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
 .container{margin:1.8rem;display:flex;flex-direction:column}
 .container>div{margin:.5rem 0} */
+/* .card{font-family:Comfortaa,cursive;color:#fff;box-shadow:2px 2px 8px rgba(0,0,0,.1);border:1px solid hsla(0,0%,76.9%,.3);height:10rem;border-radius:2rem;display:flex;padding:3rem 2rem;align-items:center;justify-content:center;flex-direction:column;background:linear-gradient(75deg,#f17c58,#e94584,#24aadb,#27dbb1,#ffdc18,#ff3706);background-size:600% 100%;-webkit-animation:gradient 16s linear infinite;animation:gradient 16s linear infinite;-webkit-animation-direction:alternate;animation-direction:alternate} */
 .card{font-family:Comfortaa,cursive;color:#fff;box-shadow:2px 2px 8px rgba(0,0,0,.1);border:1px solid hsla(0,0%,76.9%,.3);height:10rem;border-radius:2rem;display:flex;padding:3rem 2rem;align-items:center;justify-content:center;flex-direction:column;background:linear-gradient(75deg,#f17c58,#e94584,#24aadb,#27dbb1,#ffdc18,#ff3706);background-size:600% 100%;-webkit-animation:gradient 16s linear infinite;animation:gradient 16s linear infinite;-webkit-animation-direction:alternate;animation-direction:alternate}
+
 @-webkit-keyframes gradient{0%{background-position:0}to{background-position:100%}}
 @keyframes gradient{0%{background-position:0}to{background-position:100%}}
 /* .description{font-size:1.5rem;font-family:Comfortaa,cursive;margin-right:auto}

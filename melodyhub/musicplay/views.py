@@ -9,7 +9,8 @@ from mutagen.mp3 import MP3
 from melodyhub.settings import BASE_DIR, MUSICPLAY_USERS, MUSICPLAY_TITLE
 from .models import UserProfile, Music, ListenTogetherRoom
 from .forms import ProfileForm, MusicUploadForm, CreateRoomForm
-
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import authenticate, login, logout
 import hashlib
 import os
 
@@ -41,9 +42,55 @@ def _known_user_check(action_function):
 
     return my_wrapper_function
 
+def register(request):
+    if request.method == 'GET':
+        context = {'form': UserCreationForm()}
+        return render(request, 'login/register.html', context)
+    
+    form = UserCreationForm(request.POST)
+    try:
+        new_user = form.save()
+        
+        new_user = authenticate(username=form.cleaned_data['username'],
+                                password=form.cleaned_data['password1'])
+        login(request, new_user)
+        
+        profile = UserProfile(user=new_user)
+        profile.save()
 
+        return redirect(reverse('musicplay:home'))
+    except Exception as e:
+        context = {'form': form, 'error': e}
+        return render(request, 'login/register.html', context)
+
+def log_out(request):
+    logout(request)
+    return render(request, 'login/logout.html')
+
+def log_in(request):
+    if request.method == 'GET':
+        if request.user.is_authenticated:
+            return redirect(reverse('musicplay:home'))
+        else:
+            form = UserCreationForm()
+            context = {'form': form}
+            return render(request, 'login/login.html', context)
+    
+    else:
+        user = authenticate(request, username=request.POST.get('username'), password=request.POST.get('password1'))
+        try:
+            login(request, user)
+            return render(request, 'musicplay/main-page.html')
+        except:
+            form = UserCreationForm()
+            context = {
+                'form': form,
+                'error': 'Username or Password is incorrect. Please try again.'
+            }
+            return render(request, 'login/login.html', context)
+
+# @_known_user_check
 @login_required
-@_known_user_check
 def main_action(request):
     request.session["title"] = "Main Page"
     return render(request, "musicplay/main-page.html", {"message": "Hello"})
@@ -104,9 +151,9 @@ def delete_music(request, song_id):
 
 @login_required
 def listen_together(request):
-    error = ""
     myListenTogetherRooms = ListenTogetherRoom.objects.filter(creator=request.user)
     hasRoom = (len(myListenTogetherRooms) >= 1)
+    everyRoom = ListenTogetherRoom.objects.all()
     if request.method == 'POST':
         form = CreateRoomForm(request.POST)
         if form.is_valid():
@@ -125,14 +172,15 @@ def listen_together(request):
             newRoom.save()
             return redirect(reverse('musicplay:inside_room', args=[link]))
 
-    context = {'form': CreateRoomForm(), 'error': error, 'hasRoom': hasRoom, 'rooms': myListenTogetherRooms}
+    context = {'form': CreateRoomForm(), 'hasRoom': hasRoom, 'rooms': myListenTogetherRooms, 'allRooms': everyRoom}
     return render(request, 'ListenTogether/create.html', context)
 
 @login_required
 def inside_room(request, key):
-
     context = {}
     thisRoom = get_object_or_404(ListenTogetherRoom, room_id=key)
     context = {'room': thisRoom}
+    print(thisRoom.creator)
+    print(request.user)
     context['isHost'] = (thisRoom.creator.id == request.user.id)
     return render(request, 'ListenTogether/listen.html', context)

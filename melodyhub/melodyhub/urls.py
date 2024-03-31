@@ -25,7 +25,6 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path('', main_action),
     path('oauth/', include('social_django.urls', namespace='social')),
-    path('logout', auth_views.logout_then_login, name='logout'),
     path('musicplay/', include(('musicplay.urls', 'musicplay'), namespace='musicplay')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

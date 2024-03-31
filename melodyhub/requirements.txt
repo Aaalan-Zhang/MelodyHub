@@ -2,3 +2,5 @@ django
 social-auth-app-django
 mutagen
 Pillow
+daphne
+channels
