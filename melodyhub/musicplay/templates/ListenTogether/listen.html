@@ -1,19 +1,15 @@
 {% extends '../musicplay/base.html' %}
 
 {% block content %}
-<div class="card">
-    <audio controls autoplay controller class="audio audio-control" id="music-bar" src="/media/audio/Mystery_of_Love.mp3"></audio>
-</div>
+{% load static %}
+<script src="{% static 'ListenTogether/js/WebSocket.js' %}" type="text/javascript"></script>
+<div class="content">
+    <div class="card">
+        <audio controls autoplay controller class="audio audio-control" data-isHost="{{ isHost }}" id="music-bar" src="/media/audio/Mystery_of_Love.mp3"></audio>
+        {% if not isHost %}
+        <button type="button" class="btn btn-dark" onclick=start_playing(this)>Start Listening</button>
+        {% endif %}
+    </div>
 
-<br>
-<div>
-    <b> Share the Link </b>
-    <input type="text" value="{{room.room_id}}" id="link" readonly>
-    <button class="btn btn-dark">Copy</button><br><br>
-</div>
-<div>
-    <b> Live Chatting </b>
-    <input type="text" id="comment">
-    <button class="btn btn-dark">Post</button><br><br>
 </div>
 {% endblock%}

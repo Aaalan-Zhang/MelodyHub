@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     {% load static %}
     <link href="{% static 'musicplay/base.css' %}" rel="stylesheet" type="text/css">
-    <link href="{% static 'ListenTogether/base.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'ListenTogether/css/base.css' %}" rel="stylesheet" type="text/css">
     <link rel="icon" href="{% static 'images/tab_icon.jpg' %}" type="image/x-icon">
 
     <title> {% block title %} MelodyHub {% endblock %} </title>
@@ -16,7 +16,7 @@
     <div class="big-heading">
         {{ request.session.title }}
     </div>
-
+    {% if user.is_authenticated %}
     <div class="user-info">
         {% block user-info %}
         <div class="dropdown">
@@ -25,12 +25,13 @@
             <div class="dropdown-content">
                 {{user.first_name}} {{user.last_name}} <br>
                 <a href="{% url 'musicplay:my_profile' %}">My Profile</a> <br>
-                <a href="{% url 'logout' %}">Logout</a>
+                <a href="{% url 'musicplay:logout' %}">Logout</a>
             </div>
         </div>
         <a href="{% url 'musicplay:home' %}">Home</a>
         {% endblock %}
     </div>
+    {% endif %}
 
     {% if message %}
     <div class="message">
@@ -38,10 +39,8 @@
     </div>
     {% endif %}
 
-    <div class="content">
-        {% block content %}
-        {% endblock %}
-    </div>
+    {% block content %}
+    {% endblock %}
 </body>
 
 </html>

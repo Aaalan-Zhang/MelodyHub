@@ -44,6 +44,8 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
+    'channels',
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -51,7 +53,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "musicplay",
-    "social_django"
+    "social_django",
 ]
 
 MIDDLEWARE = [
@@ -96,13 +98,19 @@ MUSICPLAY_TITLE = CONFIG.get("musicplay", "title")
 MUSICPLAY_USERS = CONFIG.get("musicplay", "users")
 
 # Used by the @login_required decorator to redirect to the login action
-LOGIN_URL = '/oauth/login/google-oauth2/'
+LOGIN_URL = 'musicplay/login'
 
 # Default URL to redirect to after a user logs in.
 LOGIN_REDIRECT_URL = '/'
 
 WSGI_APPLICATION = "melodyhub.wsgi.application"
+ASGI_APPLICATION = "melodyhub.routing.application"
 
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+    },
+}
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases

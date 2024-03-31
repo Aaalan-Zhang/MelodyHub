@@ -1,26 +1,39 @@
 {% extends '../musicplay/base.html' %}
 {% block content %}
-
-{% if hasRoom %}
-<div class="card">
-<form method="POST">
-  <b>  Rooms You Created: </b>
-    {% for room in rooms %}
-    <a href="{% url 'musicplay:inside_room' room.room_id %}" class="btn btn-dark" role="button">
-        {{room.name}}
-    </a>
-    {% endfor %}
-    {% csrf_token %}
-</form>
-</div>
-{% endif %}
-{% if not hasRoom %}
-<div class="card">
-<form method="POST"> 
-    <label class="app-label">Enter ListenTogether Room Name: {{form.name}}</label>
-    <input type="submit" class="btn btn-dark">
-    {% csrf_token %}
-</form>
-</div>
-{% endif %}
+<!-- <div class="content"> -->
+    {% if hasRoom %}
+    <div class="card" style="width: 60%; margin: 0 auto;">
+        Rooms you created: <br><br>
+        {% for room in rooms %}
+        <a href="{% url 'musicplay:inside_room' room.room_id %}" class="btn btn-dark" role="button">
+            {{room.name}}
+        </a>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% if not hasRoom %}
+    <div class="card" style="width: 60%; margin: 0 auto;">
+        <form method="POST"> 
+            Enter ListenTogether room name:
+            <br><br>
+            {{form.name}} 
+            <br><br>
+            <input type="submit" class="btn btn-dark" value="create">
+            {% csrf_token %}
+        </form>
+    </div>
+    {% endif %}
+    <br><br>
+    <div class="card" style="width: 60%; height: 80%; margin: 0 auto;">
+        All available rooms: <br><br>
+        {% if not allRooms %}
+            No rooms available
+        {% endif %}
+        {% for every_room in allRooms %}
+            <a href="{% url 'musicplay:inside_room' every_room.room_id %}" class="btn btn-dark" role="button">
+                {{every_room.name}}
+            </a><br>
+        {% endfor %}
+    </div>
+<!-- </div> -->
 {% endblock %}

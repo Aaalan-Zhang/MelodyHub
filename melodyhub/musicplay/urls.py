@@ -28,5 +28,8 @@ urlpatterns = [
     path('delete_music/<int:song_id>/', views.delete_music, name='delete_music'),
     path('listentogether/create', views.listen_together, name='listen_together'),
     path('listentogether/<slug:key>', views.inside_room, name='inside_room'),
+    path('register', views.register, name='register'),
+    path('login', views.log_in, name='login'),
+    path('logout', views.log_out, name='logout'),
     path('playlist_detail/<int:playlist_id>/', views.playlist_detail, name='playlist_detail'),
 ]

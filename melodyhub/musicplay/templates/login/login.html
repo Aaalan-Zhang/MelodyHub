@@ -1,0 +1,41 @@
+{% extends 'musicplay/base.html' %}
+{% block content %}
+{% load static %}
+<div style="font-family:Comfortaa,cursive; display: flex; justify-content: center;">
+    <h1>Welcome to MelodyHub</h1>
+</div>
+<div style="width: 60%; height: 80%; margin: 0 auto;">
+    <div class="card">
+        <form method="POST">
+            <div style="display: grid; grid-template-columns: 100px auto; align-items: center; gap: 10px;">
+                <div>Username:</div>
+                <div>{{ form.username }}</div>
+            </div>
+            <div style="display: grid; grid-template-columns: 100px auto; align-items: center; gap: 10px;">
+                <div>Password:</div>
+                <div>{{ form.password1 }}</div>
+            </div>
+            {% csrf_token %}
+            <div style="display: flex; justify-content: center;">
+                    <input type="submit" class="btn btn-dark" value="Sign in">
+            </div>
+        </form>
+    </div>
+</div><br>
+<div style="font-family:Comfortaa,cursive; display: flex; justify-content: center;">
+    <div>
+        Don't have an account? <a href="{% url 'musicplay:register' %}">Sign up</a>, or
+        log in with
+        <a href="/oauth/login/google-oauth2/">
+            <img src="/media/imgs/google-icon-logo.svg" height="25em" width="25em" alt="Google-Auth">
+        </a>
+    </div>
+</div>
+{% if error %}
+<div style="font-family:Comfortaa,cursive; color: rgb(0, 0, 0); display: flex; justify-content: center;">
+    {{error}}
+</div>
+{% endif %}
+
+
+{% endblock %}
