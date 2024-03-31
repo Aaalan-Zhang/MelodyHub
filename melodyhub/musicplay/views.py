@@ -7,7 +7,7 @@ from django.utils import timezone
 from mutagen.mp3 import MP3
 
 from melodyhub.settings import BASE_DIR, MUSICPLAY_USERS, MUSICPLAY_TITLE
-from .models import UserProfile, Music, ListenTogetherRoom
+from .models import UserProfile, Music, ListenTogetherRoom, Playlist
 from .forms import ProfileForm, MusicUploadForm, CreateRoomForm
 
 import hashlib
@@ -74,8 +74,6 @@ def upload_profile(request):
         profile = UserProfile.objects.get(user=request.user)
         form = ProfileForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
-            if 'avatar' in request.FILES and form.cleaned_data["avatar"] is not None:
-                profile.content_type = form.cleaned_data["avatar"].content_type
             form.save()
             return redirect(reverse("musicplay:my_profile"))
 
@@ -101,6 +99,17 @@ def delete_music(request, song_id):
         if request.user == song.user:
             song.delete()
             return redirect(reverse("musicplay:my_profile"))
+
+
+@login_required
+def playlist_detail(request, playlist_id):
+    playlist = get_object_or_404(Playlist, id=playlist_id)
+    musics = playlist.musics.all()
+    return render(request, 'playlist_detail.html', {
+        'playlist': playlist,
+        'musics': musics,
+    })
+
 
 @login_required
 def listen_together(request):

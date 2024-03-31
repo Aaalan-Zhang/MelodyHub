@@ -1,0 +1,19 @@
+{% extends "musicplay/base.html" %}
+
+{% block content %}
+<h1>{{ playlist.name }}</h1>
+{% if playlist.picture %}
+<img src="{{ playlist.picture.url }}" alt="Playlist picture">
+{% endif %}
+<p>{{ playlist.description }}</p>
+<h2>Tracks</h2>
+{% if musics %}
+<ul>
+    {% for music in musics %}
+    <li>{{ music.name }} - {{ music.length }} seconds</li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>This playlist has no tracks.</p>
+{% endif %}
+{% endblock %}

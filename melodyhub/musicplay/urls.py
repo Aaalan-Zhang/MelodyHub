@@ -27,5 +27,6 @@ urlpatterns = [
     path('music_detail/<int:song_id>/', views.my_profile, name='music_detail'),
     path('delete_music/<int:song_id>/', views.delete_music, name='delete_music'),
     path('listentogether/create', views.listen_together, name='listen_together'),
-    path('listentogether/<slug:key>', views.inside_room, name='inside_room')
+    path('listentogether/<slug:key>', views.inside_room, name='inside_room'),
+    path('playlist_detail/<int:playlist_id>/', views.playlist_detail, name='playlist_detail'),
 ]

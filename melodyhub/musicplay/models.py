@@ -6,13 +6,13 @@ from django.utils.timezone import now
 # Create your models here.
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
-    avatar = models.FileField(upload_to="user_avatars/",
-        null=True,
+    avatar = models.ImageField(
+        upload_to="user_avatars/",
         blank=True,
-        default="default_avatar/default_avatar.jpg",)
-    content_type = models.CharField(max_length=50, blank=True)
+        default="default_avatar/default_avatar.jpg",
+    )
     description = models.TextField(
-        null=True, blank=True, default="This guy is too lazy to write a description."
+        blank=True, default="This guy is too lazy to write a description."
     )
     registration_time = models.DateTimeField(auto_now_add=True)
     total_favorites = models.IntegerField(default=0)
@@ -57,6 +57,8 @@ class Playlist(models.Model):
     name = models.CharField(max_length=255)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="playlists")
     musics = models.ManyToManyField(Music, related_name="playlists")
+    picture = models.ImageField(upload_to="playlist_pictures/", null=True, blank=True)
+    description = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     is_favorites = models.BooleanField(default=False)  # To distinguish "My Favorites"
     is_recent = models.BooleanField(default=False)  # To distinguish "Recent" playlist
