@@ -1,20 +1,16 @@
-from django.http import HttpResponse
-from django.shortcuts import redirect, render, resolve_url, get_object_or_404
+from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.db import transaction
 from django.urls import reverse
 from django.utils import timezone
 from mutagen.mp3 import MP3
 
-from melodyhub.settings import BASE_DIR, MUSICPLAY_USERS, MUSICPLAY_TITLE
+from melodyhub.settings import MUSICPLAY_USERS, MUSICPLAY_TITLE
 from .models import UserProfile, Music, ListenTogetherRoom, Playlist
 from .forms import ProfileForm, MusicUploadForm, CreateRoomForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login, logout
 import hashlib
 import os
-
-import time
 
 
 def _known_user_check(action_function):
@@ -93,7 +89,8 @@ def log_in(request):
 @login_required
 def main_action(request):
     request.session["title"] = "Main Page"
-    return render(request, "musicplay/main-page.html", {"message": "Hello"})
+    all_music = Music.objects.all().order_by("-upload_time")
+    return render(request, "musicplay/main-page.html", {"message": "Welcome to MelodyHub", "all_music": all_music})
 
 
 @login_required

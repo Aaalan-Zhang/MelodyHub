@@ -271,26 +271,6 @@ form {
     font-size: medium;
 }
 
-.progress-bar {
-    width: 80%;
-    height: 8px;
-    background-color: #666;
-    margin: 0 auto;
-    border-radius: 5px;
-    position: relative;
-}
-
-.progress {
-    height: 100%;
-    background-color: #4CAF50;
-    border-radius: 5px;
-}
-
-.time-display {
-    margin-top: 5px;
-    font-size: medium;
-}
-
 
 .favoriteMusicBtn {
     background-color: #f3865f;
@@ -312,4 +292,22 @@ form {
     background-color: #ff6f00;
 }
 
-.card{font-family:Comfortaa,cursive;color:#fff;box-shadow:2px 2px 8px rgba(0,0,0,.1);border:1px solid hsla(0,0%,76.9%,.3);height:10rem;border-radius:2rem;display:flex;padding:3rem 2rem;align-items:center;justify-content:center;flex-direction:column;background:linear-gradient(75deg,#f17c58,#e94584,#24aadb,#27dbb1,#ffdc18,#ff3706);background-size:600% 100%;-webkit-animation:gradient 16s linear infinite;animation:gradient 16s linear infinite;-webkit-animation-direction:alternate;animation-direction:alternate}
+.card {
+    font-family: Comfortaa, cursive;
+    color: #fff;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, .1);
+    border: 1px solid hsla(0, 0%, 76.9%, .3);
+    height: 10rem;
+    border-radius: 2rem;
+    display: flex;
+    padding: 3rem 2rem;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background: linear-gradient(75deg, #f17c58, #e94584, #24aadb, #27dbb1, #ffdc18, #ff3706);
+    background-size: 600% 100%;
+    -webkit-animation: gradient 16s linear infinite;
+    animation: gradient 16s linear infinite;
+    -webkit-animation-direction: alternate;
+    animation-direction: alternate
+}

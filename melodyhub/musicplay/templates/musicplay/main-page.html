@@ -1,14 +1,15 @@
 {% extends "musicplay/base.html" %}
 
 {% block content %}
-<li class="navbar"><a href="{% url 'musicplay:listen_together' %}" class="btn btn-dark" role="button">ListenTogether</a></li>
+<li class="navbar"><a href="{% url 'musicplay:listen_together' %}" class="btn btn-dark" role="button">ListenTogether</a>
+</li>
 <div class="container">
     <div class="search-container">
         <input type="text" class="search-bar" placeholder="Search Music...">
         <button class="search-button">Search</button>
     </div>
 
-    <div class="favorite-songs">
+    <!-- <div class="favorite-songs">
         <h4>Recently Uploaded Songs</h4>
         <ul class="music-list">
             <li>
@@ -20,45 +21,28 @@
                 <button class="play-btn">▶</button>
             </li>
         </ul>
-    </div>
+    </div> -->
     <h4>All Songs</h4>
     <button class="favoriteMusicBtn">Show Favorite Songs</button>
 
     <ul class="music-list">
+        {% for song in all_music %}
         <li>
             <span class="music-details">
-                <div class="music-title">Song 1</div>
-                <div class="music-artist">Artist 1</div>
+                <div class="music-title">{{ song.name }}</div>
+                <div class="music-artist">{{ song.user.username }}</div>
             </span>
             <button class="fav-btn">🤍</button>
-            <button class="play-btn">▶</button>
+            <button class="play-btn" data-src="{{ song.file.url }}">▶</button>
         </li>
-        <li>
-            <span class="music-details">
-                <div class="music-title">Song 2</div>
-                <div class="music-artist">Artist 2</div>
-            </span>
-            <button class="fav-btn">🤍</button>
-            <button class="play-btn">▶</button>
-        </li>
-        <li>
-            <span class="music-details">
-                <div class="music-title">Song 3</div>
-                <div class="music-artist">Artist 3</div>
-            </span>
-            <button class="fav-btn">🤍</button>
-            <button class="play-btn">▶</button>
-        </li>
+        {% endfor %}
     </ul>
 
 </div>
 <div class="play-status-bar">
     <p><strong>Now Playing:</strong> <span id="currentSong">Song Name - Artist</span></p>
-    <div class="progress-bar">
-        <div class="progress" style="width: 50%;"></div>
-    </div>
-    <div class="time-display">
-        <span id="elapsedTime">00:00</span> / <span id="totalTime">00:00</span>
-    </div>
+    <audio id="audio-player" controls></audio>
 </div>
+{% load static %}
+<script src="{% static 'musicplay/js/audio_play.js' %}"></script>
 {% endblock %}
