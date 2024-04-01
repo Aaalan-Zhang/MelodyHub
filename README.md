@@ -20,3 +20,5 @@ python manage.py makemigrations
 python manage.py migrate
 python manage.py runserver
 ```
+
+Some of the ideas of the WebSocket implementation of the ListenTogether room was inspired by the WebSocket codes provided in the course and by a project on GitHub called synphony (https://github.com/alan9262/synphonymusicweb). However, we got the idea of the ListenTogether Room by ourselves and wrote substantially different codes.

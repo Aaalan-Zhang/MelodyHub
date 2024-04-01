@@ -61,7 +61,6 @@ function startListening(element) {
             document.getElementById('music-bar').muted = false;
             element.innerHTML = "Stop Listening";
         } else if (element.innerHTML === "Stop Listening") {
-
             document.getElementById('music-bar').muted = true;
             document.getElementById('music-bar').pause()
             element.innerHTML = "Start Listening"; 
