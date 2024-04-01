@@ -6,10 +6,12 @@
             role="button">ListenTogether</a></li>
 </div>
 <div class="container">
-    <div class="search-container">
-        <input type="text" class="search-bar" placeholder="Search Music...">
-        <button class="search-button">Search</button>
-    </div>
+    <form method="GET" action=".">
+        <div class="search-container">
+            <input type="text" name="q" class="search-bar" placeholder="Search Music...">
+            <button type="submit" class="search-button">Search</button>
+        </div>
+    </form>
 
     <!-- <div class="favorite-songs">
         <h4>Recently Uploaded Songs</h4>
@@ -28,7 +30,7 @@
     <button class="favoriteMusicBtn">Show Favorite Songs</button>
 
     <ul class="music-list">
-        {% for song in all_music %}
+        {% for song in songs %}
         <li>
             <span class="music-details">
                 <div class="music-title">{{ song.name }}</div>

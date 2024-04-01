@@ -89,8 +89,10 @@ def log_in(request):
 @login_required
 def main_action(request):
     request.session["title"] = "Main Page"
-    all_music = Music.objects.all().order_by("-upload_time")
-    return render(request, "musicplay/main-page.html", {"message": "Welcome to MelodyHub", "all_music": all_music})
+    query = request.GET.get('q', '')
+    songs = Music.objects.filter(name__icontains=query).order_by("-upload_time")
+    # all_music = Music.objects.all().order_by("-upload_time")
+    return render(request, "musicplay/main-page.html", {"message": "Welcome to MelodyHub", "songs": songs})
 
 
 @login_required
