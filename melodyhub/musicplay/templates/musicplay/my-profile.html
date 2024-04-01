@@ -1,51 +1,66 @@
 {% extends "musicplay/base.html" %}
 
 {% block content %}
-<div class="container mt-5">
-    <div class="col-md-4">
+<div class="container" style="font-family:Comfortaa,cursive;">
+    <div style="display: flex; justify-content: center;">
         <div class="profile-info">
-            <h2>{{user.first_name}} {{user.last_name}}</h2>
-            <img src="{{ user_profile.avatar.url }}" class="img-fluid img-thumbnail rounded-circle"
-                alt="User profile picture">
+            <div class="row">
+                <div class="col-5">
+                    <img src="{{ user_profile.avatar.url }}" class="img-fluid img-thumbnail rectangle"
+                        alt="User profile picture" style="width: 200px; height: 180px;">
+                </div>
+                <div class="col-1">
+                </div>
+                <div class="col-6">
+                    <h2>{{user.first_name}} {{user.last_name}}</h2>
+                    <p>Joined: {{ user_profile.registration_time|date:"M d, Y" }}</p>
+                    <p>Total Favorites: {{ user_profile.total_favorites }}</p>
+                    <p>Total Not Favorites: {{ user_profile.total_not_favorites }}</p>
+                </div>
+            </div>
             <form method="post" enctype="multipart/form-data" action="{% url 'musicplay:upload_profile' %}">
                 {% csrf_token %}
-                {{ profile_form.as_p }}
-                <button type="submit">Update Profile</button>
+                <div>
+                    {{ profile_form.as_p }}
+                </div>
+                <div style="display: flex; justify-content: center;">
+                    <button type="submit" class="btn btn-dark">Update Profile</button>
+                </div>
             </form>
+        </div>
+    </div>
 
-            <p>Joined: {{ user_profile.registration_time|date:"M d, Y" }}</p>
-            <p>Total Favorites: {{ user_profile.total_favorites }}</p>
-            <p>Total Not Favorites: {{ user_profile.total_not_favorites }}</p>
-            <form method="post" enctype="multipart/form-data" action="{% url 'musicplay:upload_music' %}">
+    <div class="uploaded-music">
+        <h3>Uploaded Music</h3>
+        <div class="list-group">
+            {% for song in music %}
+            <a href="{% url 'musicplay:music_detail' song.id %}"
+                class="list-group-item list-group-item-action flex-column align-items-start"
+                style="margin-bottom: 1em;">
+                <div class="d-flex justify-content-between">
+                    <h5 class="mb-1">{{ song.name }}</h5>
+                    <small>Uploaded Time: {{ song.upload_time|date:"M d, Y" }}</small>
+                </div>
+                <small>Description: {{ song.description }}</small><br />
+                <small>Favorites: {{ song.favorites_count }}, Not Favorites: {{song.not_favorites_count}}</small>
+            </a>
+            <form action="{% url 'musicplay:delete_music' song.id %}" method="post" style="display: inline;">
                 {% csrf_token %}
-                <table>
-                    {{ music_upload_form.as_table }}
-                </table>
-                <button type="submit">Upload Music</button>
+                <button type="submit" class="btn btn-danger">Delete</button>
             </form>
+            {% endfor %}
         </div>
     </div>
-    <div class="col-md-8">
-        <div class="uploaded-music">
-            <h3>Uploaded Music</h3>
-            <div class="list-group">
-                {% for song in music %}
-                <a href="{% url 'musicplay:music_detail' song.id %}"
-                    class="list-group-item list-group-item-action flex-column align-items-start">
-                    <div class="d-flex justify-content-between">
-                        <h5 class="mb-1">{{ song.name }}</h5>
-                        <small>Uploaded Time: {{ song.upload_time|date:"M d, Y" }}</small>
-                    </div>
-                    <small>Description: {{ song.description }}</small> <br/>
-                    <small>Favorites: {{ song.favorites_count }}, Not Favorites: {{ song.not_favorites_count}}</small>
-                </a>
-                <form action="{% url 'musicplay:delete_music' song.id %}" method="post" style="display: inline;">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-danger">Delete</button>
-                </form>
-                {% endfor %}
-            </div>
+
+    <form method="post" enctype="multipart/form-data" action="{% url 'musicplay:upload_music' %}">
+        {% csrf_token %}
+        <div
+            style="display: grid; grid-template-columns: repeat(2, minmax(100px, auto)); align-items: center; gap: 10px;">
+            {{ music_upload_form.as_table }}
         </div>
-    </div>
+        <div style="display: flex; justify-content: center;">
+            <button type="submit" class="btn btn-dark">Upload Music</button>
+        </div>
+    </form>
 </div>
 {% endblock %}
