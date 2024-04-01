@@ -5,7 +5,7 @@
 <script src="{% static 'ListenTogether/js/WebSocket.js' %}" type="text/javascript"></script>
 <div class="content">
     <div class="card">
-        <audio controls autoplay controller class="audio audio-control" isHost="{{ isHost }}" id="music-bar" src="/media/audio/Mystery_of_Love.mp3"></audio>
+        <audio controls controller class="audio audio-control" isHost="{{ isHost }}" id="music-bar" src="/media/audio/Mystery_of_Love.mp3"></audio>
         <br>
         {% if not isHost %}
         <button type="button" class="btn btn-dark" onclick=startListening(this)>Start Listening</button>

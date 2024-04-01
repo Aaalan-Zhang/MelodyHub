@@ -1,6 +1,6 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
 import json
-class MusicSyncConsumer(AsyncWebsocketConsumer):
+class SyncConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         channel_name = self.scope['url_route']['kwargs']['key']
         self.group_name = 'room_%s' % channel_name
@@ -23,13 +23,19 @@ class MusicSyncConsumer(AsyncWebsocketConsumer):
         await self.channel_layer.group_send(
             self.group_name,
             {
-                'type': 'sync',
+                'type': 'sync_music',
                 'msg_type': json_data['msg_type'],
                 'msg_content': json_data['msg_content']
             }
         )
 
-    async def sync(self, event):
+    async def sync_music(self, event):
+        await self.send(text_data=json.dumps({
+            'msg_type': event['msg_type'],
+            'msg_content': event['msg_content']
+        }))
+
+    async def sync_message(self, event):
         await self.send(text_data=json.dumps({
             'msg_type': event['msg_type'],
             'msg_content': event['msg_content']
