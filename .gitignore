@@ -20,5 +20,5 @@ venv/
 
 melodyhub/media/*
 !melodyhub/media/default_avatar
-!melodyhub/audio/
-!melodyhub/imgs/
+!melodyhub/media/audio/
+!melodyhub/media/imgs/
