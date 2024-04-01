@@ -1,8 +1,10 @@
 {% extends "musicplay/base.html" %}
 
 {% block content %}
-<li class="navbar"><a href="{% url 'musicplay:listen_together' %}" class="btn btn-dark" role="button">ListenTogether</a>
-</li>
+<div style="font-family:Comfortaa,cursive; display: flex; justify-content: center;">
+    <li class="navbar"><a href="{% url 'musicplay:listen_together' %}" class="btn btn-dark"
+            role="button">ListenTogether</a></li>
+</div>
 <div class="container">
     <div class="search-container">
         <input type="text" class="search-bar" placeholder="Search Music...">

@@ -8,9 +8,9 @@ class ProfileForm(forms.ModelForm):
         fields = ['avatar', 'description']
 
     avatar = forms.FileField(
-        label="New Avatar",
+        label="",
         required=False,
-        widget=forms.FileInput  # Use the FileInput widget
+        widget=forms.FileInput()
     )
     def clean_avatar(self):
         avatar = self.cleaned_data.get("avatar")
