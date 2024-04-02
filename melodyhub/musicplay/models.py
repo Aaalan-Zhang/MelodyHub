@@ -12,7 +12,7 @@ class UserProfile(models.Model):
         default="default_avatar/default_avatar.jpg",
     )
     description = models.TextField(
-        blank=True, default="This guy is too lazy to write a description."
+        blank=True
     )
     registration_time = models.DateTimeField(auto_now_add=True)
     total_favorites = models.IntegerField(default=0)
@@ -24,7 +24,8 @@ class Music(models.Model):
         User, on_delete=models.CASCADE, related_name="uploaded_music"
     )
     name = models.CharField(max_length=255)
-    image = models.ImageField(upload_to="music_images/")
+    singer = models.CharField(max_length=255)
+    image = models.ImageField(upload_to="music_images/", blank=True)
     description = models.TextField()
     file = models.FileField(upload_to="music_files/")
     upload_time = models.DateTimeField(auto_now_add=True)

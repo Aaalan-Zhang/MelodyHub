@@ -2,14 +2,14 @@
 
 {% block content %}
 <div class="container" style="font-family:Comfortaa,cursive;">
-    <div style="display: flex; justify-content: center;">
+    <div style="display: flex; justify-content: center; background-image: url('/media/background/bg3.jpg');
+    height: 450px; width: 1100px; background-size: cover; background-position: center;">
         <div class="profile-info">
+            <br>
             <div class="row">
                 <div class="col-5">
                     <img src="{{ user_profile.avatar.url }}" class="img-fluid img-thumbnail rectangle"
                         alt="User profile picture" style="width: 200px; height: 180px;">
-                </div>
-                <div class="col-1">
                 </div>
                 <div class="col-6">
                     <h2>{{user.first_name}} {{user.last_name}}</h2>
@@ -30,9 +30,11 @@
         </div>
     </div>
 
+    <br>
+    <h3>Uploaded Tracks</h3>
     <div class="uploaded-music">
-        <h3>Uploaded Music</h3>
         <div class="list-group">
+            {% if music %}
             {% for song in music %}
             <a href="{% url 'musicplay:music_detail' song.id %}"
                 class="list-group-item list-group-item-action flex-column align-items-start"
@@ -49,17 +51,25 @@
                 <button type="submit" class="btn btn-danger">Delete</button>
             </form>
             {% endfor %}
+            {% else %}
+            <p>Your track list looks a little quiet. Start the vibes by uploading your first track!</p>
+            {% endif %}
         </div>
     </div>
 
-    <form method="post" enctype="multipart/form-data" action="{% url 'musicplay:upload_music' %}">
-        {% csrf_token %}
-        <div
-            style="display: grid; grid-template-columns: repeat(2, minmax(100px, auto)); align-items: center; gap: 10px;">
-            {{ music_upload_form.as_table }}
-        </div>
-        <div style="display: flex; justify-content: center;">
-            <button type="submit" class="btn btn-dark">Upload Music</button>
+    <br>
+    <h3>Upload New Track</h3>
+    <form style="border:3px solid orange ;height: 370px;" class='card p-1' method="post" enctype="multipart/form-data"
+        action="{% url 'musicplay:upload_music' %}">
+        <div class="card-body">
+            {% csrf_token %}
+            <div
+                style="display: grid; grid-template-columns: repeat(2, minmax(100px, auto)); align-items: center; gap: 10px;">
+                {{ music_upload_form.as_table }}
+            </div>
+            <div style="display: flex; justify-content: center;">
+                <button type="submit" class="btn btn-dark">Upload Music</button>
+            </div>
         </div>
     </form>
 </div>

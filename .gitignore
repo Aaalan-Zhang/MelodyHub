@@ -22,3 +22,4 @@ melodyhub/media/*
 !melodyhub/media/default_avatar
 !melodyhub/media/audio/
 !melodyhub/media/imgs/
+!melodyhub/media/background/
