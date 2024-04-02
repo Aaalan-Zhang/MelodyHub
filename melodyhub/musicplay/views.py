@@ -98,7 +98,6 @@ def log_in(request):
 # @_known_user_check
 @login_required
 def main_action(request):
-<<<<<<< HEAD
     try:
         google_auth = request.user.social_auth.get(provider="google-oauth2")
         request.session["picture"] = google_auth.extra_data.get("picture", "")
@@ -106,8 +105,6 @@ def main_action(request):
         user_profile_img = get_object_or_404(UserProfile, user=request.user).avatar.url
         request.session["picture"] = user_profile_img
 
-    query = request.GET.get('q', '')
-=======
     user = request.user
 
     favorite_playlist, created_fav = Playlist.objects.get_or_create(
@@ -130,7 +127,6 @@ def main_action(request):
 
     request.session["title"] = "Main Page"
     query = request.GET.get("q", "")
->>>>>>> 8348f0b5c45c6dfc7df0f1fca0471608fcdeaa13
     songs = Music.objects.filter(name__icontains=query).order_by("-upload_time")
     # all_music = Music.objects.all().order_by("-upload_time")
     return render(
