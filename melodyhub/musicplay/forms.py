@@ -1,6 +1,5 @@
 from django import forms
 from musicplay.models import Music, UserProfile, ListenTogetherRoom, User
-from mutagen.mp3 import MP3
 
 
 class ProfileForm(forms.ModelForm):
