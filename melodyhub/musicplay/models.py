@@ -11,9 +11,7 @@ class UserProfile(models.Model):
         blank=True,
         default="default_avatar/avatar.png",
     )
-    description = models.TextField(
-        blank=True
-    )
+    description = models.TextField(blank=True)
     registration_time = models.DateTimeField(auto_now_add=True)
     total_favorites = models.IntegerField(default=0)
     total_not_favorites = models.IntegerField(default=0)

@@ -27,7 +27,12 @@
         </ul>
     </div> -->
     <h4>All Songs</h4>
-    <button class="favoriteMusicBtn">Show Favorite Songs</button>
+    <br>
+    <a href="{% url 'musicplay:playlist_detail' favorite_playlist.id %}" class="favoriteMusicBtn">Show Favorite
+        Songs</a> <br><br>
+
+    <a href="{% url 'musicplay:playlist_detail' recent_playlist.id %}" class="favoriteMusicBtn">Show Recent Played
+        Songs</a> <br><br>
 
     <ul class="music-list">
         {% for song in songs %}
