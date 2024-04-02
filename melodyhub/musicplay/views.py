@@ -190,6 +190,7 @@ def delete_music(request, song_id):
 def playlist_detail(request, playlist_id):
     playlist = get_object_or_404(Playlist, id=playlist_id)
     musics = playlist.musics.all()
+    request.session["title"] = "Playlist"
     return render(
         request,
         "musicplay/playlist_detail.html",
