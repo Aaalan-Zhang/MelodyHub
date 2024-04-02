@@ -1,3 +1,6 @@
+@import url(https://fonts.googleapis.com/css2?family=Comfortaa:wght@600&display=swap);
+#app{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 14px;
@@ -258,17 +261,39 @@ form {
     bottom: 0;
     left: 0;
     width: 100%;
-    background-color: #333;
+    /* background-color: #333; */
     color: #fff;
     padding: 10px;
     text-align: center;
     box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.3);
     height: 100px;
+    background: linear-gradient(75deg, #f17c58, #e94584, #24aadb, #27dbb1, #ffdc18, #ff3706);
+    background-size: 600% 100%;
+    -webkit-animation: gradient 16s linear infinite;
+    animation: gradient 16s linear infinite;
+    -webkit-animation-direction: alternate;
+    animation-direction: alternate;
 }
+
+/* .card {
+    font-family: Comfortaa, cursive;
+    color: #fff;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, .1);
+    border: 1px solid hsla(0, 0%, 76.9%, .3);
+    height: 10rem;
+    border-radius: 2rem;
+    display: flex;
+    padding: 3rem 2rem;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  } */
+  
 
 .play-status-bar p {
     margin: 5px 0;
     font-size: medium;
+    font-family: Comfortaa, cursive;
 }
 
 

@@ -13,8 +13,9 @@
 </head>
 
 <body>
-    <div class="big-heading">
-        {{ request.session.title }}
+    <br>
+    <div style="font-family:Comfortaa,cursive; display: flex; justify-content: center;">
+        <h1>{{ request.session.title }}</h1>
     </div>
     {% if user.is_authenticated %}
     <div class="user-info">
@@ -23,7 +24,7 @@
             <img style="border-radius: 50%; height: 2em;" src="{{ request.session.picture }}"
                 alt="User profile picture"><br>
             <div class="dropdown-content">
-                {{user.first_name}} {{user.last_name}} <br>
+                {{user.username}} <br>
                 <a href="{% url 'musicplay:my_profile' %}">My Profile</a> <br>
                 <a href="{% url 'musicplay:logout' %}">Logout</a>
             </div>
@@ -33,11 +34,11 @@
     </div>
     {% endif %}
 
-    {% if message %}
+    <!-- {% if message %}
     <div class="message">
         {{message}}
     </div>
-    {% endif %}
+    {% endif %} -->
 
     {% block content %}
     {% endblock %}

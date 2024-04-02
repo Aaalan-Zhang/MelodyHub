@@ -24,7 +24,7 @@ class Music(models.Model):
         User, on_delete=models.CASCADE, related_name="uploaded_music"
     )
     name = models.CharField(max_length=255)
-    singer = models.CharField(max_length=255)
+    singer = models.CharField(max_length=255, null=True, blank=True)
     image = models.ImageField(upload_to="music_images/", blank=True)
     description = models.TextField()
     file = models.FileField(upload_to="music_files/")

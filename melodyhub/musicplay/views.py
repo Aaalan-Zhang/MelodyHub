@@ -88,7 +88,13 @@ def log_in(request):
 # @_known_user_check
 @login_required
 def main_action(request):
-    request.session["title"] = "Main Page"
+    try:
+        google_auth = request.user.social_auth.get(provider="google-oauth2")
+        request.session["picture"] = google_auth.extra_data.get("picture", "")
+    except:
+        user_profile_img = get_object_or_404(UserProfile, user=request.user).avatar.url
+        request.session["picture"] = user_profile_img
+
     query = request.GET.get('q', '')
     songs = Music.objects.filter(name__icontains=query).order_by("-upload_time")
     # all_music = Music.objects.all().order_by("-upload_time")
@@ -159,6 +165,7 @@ def playlist_detail(request, playlist_id):
 
 @login_required
 def listen_together(request):
+    request.session["title"] = "ListenTogether"
     myListenTogetherRooms = ListenTogetherRoom.objects.filter(creator=request.user)
     hasRoom = (len(myListenTogetherRooms) >= 1)
     everyRoom = ListenTogetherRoom.objects.all()
@@ -188,7 +195,5 @@ def inside_room(request, key):
     context = {}
     thisRoom = get_object_or_404(ListenTogetherRoom, room_id=key)
     context = {'room': thisRoom}
-    print(thisRoom.creator)
-    print(request.user)
     context['isHost'] = (thisRoom.creator.id == request.user.id)
     return render(request, 'ListenTogether/listen.html', context)

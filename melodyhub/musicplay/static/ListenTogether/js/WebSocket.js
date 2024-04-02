@@ -11,8 +11,13 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('Host is connected');
     }
     else {
+        musicBar.removeAttribute('controls');
         syncSocket.onopen = function() {
             console.log('Participant is connected');
+            processParticipantSync(syncSocket);
+            syncSocket.send(JSON.stringify(
+                { 'msg_type' : 'sync_chat_request_from_participant', 'msg_content': ''}
+            ));
         };
         // processParticipantSync(syncSocket);
     }
@@ -20,11 +25,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function processHostSync() {
     let musicBar = document.getElementById('music-bar');
-
     ['playing', 'pause', 'volumechange'].forEach(event => {
         musicBar.addEventListener(event, () => {
             syncSocket.send(JSON.stringify(
-                { 'msg_type': 'sync_response_from_host', 
+                { 'msg_type': 'sync_music_response_from_host', 
                   'msg_content': 
                     {
                         'volume': musicBar.volume,
@@ -39,9 +43,9 @@ function processHostSync() {
 
     syncSocket.onmessage = function(event) {
         let response = JSON.parse(event.data);
-        if (response.msg_type === 'sync_request_from_participant') {
+        if (response.msg_type === 'sync_music_request_from_participant') {
             syncSocket.send(JSON.stringify(
-                { 'msg_type': 'sync_response_from_host', 
+                { 'msg_type': 'sync_music_response_from_host', 
                   'msg_content': 
                     {
                         'volume': musicBar.volume,
@@ -52,16 +56,28 @@ function processHostSync() {
                 }
             ));
         }
+        else if (response.msg_type === 'sync_chat_request_from_participant') {
+            syncSocket.send(JSON.stringify(
+                { 'msg_type': 'sync_chat_response_from_host', 
+                  'msg_content': 
+                    {
+                        'chat': document.getElementById('chat-box').innerHTML,
+                    }
+                }
+            ));
+        }
     };
 }
 
 function startListening(element) {
         if (element.innerHTML === "Start Listening") {
-            processParticipantSync(syncSocket);
-            document.getElementById('music-bar').muted = false;
+            // processParticipantSync(syncSocket);
+            syncSocket.send(JSON.stringify(
+                { 'msg_type' : 'sync_music_request_from_participant', 'msg_content': ''}
+            ));
+            // document.getElementById('music-bar').muted = false;
             element.innerHTML = "Stop Listening";
         } else if (element.innerHTML === "Stop Listening") {
-            // document.getElementById('music-bar').muted = true;
             document.getElementById('music-bar').pause()
             element.innerHTML = "Start Listening"; 
         }
@@ -70,7 +86,11 @@ function startListening(element) {
 function processParticipantSync(syncSocket) {
 	if (syncSocket.readyState === WebSocket.OPEN) {
 		syncSocket.send(JSON.stringify(
-			{ 'msg_type' : 'sync_request_from_participant', 'msg_content': ''}));
+			{ 'msg_type' : 'sync_music_request_from_participant', 'msg_content': ''}
+        ));
+		syncSocket.send(JSON.stringify(
+			{ 'msg_type' : 'sync_chat_request_from_participant', 'msg_content': ''}
+        ));
 	}
 
     syncSocket.onmessage = (e) => {
@@ -78,23 +98,23 @@ function processParticipantSync(syncSocket) {
         let musicBar = document.getElementById('music-bar');
 
         switch (msg_type) {
-            case 'sync_response_from_host':
+            case 'sync_music_response_from_host':
                 const { volume, is_paused, cur_time, cur_src } = msg_content;
-                musicBar.load();
-                console.log(msg_content);
-                console.log('message', cur_time);
-                // musicBar.setAttribute('src', cur_src);
-                if (musicBar.readyState >= 2) {
-                    musicBar.currentTime = cur_time;
+                if (is_paused || document.getElementById('participantCtrl').innerHTML === "Start Listening") {
+                    musicBar.pause();
                 } else {
-                    musicBar.addEventListener('loadedmetadata', () => {
+                    musicBar.setAttribute('src', cur_src);
+                    musicBar.load();
+                    if (musicBar.readyState >= 2) {
                         musicBar.currentTime = cur_time;
-                    }, { once: true });
+                    } else {
+                        musicBar.addEventListener('loadedmetadata', () => {
+                            musicBar.currentTime = cur_time;
+                        }, { once: true });
+                    }
+                    musicBar.volume = volume;
+                    musicBar.play();
                 }
-                musicBar.volume = volume;
-                musicBar.play();
-                console.log('playing', musicBar.currentTime);
-                if (is_paused) musicBar.pause();
                 break;
         }
     };
