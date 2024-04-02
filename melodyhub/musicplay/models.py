@@ -9,7 +9,7 @@ class UserProfile(models.Model):
     avatar = models.ImageField(
         upload_to="user_avatars/",
         blank=True,
-        default="default_avatar/default_avatar.jpg",
+        default="default_avatar/avatar.png",
     )
     description = models.TextField(
         blank=True
