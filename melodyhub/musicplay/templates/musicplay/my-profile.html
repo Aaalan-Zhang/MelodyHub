@@ -12,15 +12,15 @@
                         alt="User profile picture" style="width: 200px; height: 180px;">
                 </div>
                 <div class="col-6">
-                    <h2>{{user.first_name}} {{user.last_name}}</h2>
-                    <p>Joined: {{ user_profile.registration_time|date:"M d, Y" }}</p>
-                    <p>Total Favorites: {{ user_profile.total_favorites }}</p>
-                    <p>Total Not Favorites: {{ user_profile.total_not_favorites }}</p>
+                    <h2 class="text-light">{{user.first_name}} {{user.last_name}}</h2>
+                    <p class="text-light">Joined: {{ user_profile.registration_time|date:"M d, Y" }}</p>
+                    <p class="text-light">Total Favorites: {{ user_profile.total_favorites }}</p>
+                    <p class="text-light">Total Not Favorites: {{ user_profile.total_not_favorites }}</p>
                 </div>
             </div>
             <form method="post" enctype="multipart/form-data" action="{% url 'musicplay:upload_profile' %}">
                 {% csrf_token %}
-                <div>
+                <div class="text-light">
                     {{ profile_form.as_p }}
                 </div>
                 <div style="display: flex; justify-content: center;">
