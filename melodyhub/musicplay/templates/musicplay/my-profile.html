@@ -59,7 +59,7 @@
 
     <br>
     <h3>Upload New Track</h3>
-    <form style="border:3px solid orange ;height: 370px;" class='card p-1' method="post" enctype="multipart/form-data"
+    <form style="height: 370px;" class='card p-1' method="post" enctype="multipart/form-data"
         action="{% url 'musicplay:upload_music' %}">
         <div class="card-body">
             {% csrf_token %}
