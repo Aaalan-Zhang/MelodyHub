@@ -1,5 +1,9 @@
 @import url(https://fonts.googleapis.com/css2?family=Comfortaa:wght@600&display=swap);
-#app{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+
+#app {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale
+}
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -227,7 +231,7 @@ form {
 }
 
 .fav-btn {
-    background-color: #ea2c2c;
+    /* background-color: #6b2cea; */
     color: #fff;
     border: none;
     padding: 10px 15px;
@@ -237,9 +241,6 @@ form {
     margin-right: 10px;
 }
 
-.fav-btn:hover {
-    background-color: #555;
-}
 
 .music-details {
     flex-grow: 1;
@@ -261,18 +262,18 @@ form {
     bottom: 0;
     left: 0;
     width: 100%;
-    /* background-color: #333; */
+    background-color: #333;
     color: #fff;
     padding: 10px;
     text-align: center;
-    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.3);
+    /* box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.3);
     height: 100px;
     background: linear-gradient(75deg, #f17c58, #e94584, #24aadb, #27dbb1, #ffdc18, #ff3706);
     background-size: 600% 100%;
     -webkit-animation: gradient 16s linear infinite;
     animation: gradient 16s linear infinite;
     -webkit-animation-direction: alternate;
-    animation-direction: alternate;
+    animation-direction: alternate; */
 }
 
 /* .card {
@@ -288,7 +289,6 @@ form {
     justify-content: center;
     flex-direction: column;
   } */
-  
 
 .play-status-bar p {
     margin: 5px 0;
