@@ -3,6 +3,9 @@
 {% block content %}
 {% load static %}
 <script src="{% static 'ListenTogether/js/WebSocket.js' %}" type="text/javascript"></script>
+<input type="hidden" id="user-name" value="{{ user.username }}">
+<input type="hidden" id="room-name" value="{{ room.name }}">
+<input type="hidden" id="room-creator" value="{{ room.creator }}">
 <div class="content">
     <div class="card" style="width: 80%; height: 80%; margin: 0 auto; justify-content: center;">
         {% if isHost %}
@@ -14,7 +17,7 @@
         <br><br>
         Now streaming: Heat Waves
         <div>
-            <audio controls controller class="audio audio-control" isHost="{{ isHost }}" id="music-bar" src="/media/audio/3783252753.mp3"></audio>
+            <audio controls controller class="audio audio-control" isHost="{{ isHost }}" id="music-bar" src="/media/audio/3783252753.mp3" preload="auto"></audio>
         </div>
         <br><br>
         {% if not isHost %}
@@ -26,7 +29,8 @@
     <div class="card" style="width: 60%; height: 80%; margin: 0 auto;">
             Chat
             <br>
-            <div id="comments" style="width: 100%; overflow-y: scroll;"></div>
+            <div id="chats" style="width: 100%; overflow-y: scroll;"></div>
+            <input type="text" id="chat-input" style="width: 100%;">
             <button type="button" class="btn btn-dark" onclick=sendMessage(this)>Send</button>
     </div>
     <!-- document.getElementById('comment').innerHTML += (data + "<br>"); -->

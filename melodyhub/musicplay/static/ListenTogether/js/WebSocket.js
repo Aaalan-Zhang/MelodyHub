@@ -1,40 +1,47 @@
 const syncScheme = window.location.protocol === "https:" ? "wss" : "ws";
 const syncSocket = new WebSocket(`${syncScheme}://${window.location.host}/ws${window.location.pathname}`);
-
+const userName = document.getElementById('user-name');
 
 document.addEventListener('DOMContentLoaded', () => {
-    let musicBar = document.getElementById('music-bar');
-    let isHost = musicBar.getAttribute('isHost');
+    let audio = document.getElementById('music-bar');
+    let isHost = audio.getAttribute('isHost');
 
     if (isHost === 'True') {
         processHostSync();
         console.log('Host is connected');
+        syncSocket.send(JSON.stringify(
+            { 'msg_type' : 'sync_chat_request', 'msg_content': `Host ${userName} has joined!` }
+        ));
+        // syncSocket.onclose = function() {
+        //     syncSocket.send(JSON.stringify(
+        //         { 'msg_type' : 'sync_chat_request', 'msg_content': `Host ${userName} has left!` }
+        //     ));
+        // }
     }
     else {
-        musicBar.removeAttribute('controls');
+        audio.removeAttribute('controls');
         syncSocket.onopen = function() {
             console.log('Participant is connected');
-            processParticipantSync(syncSocket);
             syncSocket.send(JSON.stringify(
-                { 'msg_type' : 'sync_chat_request_from_participant', 'msg_content': ''}
+                { 'msg_type' : 'sync_chat_request', 'msg_content': `User ${userName} has joined!` }
             ));
+            processParticipantSync(syncSocket);
         };
-        // processParticipantSync(syncSocket);
     }
 });
 
 function processHostSync() {
-    let musicBar = document.getElementById('music-bar');
-    ['playing', 'pause', 'volumechange'].forEach(event => {
-        musicBar.addEventListener(event, () => {
+    let audio = document.getElementById('music-bar');
+    ['playing', 'pause', 'volumechange', 'seeked'].forEach(event => {
+        audio.addEventListener(event, () => {
             syncSocket.send(JSON.stringify(
                 { 'msg_type': 'sync_music_response_from_host', 
                   'msg_content': 
                     {
-                        'volume': musicBar.volume,
-                        'is_paused': musicBar.paused,
-                        'cur_time': musicBar.currentTime,
-                        'cur_src': musicBar.getAttribute('src'),
+                        'volume': audio.volume,
+                        'is_paused': audio.paused,
+                        'cur_time': audio.currentTime,
+                        'cur_src': audio.getAttribute('src'),
                     }
                 }
             ));
@@ -42,29 +49,33 @@ function processHostSync() {
     });
 
     syncSocket.onmessage = function(event) {
+        // callback function, register a event listener
+        // will keep listening even if the processHostSync function has finished execution
         let response = JSON.parse(event.data);
         if (response.msg_type === 'sync_music_request_from_participant') {
             syncSocket.send(JSON.stringify(
                 { 'msg_type': 'sync_music_response_from_host', 
                   'msg_content': 
                     {
-                        'volume': musicBar.volume,
-                        'is_paused': musicBar.paused,
-                        'cur_time': musicBar.currentTime,
-                        'cur_src': musicBar.getAttribute('src'),
+                        'volume': audio.volume,
+                        'is_paused': audio.paused,
+                        'cur_time': audio.currentTime,
+                        'cur_src': audio.getAttribute('src'),
                     }
                 }
             ));
         }
-        else if (response.msg_type === 'sync_chat_request_from_participant') {
-            syncSocket.send(JSON.stringify(
-                { 'msg_type': 'sync_chat_response_from_host', 
-                  'msg_content': 
-                    {
-                        'chat': document.getElementById('chat-box').innerHTML,
-                    }
-                }
-            ));
+        else if (response.msg_type === 'sync_chat_request') {
+            let message = response.msg_content;
+            document.getElementById('chats').innerHTML += (message + "<br>");
+            // syncSocket.send(JSON.stringify(
+            //     { 'msg_type': 'sync_chat_response', 
+            //       'msg_content': 
+            //         {
+            //             'chat': response.msg_content,
+            //         }
+            //     }
+            // ));
         }
     };
 }
@@ -83,38 +94,47 @@ function startListening(element) {
         }
 }
 
+function sendMessage(element) {
+    let message = document.getElementById('chat-input').value;
+    // document.getElementById('chats').innerHTML += (message + "<br>");
+    syncSocket.send(JSON.stringify(
+        { 'msg_type' : 'sync_chat_request', 'msg_content': message}
+    ));
+}
+
 function processParticipantSync(syncSocket) {
 	if (syncSocket.readyState === WebSocket.OPEN) {
 		syncSocket.send(JSON.stringify(
 			{ 'msg_type' : 'sync_music_request_from_participant', 'msg_content': ''}
         ));
-		syncSocket.send(JSON.stringify(
-			{ 'msg_type' : 'sync_chat_request_from_participant', 'msg_content': ''}
-        ));
+		// syncSocket.send(JSON.stringify(
+		// 	{ 'msg_type' : 'sync_chat_request', 'msg_content': ''}
+        // ));
 	}
 
     syncSocket.onmessage = (e) => {
         const { msg_type, msg_content } = JSON.parse(e.data);
-        let musicBar = document.getElementById('music-bar');
+        var audio = document.getElementById('music-bar');
+        let cur_playing_source = audio.getAttribute('src');
 
         switch (msg_type) {
             case 'sync_music_response_from_host':
                 const { volume, is_paused, cur_time, cur_src } = msg_content;
                 if (is_paused || document.getElementById('participantCtrl').innerHTML === "Start Listening") {
-                    musicBar.pause();
-                } else {
-                    musicBar.setAttribute('src', cur_src);
-                    musicBar.load();
-                    if (musicBar.readyState >= 2) {
-                        musicBar.currentTime = cur_time;
-                    } else {
-                        musicBar.addEventListener('loadedmetadata', () => {
-                            musicBar.currentTime = cur_time;
-                        }, { once: true });
-                    }
-                    musicBar.volume = volume;
-                    musicBar.play();
+                    audio.muted = true;
+                } else {          
+                    if (cur_playing_source !== cur_src) {
+                        audio.setAttribute('src', cur_src);
+                        audio.load();
+                    }          
+                    audio.muted = false;
+                    audio.volume = volume;
+                    audio.currentTime = cur_time;
+                    audio.play();
                 }
+                break;
+            case 'sync_chat_request':
+                document.getElementById('chats').innerHTML += (msg_content + "<br>");
                 break;
         }
     };

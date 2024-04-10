@@ -240,9 +240,11 @@ def listen_together(request):
 
 
 @login_required
-def inside_room(request, key):
+def inside_room(request, token):
     context = {}
-    thisRoom = get_object_or_404(ListenTogetherRoom, room_id=key)
-    context = {'room': thisRoom}
+    thisRoom = get_object_or_404(ListenTogetherRoom, room_id=token)
+    context = {'room': thisRoom, 'user': request.user}
     context['isHost'] = (thisRoom.creator.id == request.user.id)
-    return render(request, 'ListenTogether/listen.html', context)
+    response = render(request, 'ListenTogether/listen.html', context)
+    # response['Accept-Ranges'] = 'bytes'
+    return response
