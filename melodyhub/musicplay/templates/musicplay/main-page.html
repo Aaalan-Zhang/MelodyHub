@@ -13,19 +13,6 @@
         </div>
     </form>
 
-    <!-- <div class="favorite-songs">
-        <h4>Recently Uploaded Songs</h4>
-        <ul class="music-list">
-            <li>
-                <span class="music-details">
-                    <div class="music-title">Recent Song 1</div>
-                    <div class="music-artist">Artist 1</div>
-                </span>
-                <button class="fav-btn">🤍</button>
-                <button class="play-btn">▶</button>
-            </li>
-        </ul>
-    </div> -->
     <h4>All Songs</h4>
     <br>
     <a href="{% url 'musicplay:playlist_detail' favorite_playlist.id %}" class="favoriteMusicBtn">Show Favorite
@@ -39,9 +26,9 @@
         <li>
             <span class="music-details">
                 <div class="music-title">{{ song.name }}</div>
-                <div class="music-artist">{{ song.user.username }}</div>
+                <div class="music-artist">{{ song.singer }}</div>
             </span>
-            <button class="fav-btn">🤍</button>
+            <button class="fav-btn" data-user-id="{{ user_id }}" data-music-id="{{ song.id }}">🤍</button>
             <button class="play-btn" data-src="{{ song.file.url }}">▶</button>
         </li>
         {% endfor %}
@@ -54,4 +41,5 @@
 </div>
 {% load static %}
 <script src="{% static 'musicplay/js/audio_play.js' %}"></script>
+<script src="{% static 'musicplay/js/fav_button.js' %}"></script>
 {% endblock %}

@@ -11,6 +11,50 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login, logout
 import hashlib
 import os
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+
+
+@login_required
+def get_favorite_status(request):
+    if request.method == 'GET':
+        user_id = request.GET.get('user_id')
+        music_id = request.GET.get('music_id')
+
+        user_profile = UserProfile.objects.get(user__id=user_id)
+        music = Music.objects.get(id=music_id)
+
+        is_favorite = music in user_profile.favorites.all()
+
+        return JsonResponse({'is_favorite': is_favorite})
+    else:
+        return JsonResponse({'status': 'error'})
+
+@csrf_exempt
+def update_favorites(request):
+    if request.method == 'POST':
+        user_id = request.POST.get('user_id')
+        music_id = request.POST.get('music_id')
+        action = request.POST.get('action')
+
+        user_profile = UserProfile.objects.get(user__id=user_id)
+        music = Music.objects.get(id=music_id)
+
+        if action == 'increment':
+            user_profile.total_favorites += 1
+            music.favorites_count += 1
+            user_profile.favorites.add(music)
+        elif action == 'decrement':
+            user_profile.total_favorites -= 1
+            music.favorites_count -= 1
+            user_profile.favorites.remove(music)
+
+        user_profile.save()
+        music.save()
+
+        return JsonResponse({'status': 'ok'})
+    else:
+        return JsonResponse({'status': 'error'})
 
 
 def _known_user_check(action_function):
@@ -137,6 +181,7 @@ def main_action(request):
             "songs": songs,
             "favorite_playlist": favorite_playlist,
             "recent_playlist": recent_playlist,
+            'user_id': request.user.id, # added for AJAX
         },
     )
 

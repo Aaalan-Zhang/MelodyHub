@@ -15,6 +15,7 @@ class UserProfile(models.Model):
     registration_time = models.DateTimeField(auto_now_add=True)
     total_favorites = models.IntegerField(default=0)
     total_not_favorites = models.IntegerField(default=0)
+    favorites = models.ManyToManyField('Music', related_name='favorited_by')
 
 
 class Music(models.Model):

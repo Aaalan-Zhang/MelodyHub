@@ -32,4 +32,6 @@ urlpatterns = [
     path('login', views.log_in, name='login'),
     path('logout', views.log_out, name='logout'),
     path('playlist_detail/<int:playlist_id>/', views.playlist_detail, name='playlist_detail'),
+    path('update_favorites/', views.update_favorites, name='update_favorites'),
+    path('get_favorite_status/', views.get_favorite_status, name='get_favorite_status'),
 ]
