@@ -14,7 +14,7 @@ favButtons.forEach(btn => {
 });
 
 async function fetchFavoriteStatus(userId, musicId) {
-    const response = await fetch(`get_favorite_status/?user_id=${userId}&music_id=${musicId}`);
+    const response = await fetch(`musicplay/get_favorite_status/?user_id=${userId}&music_id=${musicId}`);
     if (!response.ok) throw new Error('Failed to fetch favorite status');
     return await response.json();
 }
@@ -23,7 +23,7 @@ async function toggleFavorite(btn, userId, musicId) {
     const action = btn.classList.toggle('active') ? 'increment' : 'decrement';
     btn.style.backgroundColor = action === 'increment' ? 'red' : 'gray';
 
-    const response = await fetch('update_favorites/', {
+    const response = await fetch('musicplay/update_favorites/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
