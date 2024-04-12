@@ -15,11 +15,11 @@
 
     <h4>All Songs</h4>
     <br>
-    <a href="{% url 'musicplay:playlist_detail' favorite_playlist.id %}" class="favoriteMusicBtn">Show Favorite
+    <!-- <a href="{% url 'musicplay:playlist_detail' favorite_playlist.id %}" class="favoriteMusicBtn">Show Favorite
         Songs</a> <br><br>
 
     <a href="{% url 'musicplay:playlist_detail' recent_playlist.id %}" class="favoriteMusicBtn">Show Recent Played
-        Songs</a> <br><br>
+        Songs</a> <br><br> -->
 
     <ul class="music-list">
         {% for song in songs %}
@@ -35,11 +35,18 @@
     </ul>
 
 </div>
-<div class="play-status-bar">
-    <p><strong>Now Playing:</strong> <span id="currentSong">Song Name - Artist</span></p>
-    <audio id="audio-player" controls></audio>
+<div class="play-status-bar" id="play-status-bar">
+    <div>Now Playing: <span id="currentSong">Song Name - Artist</span></div>
+    <audio id="audio-player" controls style="display: none;"></audio>
+
+    <div id="custom-controls">
+        <button id="play-pause-button" class="play"></button>
+        <input id="progress-bar" type="range" min="0" max="100" value="0">
+        <span id="current-time">00:00</span> / <span id="total-time">00:00</span>
+    </div>
 </div>
 {% load static %}
 <script src="{% static 'musicplay/js/audio_play.js' %}"></script>
 <script src="{% static 'musicplay/js/fav_button.js' %}"></script>
+<script src="{% static 'musicplay/js/play_status_bar.js' %}"></script>
 {% endblock %}
