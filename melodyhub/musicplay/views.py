@@ -293,3 +293,8 @@ def inside_room(request, token):
     response = render(request, 'ListenTogether/listen.html', context)
     # response['Accept-Ranges'] = 'bytes'
     return response
+
+@login_required
+def rooms_json(request):
+    rooms = ListenTogetherRoom.objects.all().values('room_id', 'name')
+    return JsonResponse(list(rooms), safe=False)
