@@ -98,7 +98,7 @@ MUSICPLAY_TITLE = CONFIG.get("musicplay", "title")
 MUSICPLAY_USERS = CONFIG.get("musicplay", "users")
 
 # Used by the @login_required decorator to redirect to the login action
-LOGIN_URL = 'musicplay/login'
+LOGIN_URL = 'musicplaylogin'
 
 # Default URL to redirect to after a user logs in.
 LOGIN_REDIRECT_URL = '/'

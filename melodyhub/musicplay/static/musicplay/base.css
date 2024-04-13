@@ -197,24 +197,11 @@ form {
     list-style-type: none;
     padding: 0;
     margin: 0;
-}
-
-.music-list li {
-    padding: 15px;
-    border-radius: 5px;
-    background-color: #fff;
-    margin-bottom: 10px;
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
 }
 
-.music-list li:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
 
 .play-btn {
     background-color: #333;
@@ -275,7 +262,6 @@ form {
     display: none;
     font-size: 1.2em;
     font-family: Comfortaa, cursive;
-    mix-blend-mode: difference;
 }
 
 /* .card {
@@ -292,10 +278,14 @@ form {
     flex-direction: column;
 } */
 
+
+
 .play-status-bar p {
     margin: 5px 0;
     font-size: medium;
     font-family: Comfortaa, cursive;
+    color: white;
+    mix-blend-mode: difference;
 }
 
 
@@ -387,4 +377,31 @@ form {
     border-radius: 50%;
     background: #007BFF;
     cursor: pointer;
+}
+
+.music-card {
+    width: 23%;
+    margin: 1%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.music-card img {
+    width: 100%;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.music-card .music-info {
+    padding: 0px;
+}
+
+.music-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
 }
