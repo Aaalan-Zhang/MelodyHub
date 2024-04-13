@@ -96,10 +96,12 @@ function startListening(element) {
 
 function sendMessage(element) {
     let message = document.getElementById('chat-input').value;
+    document.getElementById('chat-input').value = "";
     // document.getElementById('chats').innerHTML += (message + "<br>");
     syncSocket.send(JSON.stringify(
         { 'msg_type' : 'sync_chat_request', 'msg_content': message}
     ));
+
 }
 
 function processParticipantSync(syncSocket) {

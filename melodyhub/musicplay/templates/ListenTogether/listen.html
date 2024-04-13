@@ -7,6 +7,12 @@
 <input type="hidden" id="room-name" value="{{ room.name }}">
 <input type="hidden" id="room-creator" value="{{ room.creator }}">
 <div class="content">
+    <!-- <form method="GET" action=".">
+        <div class="search-container">
+            <input type="text" name="q" class="search-bar" placeholder="Search Music...">
+            <button type="submit" class="search-button">Search</button>
+        </div>
+    </form> -->
     <div class="card" style="width: 80%; height: 80%; margin: 0 auto; justify-content: center;">
         {% if isHost %}
         You are hosting {{ room.name }}
