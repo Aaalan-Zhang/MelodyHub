@@ -19,7 +19,7 @@ from django.urls import path
 from musicplay import views
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
+    # path("admin/", admin.site.urls),
     path('', views.main_action, name='home'),
     path('my_profile', views.my_profile, name='my_profile'),
     path('upload_music', views.upload_music, name='upload_music'),
