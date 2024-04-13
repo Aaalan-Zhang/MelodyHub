@@ -17,7 +17,7 @@ function updateRooms() {
 
                 // Iterate through rooms and append them to the list
                 $.each(data, function(i, room) {
-                    var roomUrl = `/listentogether/${room.room_id}/`; // Adjust as needed
+                    var roomUrl = `/listentogether/${room.room_id}/`;
                     var button = $('<a>')
                         .attr('href', roomUrl)
                         .addClass('btn btn-dark')

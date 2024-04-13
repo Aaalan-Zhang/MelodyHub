@@ -129,7 +129,7 @@ def log_in(request):
         )
         try:
             login(request, user)
-            return render(request, "musicplay/main-page.html")
+            return redirect(reverse("musicplay:home"))
         except:
             form = UserCreationForm()
             context = {

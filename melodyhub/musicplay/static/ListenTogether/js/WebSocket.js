@@ -126,6 +126,7 @@ function processParticipantSync(syncSocket) {
                     audio.muted = true;
                 } else {          
                     if (cur_playing_source !== cur_src) {
+                        console.log('changing source');
                         audio.setAttribute('src', cur_src);
                         audio.load();
                         // wait for 1 or 2 seconds to let the audio load
