@@ -128,11 +128,18 @@ function processParticipantSync(syncSocket) {
                     if (cur_playing_source !== cur_src) {
                         audio.setAttribute('src', cur_src);
                         audio.load();
-                    }          
-                    audio.muted = false;
-                    audio.volume = volume;
-                    audio.currentTime = cur_time;
-                    audio.play();
+                        // wait for 1 or 2 seconds to let the audio load
+                        // display a message
+                        audio.muted = false;
+                        audio.volume = volume;
+                        audio.currentTime = cur_time + 2;
+                        audio.play();    
+                    } else {
+                        audio.muted = false;
+                        audio.volume = volume;
+                        audio.currentTime = cur_time;
+                        audio.play();    
+                    }
                 }
                 break;
             case 'sync_chat_request':
