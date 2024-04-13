@@ -263,17 +263,19 @@ form {
     left: 0;
     width: 100%;
     background-color: #333;
-    color: #fff;
     padding: 10px;
     text-align: center;
-    /* box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.3);
-    height: 100px;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.3);
     background: linear-gradient(75deg, #f17c58, #e94584, #24aadb, #27dbb1, #ffdc18, #ff3706);
     background-size: 600% 100%;
     -webkit-animation: gradient 16s linear infinite;
     animation: gradient 16s linear infinite;
     -webkit-animation-direction: alternate;
-    animation-direction: alternate; */
+    animation-direction: alternate;
+    display: none;
+    font-size: 1.2em;
+    font-family: Comfortaa, cursive;
+    mix-blend-mode: difference;
 }
 
 /* .card {
@@ -288,7 +290,7 @@ form {
     align-items: center;
     justify-content: center;
     flex-direction: column;
-  } */
+} */
 
 .play-status-bar p {
     margin: 5px 0;
@@ -335,4 +337,54 @@ form {
     animation: gradient 16s linear infinite;
     -webkit-animation-direction: alternate;
     animation-direction: alternate
+}
+
+#play-pause-button {
+    border: none;
+    /* padding: 10px; */
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    outline: none;
+    width: 80px;
+    height: 80px;
+}
+
+#play-pause-button.play {
+    background: url('../images/play_icon.png') no-repeat center center;
+    background-size: 50%;
+}
+
+#play-pause-button.pause {
+    background: url('../images/pause_icon.png') no-repeat center center;
+    background-size: 50%;
+}
+
+#progress-bar {
+    width: 60%;
+    height: 4px;
+    border-radius: 5px;
+    background: #ddd;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+}
+
+#progress-bar::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #007BFF;
+    cursor: pointer;
+}
+
+#progress-bar::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #007BFF;
+    cursor: pointer;
 }
