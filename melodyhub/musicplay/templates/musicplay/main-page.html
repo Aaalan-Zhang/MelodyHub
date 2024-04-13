@@ -21,7 +21,7 @@
     <a href="{% url 'musicplay:playlist_detail' recent_playlist.id %}" class="favoriteMusicBtn">Show Recent Played
         Songs</a> <br><br> -->
 
-    <ul class="music-list">
+    <!-- <ul class="music-list">
         {% for song in songs %}
         <li>
             <span class="music-details">
@@ -32,11 +32,26 @@
             <button class="play-btn" data-src="{{ song.file.url }}">▶</button>
         </li>
         {% endfor %}
-    </ul>
+    </ul> -->
+    <div class="music-list">
+        {% for song in songs %}
+        <div class="music-card">
+            <img src="{{ song.image.url }}" alt="Music image">
+            <div class="music-info">
+                <span class="music-details">
+                    <div class="music-title">{{ song.name }}</div>
+                    <div class="music-artist">{{ song.singer }}</div>
+                </span>
+                <button class="fav-btn" data-user-id="{{ user_id }}" data-music-id="{{ song.id }}">🤍</button>
+                <button class="play-btn" data-src="{{ song.file.url }}">▶</button>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
 
 </div>
 <div class="play-status-bar" id="play-status-bar">
-    <div>Now Playing: <span id="currentSong">Song Name - Artist</span></div>
+    <p>Now Playing: <span id="currentSong">Song Name - Artist</span></p>
     <audio id="audio-player" controls style="display: none;"></audio>
 
     <div id="custom-controls">
