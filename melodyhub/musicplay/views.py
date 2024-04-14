@@ -298,3 +298,12 @@ def inside_room(request, token):
 def rooms_json(request):
     rooms = ListenTogetherRoom.objects.all().values('room_id', 'name')
     return JsonResponse(list(rooms), safe=False)
+
+# @login_required
+# def lt_search(request):
+#     if request.is_ajax():
+#         query = request.GET.get('term', '')  # 'term' is the keyword sent by Ajax
+#         results = YourModel.objects.filter(name__icontains=query)  # Adjust the filter
+#         data = list(results.values('id', 'name'))  # Adjust fields to return
+#         return JsonResponse(data, safe=False)
+#     return JsonResponse({"error": ""}, status=400)

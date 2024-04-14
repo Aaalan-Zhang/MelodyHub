@@ -3,6 +3,7 @@
 {% block content %}
 {% load static %}
 <script src="{% static 'ListenTogether/js/WebSocket.js' %}" type="text/javascript"></script>
+<!-- <script src="{% static 'ListenTogether/js/Ajax-ListenTogether-Search.js' %}" type="text/javascript"></script> -->
 <input type="hidden" id="user-name" value="{{ user.username }}">
 <input type="hidden" id="room-name" value="{{ room.name }}">
 <input type="hidden" id="room-creator" value="{{ room.creator }}">
@@ -46,6 +47,13 @@
                 <button type="button" class="btn btn-dark" onclick=sendMessage(this)>Send</button>
         </div>
     </div>
-    <!-- document.getElementById('comment').innerHTML += (data + "<br>"); -->
+</div>
+<div id="search-section">
+    <div style="font-family:Comfortaa,cursive; display: flex; justify-content: center;">
+        Search
+        <br>
+        <input type="text" id="search-input" placeholder="Search...">
+        <div id="search-results"></div>
+    </div>
 </div>
 {% endblock%}
