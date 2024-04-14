@@ -35,3 +35,30 @@ body{margin:0;background-color:#f6f6f6;font-family:Montserrat,sans-serif;-webkit
 .rwd-table td,.rwd-table th{margin:.5em 1em} */
 @media (min-width:480px){.rwd-table td,.rwd-table th{padding:1em!important}}
 /* .rwd-table td:before,.rwd-table th{color:#dd5} */
+#play-section{
+    float:left;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left:10px;
+}
+#chat-section{
+    float:right;
+    margin-left: auto;
+    margin-right: auto;
+    padding-right:10px;
+}
+
+#listentogether-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: start;
+    margin: 0 auto;
+    /* margin-left: auto;
+    margin-right: auto;
+    margin-top: auto; */
+    width: 80%;
+    font-family: sans-serif;
+    font-size: x-large;
+    padding: 25px 50px;
+}

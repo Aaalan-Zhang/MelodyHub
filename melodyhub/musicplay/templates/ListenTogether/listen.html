@@ -6,40 +6,46 @@
 <input type="hidden" id="user-name" value="{{ user.username }}">
 <input type="hidden" id="room-name" value="{{ room.name }}">
 <input type="hidden" id="room-creator" value="{{ room.creator }}">
-<div class="content">
+<!-- <div class="content"> -->
+<div style="font-family:Comfortaa,cursive; display: flex; justify-content: center; padding-top: 25px">
+    <h1>ListenTogether</h1>
+</div>
+<div id="listentogether-content">
     <!-- <form method="GET" action=".">
         <div class="search-container">
             <input type="text" name="q" class="search-bar" placeholder="Search Music...">
             <button type="submit" class="search-button">Search</button>
         </div>
     </form> -->
-    <div class="card" style="width: 80%; height: 80%; margin: 0 auto; justify-content: center;">
-        {% if isHost %}
-        You are hosting {{ room.name }}
-        {% endif %}
-        {% if not isHost %}
-        You are listening to {{ room.name }} hosted by {{ room.creator }}
-        {% endif %}
-        <br><br>
-        Now streaming: Heat Waves
-        <div>
-            <audio controls controller class="audio audio-control" isHost="{{ isHost }}" id="music-bar" src="/media/audio/3783252753.mp3" preload="auto"></audio>
-        </div>
-        <br><br>
-        {% if not isHost %}
-        <button type="button" class="btn btn-dark" onclick=startListening(this) id="participantCtrl">Start Listening</button>
-        {% endif %}
-    </div>
-    <br><br>
 
-    <div class="card" style="width: 60%; height: 80%; margin: 0 auto;">
-            Chat
-            <br>
-            <div id="chats" style="width: 100%; overflow-y: scroll;"></div>
-            <input type="text" id="chat-input" style="width: 100%;">
-            <button type="button" class="btn btn-dark" onclick=sendMessage(this)>Send</button>
+    <div id="play-section">
+        <div class="card" style="width: 100%; height: 100%; margin: 0 auto; justify-content: center;">
+            {% if isHost %}
+            You are hosting {{ room.name }}
+            {% endif %}
+            {% if not isHost %}
+            You are listening to {{ room.name }} hosted by {{ room.creator }}
+            {% endif %}
+            <br><br>
+            Now streaming: Heat Waves
+            <div>
+                <audio controls controller class="audio audio-control" isHost="{{ isHost }}" id="music-bar" src="/media/audio/3783252753.mp3" preload="auto"></audio>
+            </div>
+            <br><br>
+            {% if not isHost %}
+            <button type="button" class="btn btn-dark" onclick=startListening(this) id="participantCtrl">Start Listening</button>
+            {% endif %}
+        </div>
+    </div>
+    <div id="chat-section">
+        <div class="card" style="width: 100%; height: 100%; margin: 0 auto;">
+                Chat
+                <br>
+                <div id="chats" style="width: 100%; overflow-y: scroll;"></div>
+                <input type="text" id="chat-input" style="width: 100%;">
+                <button type="button" class="btn btn-dark" onclick=sendMessage(this)>Send</button>
+        </div>
     </div>
     <!-- document.getElementById('comment').innerHTML += (data + "<br>"); -->
-
 </div>
 {% endblock%}

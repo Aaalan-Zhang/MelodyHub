@@ -14,8 +14,8 @@
 </head>
 
 <body>
-    <br>
-    <div style="font-family:Comfortaa,cursive; display: flex; justify-content: center;">
+    <!-- <br> -->
+    <!-- <div style="font-family:Comfortaa,cursive; display: flex; justify-content: center;">
         <h1>{{ request.session.title }}</h1>
     </div>
     {% if user.is_authenticated %}
@@ -32,7 +32,29 @@
         </div>
         <a href="{% url 'musicplay:home' %}">Home</a>
         {% endblock %}
-    </div>
+    </div> -->
+    <nav style="font-family: Comfortaa, cursive; display: flex; justify-content: space-between; align-items: center; padding: 10px 20px;">
+        <div>
+            <!-- {{ request.session.title }}  -->
+            <a href="{% url 'musicplay:home' %}" class="btn btn-dark" role="button">Home</a>
+            <a href="{% url 'musicplay:listen_together' %}" class="btn btn-dark" role="button">ListenTogether</a>
+        </div>
+        <!-- <div style="display: flex; justify-content: flex-start;">
+
+        </div> -->
+        {% if user.is_authenticated %}
+        <div class="user-info">
+            <div class="dropdown">
+                <img style="border-radius: 50%; height: 2em;" src="{{ request.session.picture }}" alt="User profile picture">
+                <div class="dropdown-content">
+                    {{ user.username }}<br>
+                    <a href="{% url 'musicplay:my_profile' %}">My Profile</a><br>
+                    <a href="{% url 'musicplay:logout' %}">Logout</a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </nav>
     {% endif %}
 
     <!-- {% if message %}
