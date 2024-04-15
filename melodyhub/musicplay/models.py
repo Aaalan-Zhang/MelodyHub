@@ -37,24 +37,14 @@ class Music(models.Model):
     not_favorites_count = models.IntegerField(default=0)
 
 
-class MusicComment(models.Model):
-    user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="music_comments"
-    )
-    music = models.ForeignKey(Music, on_delete=models.CASCADE, related_name="comments")
-    comment = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-
-
-class MusicFavorite(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="liked_music")
-    music = models.ForeignKey(Music, on_delete=models.CASCADE, related_name="likes")
-    like = models.BooleanField(
-        default=True
-    )  # True for favorite, False for not favorite
+class PlaylistMusic(models.Model):
+    playlist = models.ForeignKey('Playlist', on_delete=models.CASCADE)
+    music = models.ForeignKey('Music', on_delete=models.CASCADE)
+    added_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        unique_together = ("user", "music")
+        unique_together = ('playlist', 'music')
+        ordering = ['added_at']
 
 
 class Playlist(models.Model):

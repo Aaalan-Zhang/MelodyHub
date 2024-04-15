@@ -3,10 +3,9 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.utils import timezone
 from mutagen.mp3 import MP3
-from mutagen.id3 import APIC
 
 from melodyhub.settings import MUSICPLAY_USERS, MUSICPLAY_TITLE
-from .models import UserProfile, Music, ListenTogetherRoom, Playlist
+from .models import UserProfile, Music, ListenTogetherRoom, Playlist, PlaylistMusic
 from .forms import ProfileForm, MusicUploadForm, CreateRoomForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login, logout
@@ -18,45 +17,94 @@ from django.http import JsonResponse
 
 @login_required
 def get_favorite_status(request):
-    if request.method == 'GET':
-        user_id = request.GET.get('user_id')
-        music_id = request.GET.get('music_id')
+    if request.method == "GET":
+        user_id = request.GET.get("user_id")
+        music_id = request.GET.get("music_id")
 
         user_profile = UserProfile.objects.get(user__id=user_id)
         music = Music.objects.get(id=music_id)
 
-        is_favorite = music in user_profile.favorites.all()
+        favorite_playlist, created_fav = Playlist.objects.get_or_create(
+            user=request.user,
+            is_favorites=True,
+            defaults={
+                "name": "My Favorites",
+                "description": "Your favorite musics.",
+            },
+        )
+        is_favorite = PlaylistMusic.objects.filter(playlist=favorite_playlist, music=music).exists()
 
-        return JsonResponse({'is_favorite': is_favorite})
+        return JsonResponse({"is_favorite": is_favorite})
     else:
-        return JsonResponse({'status': 'error'})
+        return JsonResponse({"status": "error"})
+
+
+def update_playlist(playlist, music, is_add):
+    if is_add:
+        if not PlaylistMusic.objects.filter(playlist=playlist, music=music).exists():
+            playlist.musics.add(music)
+            PlaylistMusic.objects.create(playlist=playlist, music=music)
+    else:
+        if PlaylistMusic.objects.filter(playlist=playlist, music=music).exists():
+            playlist.musics.remove(music)
+            PlaylistMusic.objects.filter(playlist=playlist, music=music).delete()
+
 
 @csrf_exempt
 def update_favorites(request):
-    if request.method == 'POST':
-        user_id = request.POST.get('user_id')
-        music_id = request.POST.get('music_id')
-        action = request.POST.get('action')
+    if request.method == "POST":
+        user_id = request.POST.get("user_id")
+        music_id = request.POST.get("music_id")
+        action = request.POST.get("action")
 
         user_profile = UserProfile.objects.get(user__id=user_id)
         music = Music.objects.get(id=music_id)
 
-        if action == 'increment':
+        if action == "increment":
             user_profile.total_favorites += 1
             music.favorites_count += 1
-            user_profile.favorites.add(music)
-        elif action == 'decrement':
+        elif action == "decrement":
             user_profile.total_favorites -= 1
             music.favorites_count -= 1
-            user_profile.favorites.remove(music)
+
+        favorite_playlist, created_fav = Playlist.objects.get_or_create(
+            user=request.user,
+            is_favorites=True,
+            defaults={
+                "name": "My Favorites",
+                "description": "Your favorite musics.",
+            },
+        )
+        update_playlist(favorite_playlist, music, action == "increment")
 
         user_profile.save()
         music.save()
 
-        return JsonResponse({'status': 'ok'})
+        return JsonResponse({"status": "ok"})
     else:
-        return JsonResponse({'status': 'error'})
+        return JsonResponse({"status": "error"})
+    
 
+@login_required
+def update_played_musics(request):
+    if request.method == "POST":
+        music_id = request.POST.get("music_id")
+        music = Music.objects.get(id=music_id)
+
+        recent_playlist, created_rec = Playlist.objects.get_or_create(
+            user=request.user,
+            is_recent=True,
+            defaults={
+                "name": "Recent",
+                "description": "Recently played musics.",
+            },
+        )
+        update_playlist(recent_playlist, music, False)
+        update_playlist(recent_playlist, music, True)
+
+        return JsonResponse({"status": "ok"})
+    else:
+        return JsonResponse({"status": "error"})
 
 def _known_user_check(action_function):
     def my_wrapper_function(request, *args, **kwargs):
@@ -182,7 +230,7 @@ def main_action(request):
             "songs": songs,
             "favorite_playlist": favorite_playlist,
             "recent_playlist": recent_playlist,
-            'user_id': request.user.id, # added for AJAX
+            "user_id": request.user.id,  # added for AJAX
         },
     )
 
@@ -233,10 +281,18 @@ def delete_music(request, song_id):
             return redirect(reverse("musicplay:my_profile"))
 
 
+def get_playlist_musics(playlist_id):
+    playlist_musics = PlaylistMusic.objects.filter(playlist_id=playlist_id).order_by(
+        "-added_at"
+    )
+    musics = [pm.music for pm in playlist_musics]
+    return musics
+
+
 @login_required
 def playlist_detail(request, playlist_id):
     playlist = get_object_or_404(Playlist, id=playlist_id)
-    musics = playlist.musics.all()
+    musics = get_playlist_musics(playlist_id)
     request.session["title"] = "Playlist"
     return render(
         request,
@@ -244,6 +300,7 @@ def playlist_detail(request, playlist_id):
         {
             "playlist": playlist,
             "musics": musics,
+            "user_id": request.user.id,
         },
     )
 
@@ -283,30 +340,37 @@ def listen_together(request):
 def inside_room(request, token):
     context = {}
     thisRoom = get_object_or_404(ListenTogetherRoom, room_id=token)
-    context = {'room': thisRoom, 'user': request.user}
-    context['isHost'] = (thisRoom.creator.id == request.user.id)
-    response = render(request, 'ListenTogether/listen.html', context)
+    context = {"room": thisRoom, "user": request.user}
+    context["isHost"] = thisRoom.creator.id == request.user.id
+    response = render(request, "ListenTogether/listen.html", context)
     # response['Accept-Ranges'] = 'bytes'
     return response
 
+
 @login_required
 def rooms_json(request):
-    rooms = ListenTogetherRoom.objects.all().values('room_id', 'name')
+    rooms = ListenTogetherRoom.objects.all().values("room_id", "name")
     return JsonResponse(list(rooms), safe=False)
+
 
 @login_required
 def lt_search(request):
     query = request.GET.get("q", "")
     music_tracks = Music.objects.filter(name__icontains=query).order_by("-upload_time")
-    data = [{
-        'user_id': track.user.id,
-        'id': track.id,
-        'name': track.name,
-        'image_url': track.image.url if track.image else None,  # Ensure image is handled correctly
-        'singer': track.singer,
-        'file_url': track.file.url,
-        'upload_time': track.upload_time,
-        'length': track.length
-    } for track in music_tracks]
-    # data = list(songs.values('name', 'singer', 'image', 'file', 'upload_time', 'length')) 
+    data = [
+        {
+            "user_id": track.user.id,
+            "id": track.id,
+            "name": track.name,
+            "image_url": (
+                track.image.url if track.image else None
+            ),  # Ensure image is handled correctly
+            "singer": track.singer,
+            "file_url": track.file.url,
+            "upload_time": track.upload_time,
+            "length": track.length,
+        }
+        for track in music_tracks
+    ]
+    # data = list(songs.values('name', 'singer', 'image', 'file', 'upload_time', 'length'))
     return JsonResponse(data, safe=False)

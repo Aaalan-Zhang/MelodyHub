@@ -31,6 +31,7 @@ urlpatterns = [
     path('logout', views.log_out, name='logout'),
     path('playlist_detail/<int:playlist_id>/', views.playlist_detail, name='playlist_detail'),
     path('update_favorites/', views.update_favorites, name='update_favorites'),
+    path('update_played_musics/', views.update_played_musics, name='update_played_musics'),
     path('get_favorite_status/', views.get_favorite_status, name='get_favorite_status'),
     path('listentogether/rooms/json/', views.rooms_json, name='rooms_json'),
     path('lt-search/', views.lt_search, name='lt_search'),
