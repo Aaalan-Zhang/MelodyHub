@@ -53,18 +53,17 @@ def update_playlist(playlist, music, is_add):
 @csrf_exempt
 def update_favorites(request):
     if request.method == "POST":
-        user_id = request.POST.get("user_id")
         music_id = request.POST.get("music_id")
         action = request.POST.get("action")
 
-        user_profile = UserProfile.objects.get(user__id=user_id)
         music = Music.objects.get(id=music_id)
+        uploader_profile = music.uploader_profile
 
         if action == "increment":
-            user_profile.total_favorites += 1
+            uploader_profile.total_favorites += 1
             music.favorites_count += 1
         elif action == "decrement":
-            user_profile.total_favorites -= 1
+            uploader_profile.total_favorites -= 1
             music.favorites_count -= 1
 
         favorite_playlist, created_fav = Playlist.objects.get_or_create(
@@ -77,7 +76,7 @@ def update_favorites(request):
         )
         update_playlist(favorite_playlist, music, action == "increment")
 
-        user_profile.save()
+        uploader_profile.save()
         music.save()
 
         return JsonResponse({"status": "ok"})
@@ -254,6 +253,7 @@ def my_profile(request):
             music_file = request.FILES.get("file")
             audio = MP3(music_file)
             music.length = int(audio.info.length)
+            music.uploader_profile = user_profile
             music.save()
             music_upload_form = MusicUploadForm()
     else:
