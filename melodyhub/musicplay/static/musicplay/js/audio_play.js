@@ -1,5 +1,5 @@
-document.querySelectorAll('.play-btn').forEach(function (button) {
-    button.addEventListener('click', function () {
+document.querySelectorAll('.play-btn').forEach(btn => {
+    btn.addEventListener('click', function () {
         var audioPlayer = document.getElementById('audio-player');
         var currentSong = document.getElementById('currentSong');
         var playStatusBar = document.getElementById('play-status-bar');
@@ -10,5 +10,14 @@ document.querySelectorAll('.play-btn').forEach(function (button) {
         playPauseButton.classList.remove('play');
         playPauseButton.classList.add('pause');
         playStatusBar.style.display = 'block';
+
+        fetch('/update_played_musics/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: `user_id=${this.dataset.userId}&music_id=${this.dataset.musicId}`
+        });
     });
 });

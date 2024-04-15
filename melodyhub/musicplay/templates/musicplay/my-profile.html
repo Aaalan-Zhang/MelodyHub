@@ -5,8 +5,8 @@
     <h1>My Profile Page</h1>
 </div>
 <div class="container" style="font-family:Comfortaa,cursive;">
-    <div style="display: flex; justify-content: center; background-image: url('/media/background/bg3.jpg');
-    height: 450px; width: 1100px; background-size: cover; background-position: center;">
+    <div style="display: flex; justify-content: center; background-image: url('/media/background/bg1.jpg');
+    height: 440px; width: 1100px; background-size: cover; background-position: center;">
         <div class="profile-info">
             <br>
             <div class="row">
@@ -21,13 +21,25 @@
                     <p class="text-light">Total Not Favorites: {{ user_profile.total_not_favorites }}</p>
                 </div>
             </div>
-            <form method="post" enctype="multipart/form-data" action="{% url 'musicplay:upload_profile' %}">
+            <form method="post" enctype="multipart/form-data" action="{% url 'musicplay:my_profile' %}">
                 {% csrf_token %}
-                <div class="text-light">
-                    {{ profile_form.as_p }}
+                <div style="margin-bottom: 1em;" class="text-light">
+                    <div class="form-field">
+                        <span>{{ profile_form.avatar }}</span>
+                        {% if profile_form.avatar.errors %}
+                            <span class="form-error">{{ profile_form.avatar.errors.as_text }}</span>
+                        {% endif %}
+                    </div>
+                    <div class="form-field">
+                        {{ music_upload_form.description.label_tag }}
+                        <span style="margin-left: 5px;">{{ profile_form.description }}</span>
+                        {% if profile_form.description.errors %}
+                            <span class="form-error">{{ profile_form.description.errors.as_text }}</span>
+                        {% endif %}
+                    </div>
                 </div>
                 <div style="display: flex; justify-content: center;">
-                    <button type="submit" class="btn btn-dark">Update Profile</button>
+                    <button type="submit" class="btn btn-light">Update Profile</button>
                 </div>
             </form>
         </div>
@@ -37,22 +49,22 @@
     <h3>Uploaded Tracks</h3>
     <div class="uploaded-music">
         <div class="list-group">
-            {% if music %}
-            {% for song in music %}
+            {% if musics %}
+            {% for song in musics %}
             <a href="{% url 'musicplay:music_detail' song.id %}"
-                class="list-group-item list-group-item-action flex-column align-items-start"
-                style="margin-bottom: 1em;">
+                class="list-group-item list-group-item-action flex-column align-items-start">
                 <div class="d-flex justify-content-between">
                     <h5 class="mb-1">{{ song.name }} <small class="ml-2">{{ song.singer }}</small></h5>
                     <small>Uploaded Time: {{ song.upload_time|date:"M d, Y" }}</small>
                 </div>
-                <small class="ml-2">Description: {{ song.description }}</small><br />
+                <small class="ml-2">{{ song.description }}</small><br />
                 <small class="ml-2">Favorites: {{ song.favorites_count }}, Not Favorites: {{song.not_favorites_count}}</small>
+                <form style="text-align: right;" action="{% url 'musicplay:delete_music' song.id %}" method="post" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
             </a>
-            <form action="{% url 'musicplay:delete_music' song.id %}" method="post" style="display: inline;">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-danger">Delete</button>
-            </form>
+            <br>
             {% endfor %}
             {% else %}
             <p>Your track list looks a little quiet. Start the vibes by uploading your first track!</p>
@@ -60,16 +72,49 @@
         </div>
     </div>
 
-    <br>
     <h3>Upload New Track</h3>
-    <form style="height: 370px;" class='card p-1' method="post" enctype="multipart/form-data"
-        action="{% url 'musicplay:upload_music' %}">
+    <form style="height: 390px;" class='card p-1' method="post" enctype="multipart/form-data"
+        action="{% url 'musicplay:my_profile' %}">
         <div class="card-body">
             {% csrf_token %}
-            <div
-                style="display: grid; grid-template-columns: repeat(2, minmax(100px, auto)); align-items: center; gap: 10px;">
-                {{ music_upload_form.as_table }}
+
+            <div class="form-field">
+                {{ music_upload_form.name.label_tag }} 
+                <span style="margin-left: 60px;">{{ music_upload_form.name }}</span>
+                {% if music_upload_form.name.errors %}
+                    <span class="form-error">{{ music_upload_form.name.errors.as_text }}</span>
+                {% endif %}
             </div>
+            <div class="form-field">
+                {{ music_upload_form.image.label_tag }} 
+                <span style="margin-left: 58px;">{{ music_upload_form.image }}</span> 
+                {% if music_upload_form.image.errors %}
+                    <span class="form-error">{{ music_upload_form.image.errors.as_text }}</span>
+                {% endif %}
+            </div>
+            <div class="form-field">
+                {{ music_upload_form.singer.label_tag }} 
+                <span style="margin-left: 55px;">{{ music_upload_form.singer }}</span>
+                {% if music_upload_form.singer.errors %}
+                    <span class="form-error">{{ music_upload_form.singer.errors.as_text }}</span>
+                {% endif %}
+            </div>
+            <div class="form-field">
+                {{ music_upload_form.description.label_tag }}
+                <span style="margin-left: 13px;">{{ music_upload_form.description }}</span>
+                {% if music_upload_form.description.errors %}
+                    <span class="form-error">{{ music_upload_form.description.errors.as_text }}</span>
+                {% endif %}
+            </div>
+            <div class="form-field">
+                {{ music_upload_form.file.label_tag }}
+                <span style="margin-left: 82px;">{{ music_upload_form.file }}</span>
+                {% if music_upload_form.file.errors %}
+                    <span class="form-error">{{ music_upload_form.file.errors.as_text }}</span>
+                {% endif %}
+            </div>
+
+            <br>
             <div style="display: flex; justify-content: center;">
                 <button type="submit" class="btn btn-dark">Upload Music</button>
             </div>

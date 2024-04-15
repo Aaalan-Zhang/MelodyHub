@@ -20,6 +20,7 @@ venv/
 
 melodyhub/media/*
 !melodyhub/media/default_avatar
+!melodyhub/media/default_cover
 !melodyhub/media/audio/
 !melodyhub/media/imgs/
 !melodyhub/media/background/

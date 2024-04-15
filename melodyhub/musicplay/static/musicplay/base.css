@@ -329,6 +329,11 @@ form {
     animation-direction: alternate
 }
 
+.form-error {
+    color: white;
+    margin-left: 10px;
+}
+
 #play-pause-button {
     border: none;
     /* padding: 10px; */

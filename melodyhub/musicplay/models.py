@@ -15,7 +15,7 @@ class UserProfile(models.Model):
     registration_time = models.DateTimeField(auto_now_add=True)
     total_favorites = models.IntegerField(default=0)
     total_not_favorites = models.IntegerField(default=0)
-    favorites = models.ManyToManyField('Music', related_name='favorited_by')
+    favorites = models.ManyToManyField("Music", related_name="favorited_by")
 
 
 class Music(models.Model):
@@ -24,7 +24,11 @@ class Music(models.Model):
     )
     name = models.CharField(max_length=255)
     singer = models.CharField(max_length=255, null=True, blank=True)
-    image = models.ImageField(upload_to="music_images/", blank=True)
+    image = models.ImageField(
+        upload_to="music_images/",
+        blank=True,
+        default="default_cover/cover.png",
+    )
     description = models.TextField()
     file = models.FileField(upload_to="music_files/")
     upload_time = models.DateTimeField(auto_now_add=True)
@@ -33,24 +37,14 @@ class Music(models.Model):
     not_favorites_count = models.IntegerField(default=0)
 
 
-class MusicComment(models.Model):
-    user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="music_comments"
-    )
-    music = models.ForeignKey(Music, on_delete=models.CASCADE, related_name="comments")
-    comment = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-
-
-class MusicFavorite(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="liked_music")
-    music = models.ForeignKey(Music, on_delete=models.CASCADE, related_name="likes")
-    like = models.BooleanField(
-        default=True
-    )  # True for favorite, False for not favorite
+class PlaylistMusic(models.Model):
+    playlist = models.ForeignKey('Playlist', on_delete=models.CASCADE)
+    music = models.ForeignKey('Music', on_delete=models.CASCADE)
+    added_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        unique_together = ("user", "music")
+        unique_together = ('playlist', 'music')
+        ordering = ['added_at']
 
 
 class Playlist(models.Model):

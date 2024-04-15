@@ -18,11 +18,11 @@
 
     <h4>All Songs</h4>
     <br>
-    <!-- <a href="{% url 'musicplay:playlist_detail' favorite_playlist.id %}" class="favoriteMusicBtn">Show Favorite
+    <a href="{% url 'musicplay:playlist_detail' favorite_playlist.id %}" class="favoriteMusicBtn">Show Favorite
         Songs</a> <br><br>
 
     <a href="{% url 'musicplay:playlist_detail' recent_playlist.id %}" class="favoriteMusicBtn">Show Recent Played
-        Songs</a> <br><br> -->
+        Songs</a> <br><br>
 
     <!-- <ul class="music-list">
         {% for song in songs %}
@@ -46,7 +46,7 @@
                     <div class="music-artist">{{ song.singer }}</div>
                 </span>
                 <button class="fav-btn" data-user-id="{{ user_id }}" data-music-id="{{ song.id }}">🤍</button>
-                <button class="play-btn" data-src="{{ song.file.url }}">▶</button>
+                <button class="play-btn" data-src="{{ song.file.url }}" data-user-id="{{ user_id }}" data-music-id="{{ song.id }}">▶</button>
             </div>
         </div>
         {% endfor %}
@@ -63,8 +63,10 @@
         <span id="current-time">00:00</span> / <span id="total-time">00:00</span>
     </div>
 </div>
+
 {% load static %}
 <script src="{% static 'musicplay/js/audio_play.js' %}"></script>
 <script src="{% static 'musicplay/js/fav_button.js' %}"></script>
 <script src="{% static 'musicplay/js/play_status_bar.js' %}"></script>
+
 {% endblock %}
