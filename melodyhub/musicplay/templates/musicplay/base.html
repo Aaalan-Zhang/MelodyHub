@@ -15,19 +15,26 @@
 
 <body>
     {% if user.is_authenticated %}
-    <nav style="font-family: Comfortaa, cursive; display: flex; justify-content: space-between; align-items: center; padding: 10px 20px;">
+    <nav
+        style="font-family: Comfortaa, cursive; display: flex; justify-content: space-between; align-items: center; padding: 10px 20px;">
         <div>
             <!-- {{ request.session.title }}  -->
             <a href="{% url 'musicplay:home' %}" class="btn btn-dark" role="button">Home</a>
             <a href="{% url 'musicplay:listen_together' %}" class="btn btn-dark" role="button">ListenTogether</a>
+            {% if favorite_playlist.id %}
+            <a href="{% url 'musicplay:playlist_detail' favorite_playlist.id %}" class="btn btn-dark"> Favorite
+                Songs</a>
+            {% endif %}
+            {% if recent_playlist.id %}
+            <a href="{% url 'musicplay:playlist_detail' recent_playlist.id %}" class="btn btn-dark">Recently Played
+                Songs</a>
+            {% endif %}
         </div>
-        <!-- <div style="display: flex; justify-content: flex-start;">
-
-        </div> -->
 
         <div class="user-info">
             <div class="dropdown">
-                <img style="border-radius: 50%; height: 2em;" src="{{ request.session.picture }}" alt="User profile picture">
+                <img style="border-radius: 50%; height: 2em;" src="{{ request.session.picture }}"
+                    alt="User profile picture">
                 <div class="dropdown-content">
                     {{ user.username }}<br>
                     <a href="{% url 'musicplay:my_profile' %}">My Profile</a><br>
@@ -44,8 +51,10 @@
     </div>
     {% endif %} -->
 
-    {% block content %}
-    {% endblock %}
+    <div class="main-content">
+        {% block content %}
+        {% endblock %}
+    </div>
 </body>
 
 </html>
