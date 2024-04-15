@@ -45,6 +45,7 @@ function processHostSync() {
                         'is_paused': audio.paused,
                         'cur_time': audio.currentTime,
                         'cur_src': audio.getAttribute('src'),
+                        // 'cur_name': audio.getAttribute('cur-name'),
                     }
                 }
             ));
@@ -64,6 +65,7 @@ function processHostSync() {
                         'is_paused': audio.paused,
                         'cur_time': audio.currentTime,
                         'cur_src': audio.getAttribute('src'),
+                        // 'cur_name': audio.getAttribute('cur-name'),
                     }
                 }
             ));
@@ -77,7 +79,6 @@ function processHostSync() {
             }
         }
         else if (response.msg_type === 'active_connections') {
-            console.log(response.msg_content);
             document.getElementById('active-users').innerHTML = response.msg_content;
         }
     };
@@ -117,22 +118,25 @@ function processParticipantSync(syncSocket) {
         const { msg_type, msg_content } = JSON.parse(e.data);
         var audio = document.getElementById('music-bar');
         let cur_playing_source = audio.getAttribute('src');
+        let cur_playing_name = audio.getAttribute('cur-name');
 
         switch (msg_type) {
             case 'sync_music_response_from_host':
-                const { volume, is_paused, cur_time, cur_src } = msg_content;
+                const { volume, is_paused, cur_time, cur_src, cur_name } = msg_content;
                 if (is_paused || document.getElementById('participantCtrl').innerHTML === "Start Listening") {
                     audio.muted = true;
+                    audio.pause();
                 } else {          
                     if (cur_playing_source !== cur_src) {
                         console.log('changing source');
                         audio.setAttribute('src', cur_src);
+                        // document.getElementById('music-info').innerHTML = `Now Streaming: ${cur_name}`;
                         audio.load();
                         // wait for 1 or 2 seconds to let the audio load
                         // display a message
                         audio.muted = false;
                         audio.volume = volume;
-                        audio.currentTime = cur_time + 2;
+                        audio.currentTime = cur_time;
                         audio.play();    
                     } else {
                         audio.muted = false;

@@ -304,7 +304,7 @@ def lt_search(request):
     query = request.GET.get("q", "")
     music_tracks = Music.objects.filter(name__icontains=query).order_by("-upload_time")
     data = [{
-        'user_id': track.user.id,
+        'user_id': request.user.id, # instead of track.user.id
         'id': track.id,
         'name': track.name,
         'image_url': track.image.url if track.image else None,  # Ensure image is handled correctly

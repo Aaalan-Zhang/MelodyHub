@@ -1,6 +1,5 @@
 
 async function fetchFavoriteStatus(userId, musicId) {
-    console.log(userId, musicId)
     const response = await fetch(`/get_favorite_status/?user_id=${userId}&music_id=${musicId}`);
     if (!response.ok) throw new Error('Failed to fetch favorite status');
     return await response.json();
@@ -33,7 +32,10 @@ function getCookie(name) {
     return match ? decodeURIComponent(match[2]) : null;
 }
 
+
 $(document).ready(function() {
+    let audio = document.getElementById('music-bar');
+    let isHost = audio.getAttribute('isHost');
     $("#search-input").keyup(function() {
         var query = $(this).val();
         if (query.length >= 1) {  // Trigger search for at least 3 characters
@@ -54,32 +56,45 @@ $(document).ready(function() {
                         musicDetails.append($('<div>', { 'class': 'music-artist', 'text': song.singer }));
                         musicInfo.append(musicDetails);
                         musicInfo.append($('<button>', { 'class': 'btn btn-dark', 'id': 'fav-btn', 'data-user-id': song.user_id, 'data-music-id': song.id, 'text': 'Like' }));
-                        musicInfo.append('<span> </span>')
-                        musicInfo.append($('<button>', { 'class': "btn btn-dark", 'data-src': song.file_url, 'text': 'Play' }));
+                        if (isHost === 'True') {
+                            musicInfo.append('<span> </span>')
+                            musicInfo.append($('<button>', { 'class': "btn btn-dark", 'id': 'play-btn', 'data-src': song.file_url, 'text': 'Play' }));
+                        }
                         musicCard.append(musicInfo);
+                        // console.log(document.querySelectorAll('#play-btn')[0].data-src);
                         $('#search-results').append(musicCard);
 
+                        var playButtons = document.querySelectorAll('#play-btn');
                         var favButtons = document.querySelectorAll('#fav-btn');
+
+                        playButtons.forEach(btn => {
+                            // console.log('play button');
+                            btn.addEventListener("click", function(event) {
+                                var newSrc = btn.getAttribute('data-src');
+                                // console.log(newSrc);
+                                $('#music-bar').attr('src', newSrc);
+                                $('#music-bar')[0].load();
+                                // document.getElementById('music-info').innerHTML = `Now Streaming: ${song.name}`;
+                                $('#music-bar')[0].play();
+                            });
+                        });
+                        favButtons.forEach(favBtn => {
+                            const userId = favBtn.dataset.userId;
+                            const musicId = favBtn.dataset.musicId;
                         
-                        favButtons.forEach(btn => {
-                            const userId = btn.dataset.userId;
-                            const musicId = btn.dataset.musicId;
-                        
-                            // Fetch favorite status and update button appearance
                             fetchFavoriteStatus(userId, musicId)
-                                .then(data => updateButton(btn, data))
+                                .then(data => updateButton(favBtn, data))
                                 .catch(error => console.error(error));
                         
-                            // Toggle favorite status on button click
-                            btn.addEventListener('click', () => toggleFavorite(btn, userId, musicId));
+                                favBtn.addEventListener('click', () => toggleFavorite(favBtn, userId, musicId));
                         });
-                    });
                     if (data.length === 0) {
                         $('#search-results').append("No Search Results Found.");
                     }
-
+                });
                 }
             });
+
         } else {
             $('#search-results').empty();
         }
