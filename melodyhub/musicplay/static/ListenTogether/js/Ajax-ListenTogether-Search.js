@@ -88,13 +88,12 @@ $(document).ready(function() {
                         
                                 favBtn.addEventListener('click', () => toggleFavorite(favBtn, userId, musicId));
                         });
+                    });
                     if (data.length === 0) {
                         $('#search-results').append("No Search Results Found.");
                     }
-                });
                 }
             });
-
         } else {
             $('#search-results').empty();
         }
