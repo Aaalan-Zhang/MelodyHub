@@ -15,7 +15,7 @@ class UserProfile(models.Model):
     registration_time = models.DateTimeField(auto_now_add=True)
     total_favorites = models.IntegerField(default=0)
     total_not_favorites = models.IntegerField(default=0)
-    favorites = models.ManyToManyField('Music', related_name='favorited_by')
+    favorites = models.ManyToManyField("Music", related_name="favorited_by")
 
 
 class Music(models.Model):
@@ -24,7 +24,11 @@ class Music(models.Model):
     )
     name = models.CharField(max_length=255)
     singer = models.CharField(max_length=255, null=True, blank=True)
-    image = models.ImageField(upload_to="music_images/", blank=True)
+    image = models.ImageField(
+        upload_to="music_images/",
+        blank=True,
+        default="default_cover/cover.png",
+    )
     description = models.TextField()
     file = models.FileField(upload_to="music_files/")
     upload_time = models.DateTimeField(auto_now_add=True)

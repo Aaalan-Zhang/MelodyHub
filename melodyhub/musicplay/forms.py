@@ -1,5 +1,6 @@
 from django import forms
 from musicplay.models import Music, UserProfile, ListenTogetherRoom, User
+import imghdr
 
 
 class ProfileForm(forms.ModelForm):
@@ -7,7 +8,14 @@ class ProfileForm(forms.ModelForm):
         model = UserProfile
         fields = ["avatar", "description"]
 
-    avatar = forms.ImageField(label="", required=False, widget=forms.FileInput())
+    err_msg = {
+        "invalid": "Upload a valid image.",
+        "invalid_image": "Upload a valid image.",
+    }
+
+    avatar = forms.ImageField(
+        label="", required=False, error_messages=err_msg, widget=forms.FileInput()
+    )
 
     description = forms.CharField(
         widget=forms.Textarea(
@@ -37,11 +45,32 @@ class MusicUploadForm(forms.ModelForm):
         required=False,
     )
 
+    err_msg = {
+        "invalid": "Upload a valid image.",
+        "invalid_image": "Upload a valid image.",
+    }
+
+    image = forms.ImageField(
+        required=False, error_messages=err_msg, widget=forms.FileInput()
+    )
+
     def clean_file(self):
         file = self.cleaned_data.get("file")
-        if not file.name.endswith((".mp3", ".wav", ".ogg")):
-            raise forms.ValidationError("Unsupported file type.")
+        if not file.name.endswith((".mp3")):
+            raise forms.ValidationError("Only mp3 is supported.")
         return file
+    
+    def clean_singer(self):
+        singer = self.cleaned_data.get("singer")
+        if not singer:
+            singer = "Anonymous"
+        return singer
+    
+    def clean_description(self):
+        description = self.cleaned_data.get("description")
+        if not description:
+            description = "No description provided."
+        return description
 
 
 class CreateRoomForm(forms.ModelForm):

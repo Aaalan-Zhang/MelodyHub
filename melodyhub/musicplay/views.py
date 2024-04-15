@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.utils import timezone
 from mutagen.mp3 import MP3
+from mutagen.id3 import APIC
 
 from melodyhub.settings import MUSICPLAY_USERS, MUSICPLAY_TITLE
 from .models import UserProfile, Music, ListenTogetherRoom, Playlist
@@ -189,44 +190,38 @@ def main_action(request):
 @login_required
 def my_profile(request):
     user_profile, created = UserProfile.objects.get_or_create(user=request.user)
-    music = Music.objects.filter(user=request.user).order_by("-upload_time")
+    musics = Music.objects.filter(user=request.user).order_by("-upload_time")
     request.session["title"] = "My Profile"
-    music_upload_form = MusicUploadForm()
-    profile_form = ProfileForm(instance=user_profile)
+
+    if request.method == "POST":
+        profile_form = ProfileForm(request.POST, request.FILES, instance=user_profile)
+        if profile_form.is_valid():
+            profile_form.save()
+            profile_form = ProfileForm(instance=user_profile)
+
+        music = Music(user=request.user, upload_time=timezone.now())
+        music_upload_form = MusicUploadForm(request.POST, request.FILES, instance=music)
+        if music_upload_form.is_valid():
+            music_upload_form.save()
+            music_file = request.FILES.get("file")
+            audio = MP3(music_file)
+            music.length = int(audio.info.length)
+            music.save()
+            music_upload_form = MusicUploadForm()
+    else:
+        profile_form = ProfileForm(instance=user_profile)
+        music_upload_form = MusicUploadForm()
+
     return render(
         request,
         "musicplay/my-profile.html",
         {
             "user_profile": user_profile,
-            "music": music,
+            "musics": musics,
             "music_upload_form": music_upload_form,
             "profile_form": profile_form,
         },
     )
-
-
-@login_required
-def upload_profile(request):
-    if request.method == "POST":
-        profile = UserProfile.objects.get(user=request.user)
-        form = ProfileForm(request.POST, request.FILES, instance=profile)
-        if form.is_valid():
-            form.save()
-            return redirect(reverse("musicplay:my_profile"))
-
-
-@login_required
-def upload_music(request):
-    if request.method == "POST":
-        music = Music(user=request.user, upload_time=timezone.now())
-        form = MusicUploadForm(request.POST, request.FILES, instance=music)
-        if form.is_valid():
-            form.save()
-            music_file = request.FILES.get("file")
-            audio = MP3(music_file)
-            music.length = int(audio.info.length)
-            music.save()
-        return redirect(reverse("musicplay:my_profile"))
 
 
 @login_required
