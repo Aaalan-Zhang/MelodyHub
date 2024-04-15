@@ -143,7 +143,11 @@ function processParticipantSync(syncSocket) {
                 }
                 break;
             case 'sync_chat_request':
-                document.getElementById('chats').innerHTML += (msg_content + "<br>");
+                if (msg_content.includes("joined")) {
+                    document.getElementById('chats').innerHTML += (msg_content + "<br>");
+                } else {
+                    document.getElementById('chats').innerHTML += (`${userName}: ` + msg_content + "<br>");
+                }
                 break;
             case 'active_connections':
                 document.getElementById('active-users').innerHTML = msg_content;
