@@ -62,3 +62,9 @@ body{margin:0;background-color:#f6f6f6;font-family:Montserrat,sans-serif;-webkit
     font-size: x-large;
     padding: 25px 50px;
 }
+
+#chats {
+    height: 200px; /* Set this to whatever fixed height you want */
+    overflow: auto;
+    width: 100% /* Adds a scrollbar when necessary */
+}

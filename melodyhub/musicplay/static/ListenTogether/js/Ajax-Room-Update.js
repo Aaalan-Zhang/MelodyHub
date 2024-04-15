@@ -24,7 +24,7 @@ function updateRooms() {
                         .attr('role', 'button')
                         .text(room.name);
                     roomsList.append(button);
-                    roomsList.append('<br>');  // For spacing
+                    roomsList.append('<br><br>');  // For spacing
                 });
             }
         },

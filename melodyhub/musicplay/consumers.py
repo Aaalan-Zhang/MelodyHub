@@ -1,25 +1,34 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
 import json
 class SyncConsumer(AsyncWebsocketConsumer):
+    active_connections = 0
+
     async def connect(self):
+        self.active_connections += 1
         channel_name = self.scope['url_route']['kwargs']['token']
         self.group_name = 'room_%s' % channel_name
 
         await self.channel_layer.group_add(
             self.group_name, self.channel_name
         )
-
+        await self.broadcast_active_connections()
         await self.accept()
 
+
+
+
     async def disconnect(self, close_code):
+        self.active_connections -= 1
+        await self.broadcast_active_connections()
         await self.channel_layer.group_discard(
             self.group_name, self.channel_name
         )
 
+        
+
     async def receive(self, **kwargs):
         text_data = kwargs['text_data']
         json_data = json.loads(text_data)
-        print(json_data)
 
         msg_type = json_data['msg_type']
 
@@ -53,4 +62,20 @@ class SyncConsumer(AsyncWebsocketConsumer):
         await self.send(text_data=json.dumps({
             'msg_type': event['msg_type'],
             'msg_content': event['msg_content']
+        }))
+
+    async def broadcast_active_connections(self):
+        await self.channel_layer.group_send(
+                self.group_name,
+            {
+                'type': 'active_connections_message',
+                'message': self.active_connections
+            }
+        )
+
+    async def active_connections_message(self, event):
+        print(event['message'])
+        await self.send(text_data=json.dumps({
+            'msg_type': 'active_connections',
+            'msg_content': f"Current Active Connections: {event['message']}"
         }))

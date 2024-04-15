@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    {% load static %}
+    <link href="{% static 'musicplay/base.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'ListenTogether/css/base.css' %}" rel="stylesheet" type="text/css">
+    <link rel="icon" href="{% static 'images/tab_icon.jpg' %}" type="image/x-icon">
+
+    <title> {% block title %} MelodyHub {% endblock %} </title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+
+<body>
+    {% if user.is_authenticated %}
+    <nav style="font-family: Comfortaa, cursive; display: flex; justify-content: space-between; align-items: center; padding: 10px 20px;">
+        <div>
+            <!-- {{ request.session.title }}  -->
+            <a href="{% url 'musicplay:home' %}" class="btn btn-dark" role="button">Home</a>
+            <a href="{% url 'musicplay:listen_together' %}" class="btn btn-dark" role="button">ListenTogether</a>
+        </div>
+        <!-- <div style="display: flex; justify-content: flex-start;">
+
+        </div> -->
+
+        <div class="user-info">
+            <div class="dropdown">
+                <img style="border-radius: 50%; height: 2em;" src="{{ request.session.picture }}" alt="User profile picture">
+                <div class="dropdown-content">
+                    {{ user.username }}<br>
+                    <a href="{% url 'musicplay:my_profile' %}">My Profile</a><br>
+                    <a href="{% url 'musicplay:logout' %}">Logout</a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </nav>
+
+    <!-- {% if message %}
+    <div class="message">
+        {{message}}
+    </div>
+    {% endif %} -->
+
+    <h1>500: Server Error</h1>
+    <p>Sorry, we are experiencing some issues on the server. Please try again later.</p>
+</body>
+
+</html>

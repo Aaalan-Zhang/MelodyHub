@@ -299,11 +299,17 @@ def rooms_json(request):
     rooms = ListenTogetherRoom.objects.all().values('room_id', 'name')
     return JsonResponse(list(rooms), safe=False)
 
-# @login_required
-# def lt_search(request):
-#     if request.is_ajax():
-#         query = request.GET.get('term', '')  # 'term' is the keyword sent by Ajax
-#         results = YourModel.objects.filter(name__icontains=query)  # Adjust the filter
-#         data = list(results.values('id', 'name'))  # Adjust fields to return
-#         return JsonResponse(data, safe=False)
-#     return JsonResponse({"error": ""}, status=400)
+@login_required
+def lt_search(request):
+    query = request.GET.get("q", "")
+    music_tracks = Music.objects.filter(name__icontains=query).order_by("-upload_time")
+    data = [{
+        'name': track.name,
+        'image_url': track.image.url if track.image else None,  # Ensure image is handled correctly
+        'singer': track.singer,
+        'file': track.file.url,
+        'upload_time': track.upload_time,
+        'length': track.length
+    } for track in music_tracks]
+    # data = list(songs.values('name', 'singer', 'image', 'file', 'upload_time', 'length')) 
+    return JsonResponse(data, safe=False)
