@@ -1,10 +1,10 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
 import json
 class SyncConsumer(AsyncWebsocketConsumer):
-    active_connections = 0
+    # active_connections = 0
 
     async def connect(self):
-        self.active_connections += 1
+        # self.active_connections += 1
         channel_name = self.scope['url_route']['kwargs']['token']
         self.group_name = 'room_%s' % channel_name
 
@@ -18,7 +18,7 @@ class SyncConsumer(AsyncWebsocketConsumer):
 
 
     async def disconnect(self, close_code):
-        self.active_connections -= 1
+        # self.active_connections -= 1
         await self.broadcast_active_connections()
         await self.channel_layer.group_discard(
             self.group_name, self.channel_name
@@ -69,13 +69,12 @@ class SyncConsumer(AsyncWebsocketConsumer):
                 self.group_name,
             {
                 'type': 'active_connections_message',
-                'message': self.active_connections
+                'message': len(self.channel_layer.groups.get(self.group_name, {}))
             }
         )
 
     async def active_connections_message(self, event):
-        print(event['message'])
         await self.send(text_data=json.dumps({
             'msg_type': 'active_connections',
-            'msg_content': f"Current Active Connections: {event['message']}"
+            'msg_content': f"Current Active Users: {event['message']}"
         }))
