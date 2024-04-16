@@ -200,6 +200,7 @@ def main_action(request):
 
     user = request.user
 
+    user_profile, created = UserProfile.objects.get_or_create(user=user)
     favorite_playlist, created_fav = Playlist.objects.get_or_create(
         user=user,
         is_favorites=True,
@@ -303,6 +304,28 @@ def playlist_detail(request, playlist_id):
             "user_id": request.user.id,
         },
     )
+
+@login_required
+def music_detail(request, song_id):
+    music = get_object_or_404(Music, pk=song_id)
+
+    if request.user == music.user:
+        if request.method == 'POST':
+            form = MusicUploadForm(request.POST, request.FILES, instance=music)
+            if form.is_valid():
+                form.save()
+                return redirect('musicplay:music_detail', song_id=music.id)
+        else:
+            form = MusicUploadForm(instance=music)
+    else:
+        form = MusicUploadForm(instance=music)
+
+    context = {
+        'music': music,
+        'music_upload_form': form,
+    }
+
+    return render(request, 'musicplay/music_detail.html', context)
 
 
 @login_required

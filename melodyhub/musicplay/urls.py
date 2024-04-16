@@ -22,7 +22,7 @@ urlpatterns = [
     # path("admin/", admin.site.urls),
     path('', views.main_action, name='home'),
     path('my_profile', views.my_profile, name='my_profile'),
-    path('music_detail/<int:song_id>/', views.my_profile, name='music_detail'),
+    path('music_detail/<int:song_id>/', views.music_detail, name='music_detail'),
     path('delete_music/<int:song_id>/', views.delete_music, name='delete_music'),
     path('listentogether/create', views.listen_together, name='listen_together'),
     path('listentogether/<slug:token>/', views.inside_room, name='inside_room'),

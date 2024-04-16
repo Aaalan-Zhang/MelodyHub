@@ -16,23 +16,23 @@
                 </div>
                 <div class="col-6">
                     <h2 class="text-light">{{user.first_name}} {{user.last_name}}</h2>
-                    <p class="text-light">Joined: {{ user_profile.registration_time|date:"M d, Y" }}</p>
-                    <p class="text-light">Total Favorites: {{ user_profile.total_favorites }}</p>
-                    <p class="text-light">Total Not Favorites: {{ user_profile.total_not_favorites }}</p>
+                    <p class="text-light" style="margin-top: 1.5em;">Joined: {{ user_profile.registration_time|date:"M d, Y" }}</p>
+                    <p class="text-light" style="margin-top: 1em;">Total Favorites: {{ user_profile.total_favorites }}</p>
                 </div>
             </div>
             <form method="post" enctype="multipart/form-data" action="{% url 'musicplay:my_profile' %}">
                 {% csrf_token %}
-                <div style="margin-bottom: 1em;" class="text-light">
-                    <div class="form-field">
-                        <span>{{ profile_form.avatar }}</span>
+                <div class="text-light">
+                    <div class="form-field" style="margin-bottom: 1em;">
+                        New Avatar: 
+                        <span style="margin-left: 13px;">{{ profile_form.avatar }}</span>
                         {% if profile_form.avatar.errors %}
                             <span class="form-error">{{ profile_form.avatar.errors.as_text }}</span>
                         {% endif %}
                     </div>
                     <div class="form-field">
                         {{ music_upload_form.description.label_tag }}
-                        <span style="margin-left: 5px;">{{ profile_form.description }}</span>
+                        <span style="margin-left: 10px;">{{ profile_form.description }}</span>
                         {% if profile_form.description.errors %}
                             <span class="form-error">{{ profile_form.description.errors.as_text }}</span>
                         {% endif %}
@@ -58,7 +58,7 @@
                     <small>Uploaded Time: {{ song.upload_time|date:"M d, Y" }}</small>
                 </div>
                 <small class="ml-2">{{ song.description }}</small><br />
-                <small class="ml-2">Favorites: {{ song.favorites_count }}, Not Favorites: {{song.not_favorites_count}}</small>
+                <small class="ml-2">Favorites: {{ song.favorites_count }}</small>
                 <form style="text-align: right;" action="{% url 'musicplay:delete_music' song.id %}" method="post" style="display: inline;">
                     {% csrf_token %}
                     <button type="submit" class="btn btn-danger">Delete</button>
@@ -85,13 +85,13 @@
                     <span class="form-error">{{ music_upload_form.name.errors.as_text }}</span>
                 {% endif %}
             </div>
-            <div class="form-field">
-                {{ music_upload_form.image.label_tag }} 
-                <span style="margin-left: 58px;">{{ music_upload_form.image }}</span> 
-                {% if music_upload_form.image.errors %}
-                    <span class="form-error">{{ music_upload_form.image.errors.as_text }}</span>
-                {% endif %}
-            </div>
+                <div class="form-field">
+                    {{ music_upload_form.image.label_tag }} 
+                    <span style="margin-left: 58px;">{{ music_upload_form.image }}</span> 
+                    {% if music_upload_form.image.errors %}
+                        <span class="form-error">{{ music_upload_form.image.errors.as_text }}</span>
+                    {% endif %}
+                </div>
             <div class="form-field">
                 {{ music_upload_form.singer.label_tag }} 
                 <span style="margin-left: 55px;">{{ music_upload_form.singer }}</span>

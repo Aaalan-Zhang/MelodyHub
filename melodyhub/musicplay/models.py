@@ -14,7 +14,6 @@ class UserProfile(models.Model):
     description = models.TextField(blank=True)
     registration_time = models.DateTimeField(auto_now_add=True)
     total_favorites = models.IntegerField(default=0)
-    total_not_favorites = models.IntegerField(default=0)
     favorites = models.ManyToManyField("Music", related_name="favorited_by")
 
 
@@ -34,7 +33,6 @@ class Music(models.Model):
     upload_time = models.DateTimeField(auto_now_add=True)
     length = models.IntegerField(help_text="Length of the song in seconds", default=0)
     favorites_count = models.IntegerField(default=0)
-    not_favorites_count = models.IntegerField(default=0)
 
 
 class PlaylistMusic(models.Model):
@@ -71,12 +69,3 @@ class ListenTogetherRoom(models.Model):
         User, related_name="joined_listen_together_rooms"
     )
     created_at = models.DateTimeField(auto_now_add=True)
-
-
-class EmailConfirmation(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    confirmation_token = models.CharField(max_length=100)
-    created_at = models.DateTimeField(default=now)
-
-    def is_expired(self):
-        return (now() - self.created_at).days > 1  # Example: 1 day to expire
