@@ -32,7 +32,9 @@ def get_favorite_status(request):
                 "description": "Your favorite musics.",
             },
         )
-        is_favorite = PlaylistMusic.objects.filter(playlist=favorite_playlist, music=music).exists()
+        is_favorite = PlaylistMusic.objects.filter(
+            playlist=favorite_playlist, music=music
+        ).exists()
 
         return JsonResponse({"is_favorite": is_favorite})
     else:
@@ -82,7 +84,7 @@ def update_favorites(request):
         return JsonResponse({"status": "ok"})
     else:
         return JsonResponse({"status": "error"})
-    
+
 
 @login_required
 def update_played_musics(request):
@@ -104,6 +106,7 @@ def update_played_musics(request):
         return JsonResponse({"status": "ok"})
     else:
         return JsonResponse({"status": "error"})
+
 
 def _known_user_check(action_function):
     def my_wrapper_function(request, *args, **kwargs):
@@ -274,6 +277,62 @@ def my_profile(request):
 
 
 @login_required
+def update_profile(request):
+    user_profile, created = UserProfile.objects.get_or_create(user=request.user)
+    musics = Music.objects.filter(user=request.user).order_by("-upload_time")
+    request.session["title"] = "My Profile"
+
+    if request.method == "POST":
+        profile_form = ProfileForm(request.POST, request.FILES, instance=user_profile)
+        if profile_form.is_valid():
+            profile_form.save()
+            profile_form = ProfileForm(instance=user_profile)
+        music_upload_form = MusicUploadForm()
+
+        return render(
+            request,
+            "musicplay/my-profile.html",
+            {
+                "user_profile": user_profile,
+                "musics": musics,
+                "music_upload_form": music_upload_form,
+                "profile_form": profile_form,
+            },
+        )
+
+
+@login_required
+def upload_music(request):
+    user_profile, created = UserProfile.objects.get_or_create(user=request.user)
+    musics = Music.objects.filter(user=request.user).order_by("-upload_time")
+    request.session["title"] = "My Profile"
+
+    if request.method == "POST":
+        music = Music(user=request.user, upload_time=timezone.now())
+        music_upload_form = MusicUploadForm(request.POST, request.FILES, instance=music)
+        if music_upload_form.is_valid():
+            music_upload_form.save()
+            music_file = request.FILES.get("file")
+            audio = MP3(music_file)
+            music.length = int(audio.info.length)
+            music.uploader_profile = user_profile
+            music.save()
+            music_upload_form = MusicUploadForm()
+        profile_form = ProfileForm(instance=user_profile)
+
+        return render(
+            request,
+            "musicplay/my-profile.html",
+            {
+                "user_profile": user_profile,
+                "musics": musics,
+                "music_upload_form": music_upload_form,
+                "profile_form": profile_form,
+            },
+        )
+
+
+@login_required
 def delete_music(request, song_id):
     if request.method == "POST":
         song = get_object_or_404(Music, id=song_id)
@@ -305,27 +364,28 @@ def playlist_detail(request, playlist_id):
         },
     )
 
+
 @login_required
 def music_detail(request, song_id):
     music = get_object_or_404(Music, pk=song_id)
 
     if request.user == music.user:
-        if request.method == 'POST':
+        if request.method == "POST":
             form = MusicUploadForm(request.POST, request.FILES, instance=music)
             if form.is_valid():
                 form.save()
-                return redirect('musicplay:music_detail', song_id=music.id)
+                return redirect("musicplay:music_detail", song_id=music.id)
         else:
             form = MusicUploadForm(instance=music)
     else:
         form = MusicUploadForm(instance=music)
 
     context = {
-        'music': music,
-        'music_upload_form': form,
+        "music": music,
+        "music_upload_form": form,
     }
 
-    return render(request, 'musicplay/music_detail.html', context)
+    return render(request, "musicplay/music_detail.html", context)
 
 
 @login_required
@@ -380,15 +440,20 @@ def rooms_json(request):
 def lt_search(request):
     query = request.GET.get("q", "")
     music_tracks = Music.objects.filter(name__icontains=query).order_by("-upload_time")
-    data = [{
-        'user_id': request.user.id, # instead of track.user.id
-        'id': track.id,
-        'name': track.name,
-        'image_url': track.image.url if track.image else None,  # Ensure image is handled correctly
-        'singer': track.singer,
-        'file_url': track.file.url,
-        'upload_time': track.upload_time,
-        'length': track.length
-    } for track in music_tracks]
-    # data = list(songs.values('name', 'singer', 'image', 'file', 'upload_time', 'length')) 
+    data = [
+        {
+            "user_id": request.user.id,  # instead of track.user.id
+            "id": track.id,
+            "name": track.name,
+            "image_url": (
+                track.image.url if track.image else None
+            ),  # Ensure image is handled correctly
+            "singer": track.singer,
+            "file_url": track.file.url,
+            "upload_time": track.upload_time,
+            "length": track.length,
+        }
+        for track in music_tracks
+    ]
+    # data = list(songs.values('name', 'singer', 'image', 'file', 'upload_time', 'length'))
     return JsonResponse(data, safe=False)

@@ -20,7 +20,7 @@
                     <p class="text-light" style="margin-top: 1em;">Total Favorites: {{ user_profile.total_favorites }}</p>
                 </div>
             </div>
-            <form method="post" enctype="multipart/form-data" action="{% url 'musicplay:my_profile' %}">
+            <form method="post" enctype="multipart/form-data" action="{% url 'musicplay:update_profile' %}">
                 {% csrf_token %}
                 <div class="text-light">
                     <div class="form-field" style="margin-bottom: 1em;">
@@ -31,7 +31,7 @@
                         {% endif %}
                     </div>
                     <div class="form-field">
-                        {{ music_upload_form.description.label_tag }}
+                        Description:
                         <span style="margin-left: 10px;">{{ profile_form.description }}</span>
                         {% if profile_form.description.errors %}
                             <span class="form-error">{{ profile_form.description.errors.as_text }}</span>
@@ -74,7 +74,7 @@
 
     <h3>Upload New Track</h3>
     <form style="height: 390px;" class='card p-1' method="post" enctype="multipart/form-data"
-        action="{% url 'musicplay:my_profile' %}">
+        action="{% url 'musicplay:upload_music' %}">
         <div class="card-body">
             {% csrf_token %}
 
