@@ -169,3 +169,5 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # Specify the default location for uploaded files
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+CSRF_TRUSTED_ORIGINS = ['https://team1.cmu-webapps.com']
