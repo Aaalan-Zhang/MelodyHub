@@ -1,0 +1,110 @@
+{% extends "musicplay/base.html" %}
+
+{% block content %}
+<div style="font-family:Comfortaa,cursive; display: flex; justify-content: center; padding-top: 25px">
+    <h1>Music Details</h1>
+</div>
+<div class="container" style="font-family:Comfortaa,cursive;">
+    <div class="music-detail">
+        {% if user == music.user %}
+        <form style="height: 450px;" class='card p-1' method="post" enctype="multipart/form-data"
+            action="{% url 'musicplay:music_detail' music.id %}">
+            <div class="card-body">
+                <div class="row" style="margin-bottom: 1em;">
+                    <div class="col-3">
+                        <img src="{{ music.image.url }}" class="img-fluid img-thumbnail rectangle"
+                            alt="Music cover image" style="width: 300px; height: 210px;">
+                    </div>
+                    <div class="col-9">
+                        {% csrf_token %}
+                        <div class="form-field">
+                            {{ music_upload_form.name.label_tag }}
+                            <span style="margin-left: 60px;">{{ music_upload_form.name }}</span>
+                            {% if music_upload_form.name.errors %}
+                            <span class="form-error">{{ music_upload_form.name.errors.as_text }}</span>
+                            {% endif %}
+                        </div>
+                        <div class="form-field">
+                            {{ music_upload_form.image.label_tag }}
+                            <span style="margin-left: 58px;">{{ music_upload_form.image }}</span>
+                            {% if music_upload_form.image.errors %}
+                            <span class="form-error">{{ music_upload_form.image.errors.as_text }}</span>
+                            {% endif %}
+                        </div>
+                        <div class="form-field">
+                            {{ music_upload_form.singer.label_tag }}
+                            <span style="margin-left: 55px;">{{ music_upload_form.singer }}</span>
+                            {% if music_upload_form.singer.errors %}
+                            <span class="form-error">{{ music_upload_form.singer.errors.as_text }}</span>
+                            {% endif %}
+                        </div>
+                        <div class="form-field">
+                            {{ music_upload_form.description.label_tag }}
+                            <span style="margin-left: 13px;">{{ music_upload_form.description }}</span>
+                            {% if music_upload_form.description.errors %}
+                            <span class="form-error">{{ music_upload_form.description.errors.as_text }}</span>
+                            {% endif %}
+                        </div>
+                        <div class="form-field">
+                            Uploaded:
+                            <span style="margin-left: 28px;">{{ music.upload_time }}</span>
+                        </div>
+                        <div class="form-field">
+                            Length:
+                            <span style="margin-left: 52px;">{{ music.length }} seconds</span>
+                        </div>
+                        <div class="form-field">
+                            Favorites:
+                            <span style="margin-left: 34px;">{{ music.favorites_count }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div style="display: flex; justify-content: center;">
+                    <button type="submit" class="btn btn-dark">Update Music Info</button>
+                </div>
+            </div>
+        </form>
+        {% else %}
+        <div class='card p-1' style="height: 330px;">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-4">
+                        <img src="{{ music.image.url }}" class="img-fluid img-thumbnail rectangle"
+                            alt="Music cover image" style="width: 320px; height: 200px;">
+                    </div>
+                    <div class="col-8">
+                        {% csrf_token %}
+                        <div class="form-field">
+                            Name:
+                            <span style="margin-left: 60px;">{{ music.name }}</span>
+                        </div>
+                        <div class="form-field">
+                            Singer:
+                            <span style="margin-left: 54px;">{{ music.singer }}</span>
+                        </div>
+                        <div class="form-field">
+                            Description:
+                            <span style="margin-left: 13px;">{{ music.description }}</span>
+                        </div>
+                        <div class="form-field">
+                            Uploaded:
+                            <span style="margin-left: 28px;">{{ music.upload_time }}</span>
+                        </div>
+                        <div class="form-field">
+                            Length:
+                            <span style="margin-left: 52px;">{{ music.length }} seconds</span>
+                        </div>
+                        <div class="form-field">
+                            Favorites:
+                            <span style="margin-left: 34px;">{{ music.favorites_count }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+</div>
+</div>
+{% endblock %}
