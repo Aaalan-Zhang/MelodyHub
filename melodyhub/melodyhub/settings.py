@@ -108,9 +108,11 @@ ASGI_APPLICATION = "melodyhub.routing.application"
 
 CHANNEL_LAYERS = {
     "default": {
-        "BACKEND": "channels.layers.InMemoryChannelLayer"
-    },
-}
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("localhost", 6379)],
+        },
+}, }
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
@@ -167,3 +169,5 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # Specify the default location for uploaded files
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+CSRF_TRUSTED_ORIGINS = ['https://team1.cmu-webapps.com']
