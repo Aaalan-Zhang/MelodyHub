@@ -21,14 +21,10 @@
             <!-- {{ request.session.title }}  -->
             <a href="{% url 'musicplay:home' %}" class="btn btn-dark" role="button">Home</a>
             <a href="{% url 'musicplay:listen_together' %}" class="btn btn-dark" role="button">ListenTogether</a>
-            {% if favorite_playlist.id %}
-            <a href="{% url 'musicplay:playlist_detail' favorite_playlist.id %}" class="btn btn-dark"> Favorite
-                Songs</a>
-            {% endif %}
-            {% if recent_playlist.id %}
-            <a href="{% url 'musicplay:playlist_detail' recent_playlist.id %}" class="btn btn-dark">Recently Played
-                Songs</a>
-            {% endif %}
+            <a href="{% url 'musicplay:playlist_detail' favorite_playlist.id|default:'1' %}" class="btn btn-dark">
+                Favorite Songs</a>
+            <a href="{% url 'musicplay:playlist_detail' recent_playlist.id|default:'2' %}" class="btn btn-dark">Recently
+                Played Songs</a>
         </div>
 
         <div class="user-info">
