@@ -3,4 +3,5 @@ from musicplay import consumers
 
 websocket_urlpatterns = [
     re_path(r'^ws/listentogether/(?P<token>\w+)/', consumers.SyncConsumer.as_asgi()),
+    re_path(r'^wss/listentogether/(?P<token>\w+)/', consumers.SyncConsumer.as_asgi()),
 ]
