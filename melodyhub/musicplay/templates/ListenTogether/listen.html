@@ -29,10 +29,11 @@
             You are listening to {{ room.name }} hosted by {{ room.creator }}
             {% endif %}
             <br><br>
-            Now streaming: Heat Waves
+            <!-- <div id="music-info">Now Streaming: Heat Waves</div> -->
+            
             <div id="active-users"></div>
             <div>
-                <audio controls controller class="audio audio-control" isHost="{{ isHost }}" id="music-bar" src="/media/audio/3783252753.mp3" preload="auto"></audio>
+                <audio controls controller class="audio audio-control" preload="auto" isHost="{{ isHost }}" id="music-bar" src="/media/audio/3783252753.mp3"></audio>
             </div>
             <br><br>
             {% if not isHost %}

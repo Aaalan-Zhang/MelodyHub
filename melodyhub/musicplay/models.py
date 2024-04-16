@@ -33,6 +33,10 @@ class Music(models.Model):
     upload_time = models.DateTimeField(auto_now_add=True)
     length = models.IntegerField(help_text="Length of the song in seconds", default=0)
     favorites_count = models.IntegerField(default=0)
+    not_favorites_count = models.IntegerField(default=0)
+    uploader_profile = models.ForeignKey(
+        UserProfile, on_delete=models.CASCADE, related_name="uploaded_music", blank=True, null=True
+    )
 
 
 class PlaylistMusic(models.Model):

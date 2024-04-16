@@ -18,9 +18,8 @@ db.sqlite3
 
 venv/
 
-melodyhub/media/*
-!melodyhub/media/default_avatar
-!melodyhub/media/default_cover
-!melodyhub/media/audio/
-!melodyhub/media/imgs/
-!melodyhub/media/background/
+melodyhub/media/music_files/
+melodyhub/media/music_images/
+melodyhub/media/user_avatars/
+
+*.pem

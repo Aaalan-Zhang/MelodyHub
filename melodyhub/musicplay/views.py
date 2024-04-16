@@ -53,18 +53,17 @@ def update_playlist(playlist, music, is_add):
 @csrf_exempt
 def update_favorites(request):
     if request.method == "POST":
-        user_id = request.POST.get("user_id")
         music_id = request.POST.get("music_id")
         action = request.POST.get("action")
 
-        user_profile = UserProfile.objects.get(user__id=user_id)
         music = Music.objects.get(id=music_id)
+        uploader_profile = music.uploader_profile
 
         if action == "increment":
-            user_profile.total_favorites += 1
+            uploader_profile.total_favorites += 1
             music.favorites_count += 1
         elif action == "decrement":
-            user_profile.total_favorites -= 1
+            uploader_profile.total_favorites -= 1
             music.favorites_count -= 1
 
         favorite_playlist, created_fav = Playlist.objects.get_or_create(
@@ -77,7 +76,7 @@ def update_favorites(request):
         )
         update_playlist(favorite_playlist, music, action == "increment")
 
-        user_profile.save()
+        uploader_profile.save()
         music.save()
 
         return JsonResponse({"status": "ok"})
@@ -255,6 +254,7 @@ def my_profile(request):
             music_file = request.FILES.get("file")
             audio = MP3(music_file)
             music.length = int(audio.info.length)
+            music.uploader_profile = user_profile
             music.save()
             music_upload_form = MusicUploadForm()
     else:
@@ -380,20 +380,15 @@ def rooms_json(request):
 def lt_search(request):
     query = request.GET.get("q", "")
     music_tracks = Music.objects.filter(name__icontains=query).order_by("-upload_time")
-    data = [
-        {
-            "user_id": track.user.id,
-            "id": track.id,
-            "name": track.name,
-            "image_url": (
-                track.image.url if track.image else None
-            ),  # Ensure image is handled correctly
-            "singer": track.singer,
-            "file_url": track.file.url,
-            "upload_time": track.upload_time,
-            "length": track.length,
-        }
-        for track in music_tracks
-    ]
-    # data = list(songs.values('name', 'singer', 'image', 'file', 'upload_time', 'length'))
+    data = [{
+        'user_id': request.user.id, # instead of track.user.id
+        'id': track.id,
+        'name': track.name,
+        'image_url': track.image.url if track.image else None,  # Ensure image is handled correctly
+        'singer': track.singer,
+        'file_url': track.file.url,
+        'upload_time': track.upload_time,
+        'length': track.length
+    } for track in music_tracks]
+    # data = list(songs.values('name', 'singer', 'image', 'file', 'upload_time', 'length')) 
     return JsonResponse(data, safe=False)

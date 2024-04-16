@@ -1,10 +1,6 @@
 {% extends "musicplay/base.html" %}
 
 {% block content %}
-<!-- <div style="font-family:Comfortaa,cursive; display: flex; justify-content: center;">
-    <li class="navbar"><a href="{% url 'musicplay:listen_together' %}" class="btn btn-dark"
-            role="button">ListenTogether</a></li>
-</div> -->
 <div style="font-family:Comfortaa,cursive; display: flex; justify-content: center; padding-top: 25px">
     <h1>Welcome to MelodyHub</h1>
 </div>
@@ -18,24 +14,7 @@
 
     <h4>All Songs</h4>
     <br>
-    <a href="{% url 'musicplay:playlist_detail' favorite_playlist.id %}" class="favoriteMusicBtn">Show Favorite
-        Songs</a> <br><br>
 
-    <a href="{% url 'musicplay:playlist_detail' recent_playlist.id %}" class="favoriteMusicBtn">Show Recent Played
-        Songs</a> <br><br>
-
-    <!-- <ul class="music-list">
-        {% for song in songs %}
-        <li>
-            <span class="music-details">
-                <div class="music-title">{{ song.name }}</div>
-                <div class="music-artist">{{ song.singer }}</div>
-            </span>
-            <button class="fav-btn" data-user-id="{{ user_id }}" data-music-id="{{ song.id }}">🤍</button>
-            <button class="play-btn" data-src="{{ song.file.url }}">▶</button>
-        </li>
-        {% endfor %}
-    </ul> -->
     <div class="music-list">
         {% for song in songs %}
         <div class="music-card">
@@ -46,7 +25,8 @@
                     <div class="music-artist">{{ song.singer }}</div>
                 </span>
                 <button class="fav-btn" data-user-id="{{ user_id }}" data-music-id="{{ song.id }}">🤍</button>
-                <button class="play-btn" data-src="{{ song.file.url }}" data-user-id="{{ user_id }}" data-music-id="{{ song.id }}">▶</button>
+                <button class="play-btn" data-src="{{ song.file.url }}" data-user-id="{{ user_id }}"
+                    data-music-id="{{ song.id }}">▶</button>
             </div>
         </div>
         {% endfor %}

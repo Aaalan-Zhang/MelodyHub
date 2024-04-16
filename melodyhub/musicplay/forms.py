@@ -1,6 +1,5 @@
 from django import forms
 from musicplay.models import Music, UserProfile, ListenTogetherRoom, User
-import imghdr
 
 
 class ProfileForm(forms.ModelForm):

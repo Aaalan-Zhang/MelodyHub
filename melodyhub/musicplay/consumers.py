@@ -53,6 +53,7 @@ class SyncConsumer(AsyncWebsocketConsumer):
 
 
     async def sync_message(self, event):
+        print(event['msg_content'])
         await self.send(text_data=json.dumps({
             'msg_type': event['msg_type'],
             'msg_content': event['msg_content']
