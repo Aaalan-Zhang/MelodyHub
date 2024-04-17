@@ -7,7 +7,7 @@
 <div class="container" style="font-family:Comfortaa,cursive;">
     <div class="music-detail">
         {% if user == music.user %}
-        <form style="height: 450px;" class='card p-1' method="post" enctype="multipart/form-data"
+        <form style="height: 500px;" class='card p-1' method="post" enctype="multipart/form-data"
             action="{% url 'musicplay:music_detail' music.id %}">
             <div class="card-body">
                 <div class="row" style="margin-bottom: 1em;">
