@@ -112,7 +112,6 @@ def register(request):
     if request.method == "GET":
         context = {"form": UserCreationForm()}
         return render(request, "login/register.html", context)
-
     form = UserCreationForm(request.POST)
     try:
         new_user = form.save()
