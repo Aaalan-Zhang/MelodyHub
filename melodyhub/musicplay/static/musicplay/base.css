@@ -399,8 +399,10 @@ form {
 }
 
 #music-cover {
-    width: 70px;
-    height: 70px;
+    width: 80px;
+    height: auto;
+    margin-top: 5px;
+    margin-bottom: 5px;
     border-radius: 10%;
 }
 
