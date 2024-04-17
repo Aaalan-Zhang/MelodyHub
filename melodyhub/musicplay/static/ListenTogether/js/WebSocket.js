@@ -124,16 +124,20 @@ function processParticipantSync(syncSocket) {
             case 'sync_music_response_from_host':
                 const { volume, is_paused, cur_time, cur_src, cur_name } = msg_content;
                 if (is_paused || document.getElementById('participantCtrl').innerHTML === "Start Listening") {
+                    console.log('changing source');
+                    audio.setAttribute('src', cur_src + '#t=' + cur_time);
+                    audio.load();
                     audio.muted = true;
+                    audio.play();
                     audio.pause();
                 } else {          
                     if (cur_playing_source !== cur_src) {
                         console.log('changing source');
-                        audio.setAttribute('src', cur_src);
-                        // document.getElementById('music-info').innerHTML = `Now Streaming: ${cur_name}`;
+                        audio.setAttribute('src', cur_src + '#t=' + cur_time);
                         audio.load();
                         audio.play();
                         audio.pause();
+                        // document.getElementById('music-info').innerHTML = `Now Streaming: ${cur_name}`;
                         // wait for 1 or 2 seconds to let the audio load
                         // display a message
                         audio.muted = false;
@@ -141,12 +145,19 @@ function processParticipantSync(syncSocket) {
                         audio.currentTime = cur_time;
                         audio.play();    
                     } else {
+                        audio.setAttribute('src', cur_src + '#t=' + cur_time);
+                        audio.load();
                         audio.play();
                         audio.pause();
+                        // audio.setAttribute('src', cur_src + '#t=' + cur_time);
+                        // audio.load();
+                        // audio.on('canplaythrough', () => {
+
                         audio.muted = false;
                         audio.volume = volume;
                         audio.currentTime = cur_time;
                         audio.play();    
+                        // });
                     }
                 }
                 break;
