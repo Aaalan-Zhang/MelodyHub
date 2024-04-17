@@ -129,7 +129,9 @@ function processParticipantSync(syncSocket) {
                     audio.load();
                     audio.muted = true;
                     audio.play();
-                    audio.pause();
+                    setTimeout(function() {
+                        audio.pause();  // Pause the audio after 10 milliseconds
+                    }, 10);
                 } else {          
                     if (cur_playing_source !== cur_src) {
                         console.log('changing source');
