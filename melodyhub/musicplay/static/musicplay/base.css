@@ -244,36 +244,6 @@ form {
     color: #666;
 }
 
-.play-status-bar {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background-color: #333;
-    padding: 5px 0;
-    text-align: center;
-    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.3);
-    background: linear-gradient(75deg, #f17c58, #e94584, #24aadb, #27dbb1, #ffdc18, #ff3706);
-    background-size: 600% 100%;
-    -webkit-animation: gradient 16s linear infinite;
-    animation: gradient 16s linear infinite;
-    -webkit-animation-direction: alternate;
-    animation-direction: alternate;
-    display: none;
-    font-size: 1em;
-    font-family: Comfortaa, cursive;
-}
-
-
-
-.play-status-bar p {
-    margin: 0;
-    font-size: 1em;
-    font-family: Comfortaa, cursive;
-    color: white;
-    mix-blend-mode: difference;
-}
-
 .card {
     font-family: Comfortaa, cursive;
     color: #fff;
@@ -299,9 +269,41 @@ form {
     margin-left: 10px;
 }
 
+.play-status-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 10%;
+    background-color: #333;
+    padding: 5px 0;
+    text-align: center;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(75deg, #f17c58, #e94584, #24aadb, #27dbb1, #ffdc18, #ff3706);
+    background-size: 600% 100%;
+    -webkit-animation: gradient 16s linear infinite;
+    animation: gradient 16s linear infinite;
+    -webkit-animation-direction: alternate;
+    animation-direction: alternate;
+    display: none;
+    font-size: 1em;
+    font-family: Comfortaa, cursive;
+}
+
+
+
+.play-status-bar p {
+    margin: 0;
+    font-size: 1.2em;
+    font-family: Comfortaa, cursive;
+    line-height: 1em;
+    margin-bottom: -10px;
+    color: white;
+    mix-blend-mode: difference;
+}
+
 #play-pause-button {
     border: none;
-    /* padding: 10px; */
     border-radius: 50%;
     cursor: pointer;
     transition: background-color 0.3s ease;
