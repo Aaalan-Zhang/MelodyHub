@@ -134,6 +134,9 @@ DATABASES = {
 #     },
 #     {
 #         "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+#         "OPTIONS": {
+#             "min_length": 8,
+#         },
 #     },
 #     {
 #         "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
