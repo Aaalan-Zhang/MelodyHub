@@ -244,6 +244,24 @@ def my_profile(request):
     musics = Music.objects.filter(user=request.user).order_by("-upload_time")
     request.session["title"] = "My Profile"
 
+    favorite_playlist, created_fav = Playlist.objects.get_or_create(
+        user=request.user,
+        is_favorites=True,
+        defaults={
+            "name": "My Favorites",
+            "description": "Your favorite musics.",
+        },
+    )
+
+    recent_playlist, created_rec = Playlist.objects.get_or_create(
+        user=request.user,
+        is_recent=True,
+        defaults={
+            "name": "Recent",
+            "description": "Recently played musics.",
+        },
+    )
+
     if request.method == "POST":
         profile_form = ProfileForm(request.POST, request.FILES, instance=user_profile)
         if profile_form.is_valid():
@@ -272,6 +290,8 @@ def my_profile(request):
             "musics": musics,
             "music_upload_form": music_upload_form,
             "profile_form": profile_form,
+            "favorite_playlist": favorite_playlist,
+            "recent_playlist": recent_playlist,
         },
     )
 
@@ -281,6 +301,24 @@ def update_profile(request):
     user_profile, created = UserProfile.objects.get_or_create(user=request.user)
     musics = Music.objects.filter(user=request.user).order_by("-upload_time")
     request.session["title"] = "My Profile"
+
+    favorite_playlist, created_fav = Playlist.objects.get_or_create(
+        user=request.user,
+        is_favorites=True,
+        defaults={
+            "name": "My Favorites",
+            "description": "Your favorite musics.",
+        },
+    )
+
+    recent_playlist, created_rec = Playlist.objects.get_or_create(
+        user=request.user,
+        is_recent=True,
+        defaults={
+            "name": "Recent",
+            "description": "Recently played musics.",
+        },
+    )
 
     if request.method == "POST":
         profile_form = ProfileForm(request.POST, request.FILES, instance=user_profile)
@@ -297,6 +335,8 @@ def update_profile(request):
                 "musics": musics,
                 "music_upload_form": music_upload_form,
                 "profile_form": profile_form,
+                "favorite_playlist": favorite_playlist,
+                "recent_playlist": recent_playlist,
             },
         )
 
@@ -306,6 +346,24 @@ def upload_music(request):
     user_profile, created = UserProfile.objects.get_or_create(user=request.user)
     musics = Music.objects.filter(user=request.user).order_by("-upload_time")
     request.session["title"] = "My Profile"
+
+    favorite_playlist, created_fav = Playlist.objects.get_or_create(
+        user=request.user,
+        is_favorites=True,
+        defaults={
+            "name": "My Favorites",
+            "description": "Your favorite musics.",
+        },
+    )
+
+    recent_playlist, created_rec = Playlist.objects.get_or_create(
+        user=request.user,
+        is_recent=True,
+        defaults={
+            "name": "Recent",
+            "description": "Recently played musics.",
+        },
+    )
 
     if request.method == "POST":
         music = Music(user=request.user, upload_time=timezone.now())
@@ -328,6 +386,8 @@ def upload_music(request):
                 "musics": musics,
                 "music_upload_form": music_upload_form,
                 "profile_form": profile_form,
+                "favorite_playlist": favorite_playlist,
+                "recent_playlist": recent_playlist,
             },
         )
 
@@ -369,6 +429,24 @@ def playlist_detail(request, playlist_id):
 def music_detail(request, song_id):
     music = get_object_or_404(Music, pk=song_id)
 
+    favorite_playlist, created_fav = Playlist.objects.get_or_create(
+        user=request.user,
+        is_favorites=True,
+        defaults={
+            "name": "My Favorites",
+            "description": "Your favorite musics.",
+        },
+    )
+
+    recent_playlist, created_rec = Playlist.objects.get_or_create(
+        user=request.user,
+        is_recent=True,
+        defaults={
+            "name": "Recent",
+            "description": "Recently played musics.",
+        },
+    )
+
     if request.user == music.user:
         if request.method == "POST":
             form = MusicUploadForm(request.POST, request.FILES, instance=music)
@@ -383,6 +461,8 @@ def music_detail(request, song_id):
     context = {
         "music": music,
         "music_upload_form": form,
+        "favorite_playlist": favorite_playlist,
+        "recent_playlist": recent_playlist,
     }
 
     return render(request, "musicplay/music_detail.html", context)
