@@ -28,7 +28,7 @@
                 </span>
                 <button class="fav-btn" data-user-id="{{ user_id }}" data-music-id="{{ song.id }}">🤍</button>
                 <button class="play-btn" data-src="{{ song.file.url }}" data-user-id="{{ user_id }}"
-                    data-music-id="{{ song.id }}">▶</button>
+                    data-music-id="{{ song.id }}" data-cover="{{ song.image.url }}">▶</button>
             </div>
         </div>
         {% endfor %}
@@ -40,9 +40,12 @@
     <audio id="audio-player" controls style="display: none;"></audio>
 
     <div class="custom-controls" id="custom-controls">
+        <img id="music-cover" src="" alt="Music cover">
         <button id="play-pause-button" class="play"></button>
         <input id="progress-bar" type="range" min="0" max="100" value="0">
-        <span id="current-time">00:00</span> / <span id="total-time">00:00</span>
+        <div id="music-time"><span id="current-time">00:00</span> / <span id="total-time">00:00</span></div>
+        <div id="volume-icon" class="volume-on">🔊</div>
+        <input id="volume-control" type="range" min="0" max="1" step="0.01" value="1">
     </div>
 </div>
 
