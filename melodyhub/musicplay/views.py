@@ -452,6 +452,7 @@ def music_detail(request, song_id):
         "music_upload_form": form,
         "favorite_playlist": favorite_playlist,
         "recent_playlist": recent_playlist,
+        "uploader": music.user,
     }
 
     return render(request, "musicplay/music_detail.html", context)
