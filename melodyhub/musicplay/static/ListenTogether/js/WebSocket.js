@@ -72,11 +72,11 @@ function processHostSync() {
         }
         else if (response.msg_type === 'sync_chat_request') {
             let message = response.msg_content;
-            if (message.includes("joined")) {
-                document.getElementById('chats').innerHTML += (message + "<br>");
-            } else {
-                document.getElementById('chats').innerHTML += (`${userName}: ` + message + "<br>");
-            }
+            // if (message.includes("joined")) {
+            document.getElementById('chats').innerHTML += (message + "<br>");
+            // } else {
+                // document.getElementById('chats').innerHTML += (message + "<br>");
+            // }
         }
         else if (response.msg_type === 'active_connections') {
             document.getElementById('active-users').innerHTML = response.msg_content;
@@ -102,7 +102,7 @@ function sendMessage(element) {
     let message = document.getElementById('chat-input').value;
     document.getElementById('chat-input').value = "";
     syncSocket.send(JSON.stringify(
-        { 'msg_type' : 'sync_chat_request', 'msg_content': message}
+        { 'msg_type' : 'sync_chat_request', 'msg_content': `${userName}: ` + message}
     ));
 
 }
@@ -132,6 +132,8 @@ function processParticipantSync(syncSocket) {
                         audio.setAttribute('src', cur_src);
                         // document.getElementById('music-info').innerHTML = `Now Streaming: ${cur_name}`;
                         audio.load();
+                        audio.play();
+                        audio.pause();
                         // wait for 1 or 2 seconds to let the audio load
                         // display a message
                         audio.muted = false;
@@ -139,6 +141,8 @@ function processParticipantSync(syncSocket) {
                         audio.currentTime = cur_time;
                         audio.play();    
                     } else {
+                        audio.play();
+                        audio.pause();
                         audio.muted = false;
                         audio.volume = volume;
                         audio.currentTime = cur_time;
@@ -147,11 +151,11 @@ function processParticipantSync(syncSocket) {
                 }
                 break;
             case 'sync_chat_request':
-                if (msg_content.includes("joined")) {
-                    document.getElementById('chats').innerHTML += (msg_content + "<br>");
-                } else {
-                    document.getElementById('chats').innerHTML += (`${userName}: ` + msg_content + "<br>");
-                }
+                // if (msg_content.includes("joined")) {
+                document.getElementById('chats').innerHTML += (msg_content + "<br>");
+                // } else {
+                //     document.getElementById('chats').innerHTML += (`${userName}: ` + msg_content + "<br>");
+                // }
                 break;
             case 'active_connections':
                 document.getElementById('active-users').innerHTML = msg_content;
