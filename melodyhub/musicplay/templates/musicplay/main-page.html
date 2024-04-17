@@ -21,7 +21,9 @@
             <img src="{{ song.image.url }}" alt="Music image">
             <div class="music-info">
                 <span class="music-details">
-                    <div class="music-title">{{ song.name }}</div>
+                    <a href="{% url 'musicplay:music_detail' song.id %}">
+                        <div class="music-title">{{ song.name }}</div>
+                    </a>
                     <div class="music-artist">{{ song.singer }}</div>
                 </span>
                 <button class="fav-btn" data-user-id="{{ user_id }}" data-music-id="{{ song.id }}">🤍</button>
