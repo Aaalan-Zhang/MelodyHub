@@ -3,6 +3,11 @@ var playPauseButton = document.getElementById('play-pause-button');
 var progressBar = document.getElementById('progress-bar');
 var currentTimeDisplay = document.getElementById('current-time');
 var totalTimeDisplay = document.getElementById('total-time');
+var volumeControl = document.getElementById('volume-control');
+
+volumeControl.addEventListener('input', function () {
+    audioPlayer.volume = volumeControl.value;
+});
 
 // Update the progress bar and time display every time the audio time updates
 audioPlayer.addEventListener('timeupdate', function () {
@@ -41,3 +46,4 @@ playPauseButton.addEventListener('click', function () {
     }
 });
 progressBar.value = 0;
+volumeControl.value = 1;

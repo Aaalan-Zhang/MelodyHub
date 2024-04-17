@@ -304,6 +304,7 @@ form {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-bottom: 5px;
 }
 
 #play-pause-button {
@@ -327,7 +328,7 @@ form {
 }
 
 #progress-bar {
-    width: 60%;
+    width: 30%;
     height: 4px;
     border-radius: 5px;
     margin-right: 10px;
@@ -354,6 +355,57 @@ form {
     border-radius: 50%;
     background: #007BFF;
     cursor: pointer;
+}
+
+#volume-control {
+    width: 5%;
+    height: 4px;
+    border-radius: 5px;
+    margin-right: 10px;
+    background: #ddd;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+}
+
+#volume-control::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #007BFF;
+    cursor: pointer;
+}
+
+#volume-control::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #007BFF;
+    cursor: pointer;
+}
+
+#music-time {
+    font-size: 1em;
+    font-family: Comfortaa, cursive;
+    color: rgba(0, 0, 0, 0.8);
+    margin-right: 10px;
+}
+
+#volume-icon {
+    font-size: 1.8em;
+    margin-right: 5px;
+}
+
+#music-cover {
+    width: 70px;
+    height: 100%;
+    object-fit: contain;
+    margin-bottom: 5px;
+    padding: 5px;
+    border-radius: 10%;
 }
 
 .music-card {
