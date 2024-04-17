@@ -137,6 +137,10 @@ function processParticipantSync(syncSocket) {
                         audio.load();
                         audio.play();
                         audio.pause();
+
+                        audio.load();
+                        audio.play();
+                        audio.pause();
                         // document.getElementById('music-info').innerHTML = `Now Streaming: ${cur_name}`;
                         // wait for 1 or 2 seconds to let the audio load
                         // display a message
