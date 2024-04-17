@@ -63,31 +63,30 @@ $(document).ready(function() {
                         musicCard.append(musicInfo);
                         // console.log(document.querySelectorAll('#play-btn')[0].data-src);
                         $('#search-results').append(musicCard);
+                    });
+                    var playButtons = document.querySelectorAll('#play-btn');
 
-                        var playButtons = document.querySelectorAll('#play-btn');
-                        var favButtons = document.querySelectorAll('#fav-btn');
-
-                        playButtons.forEach(btn => {
-                            // console.log('play button');
-                            btn.addEventListener("click", function(event) {
-                                var newSrc = btn.getAttribute('data-src');
-                                // console.log(newSrc);
-                                $('#music-bar').attr('src', newSrc);
-                                $('#music-bar')[0].load();
-                                // document.getElementById('music-info').innerHTML = `Now Streaming: ${song.name}`;
-                                $('#music-bar')[0].play();
-                            });
+                    playButtons.forEach(btn => {
+                        // console.log('play button');
+                        btn.addEventListener("click", function(event) {
+                            var newSrc = btn.getAttribute('data-src');
+                            // console.log(newSrc);
+                            $('#music-bar').attr('src', newSrc);
+                            $('#music-bar')[0].load();
+                            // document.getElementById('music-info').innerHTML = `Now Streaming: ${song.name}`;
+                            $('#music-bar')[0].play();
                         });
-                        favButtons.forEach(favBtn => {
-                            const userId = favBtn.dataset.userId;
-                            const musicId = favBtn.dataset.musicId;
-                        
-                            fetchFavoriteStatus(userId, musicId)
-                                .then(data => updateButton(favBtn, data))
-                                .catch(error => console.error(error));
-                        
-                                favBtn.addEventListener('click', () => toggleFavorite(favBtn, userId, musicId));
-                        });
+                    });
+                    var favButtons = document.querySelectorAll('#fav-btn');
+                    favButtons.forEach(favBtn => {
+                        const userId = favBtn.dataset.userId;
+                        const musicId = favBtn.dataset.musicId;
+                    
+                        fetchFavoriteStatus(userId, musicId)
+                            .then(data => updateButton(favBtn, data))
+                            .catch(error => console.error(error));
+                    
+                            favBtn.addEventListener('click', () => toggleFavorite(favBtn, userId, musicId));
                     });
                     if (data.length === 0) {
                         $('#search-results').append("No Search Results Found.");
