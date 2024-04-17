@@ -59,7 +59,7 @@ def update_favorites(request):
         action = request.POST.get("action")
 
         music = Music.objects.get(id=music_id)
-        uploader_profile = music.uploader_profile
+        uploader_profile = music.user.profile
 
         if action == "increment":
             uploader_profile.total_favorites += 1
@@ -255,7 +255,7 @@ def my_profile(request):
             music_file = request.FILES.get("file")
             audio = MP3(music_file)
             music.length = int(audio.info.length)
-            music.uploader_profile = user_profile
+            music.user.profile = user_profile
             music.save()
             music_upload_form = MusicUploadForm()
     else:
@@ -355,7 +355,7 @@ def upload_music(request):
             music_file = request.FILES.get("file")
             audio = MP3(music_file)
             music.length = int(audio.info.length)
-            music.uploader_profile = user_profile
+            music.user.profile = user_profile
             music.save()
             music_upload_form = MusicUploadForm()
         profile_form = ProfileForm(instance=user_profile)
