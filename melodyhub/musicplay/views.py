@@ -392,17 +392,37 @@ def get_playlist_musics(playlist_id):
 
 
 @login_required
-def playlist_detail(request, playlist_id):
-    playlist = get_object_or_404(Playlist, id=playlist_id)
-    musics = get_playlist_musics(playlist_id)
-    request.session["title"] = "Playlist"
+def favorite_playlist(request):
+    request.session["title"] = "Favorite Playlist"
     favorite_playlist, recent_playlist = get_playlists(request)
-
+    request.session["title"] = "Playlist"
+    musics = get_playlist_musics(favorite_playlist.id)
+    
     return render(
         request,
         "musicplay/playlist_detail.html",
         {
-            "playlist": playlist,
+            "playlist": favorite_playlist,
+            "musics": musics,
+            "user_id": request.user.id,
+            "favorite_playlist": favorite_playlist,
+            "recent_playlist": recent_playlist,
+        },
+    )
+
+
+@login_required
+def recent_playlist(request):
+    request.session["title"] = "Recent Playlist"
+    favorite_playlist, recent_playlist = get_playlists(request)
+    request.session["title"] = "Playlist"
+    musics = get_playlist_musics(recent_playlist.id)
+    
+    return render(
+        request,
+        "musicplay/playlist_detail.html",
+        {
+            "playlist": recent_playlist,
             "musics": musics,
             "user_id": request.user.id,
             "favorite_playlist": favorite_playlist,
@@ -415,24 +435,6 @@ def playlist_detail(request, playlist_id):
 def music_detail(request, song_id):
     music = get_object_or_404(Music, pk=song_id)
     favorite_playlist, recent_playlist = get_playlists(request)
-
-    favorite_playlist, created_fav = Playlist.objects.get_or_create(
-        user=request.user,
-        is_favorites=True,
-        defaults={
-            "name": "My Favorites",
-            "description": "Your favorite musics.",
-        },
-    )
-
-    recent_playlist, created_rec = Playlist.objects.get_or_create(
-        user=request.user,
-        is_recent=True,
-        defaults={
-            "name": "Recent",
-            "description": "Recently played musics.",
-        },
-    )
 
     if request.user == music.user:
         if request.method == "POST":

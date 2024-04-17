@@ -21,9 +21,9 @@
             <!-- {{ request.session.title }}  -->
             <a href="{% url 'musicplay:home' %}" class="btn btn-dark" role="button">Home</a>
             <a href="{% url 'musicplay:listen_together' %}" class="btn btn-dark" role="button">ListenTogether</a>
-            <a href="{% url 'musicplay:playlist_detail' favorite_playlist.id %}" class="btn btn-dark">
+            <a href="{% url 'musicplay:favorite_playlist' %}" class="btn btn-dark">
                 Favorite Songs</a>
-            <a href="{% url 'musicplay:playlist_detail' recent_playlist.id %}" class="btn btn-dark">Recently
+            <a href="{% url 'musicplay:recent_playlist' %}" class="btn btn-dark">Recently
                 Played Songs</a>
         </div>
 
