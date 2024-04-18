@@ -65,8 +65,9 @@ def update_favorites(request):
             uploader_profile.total_favorites += 1
             music.favorites_count += 1
         elif action == "decrement":
-            uploader_profile.total_favorites -= 1
-            music.favorites_count -= 1
+            if uploader_profile.total_favorites > 0:
+                uploader_profile.total_favorites -= 1
+                music.favorites_count -= 1
 
         favorite_playlist, created_fav = Playlist.objects.get_or_create(
             user=request.user,
