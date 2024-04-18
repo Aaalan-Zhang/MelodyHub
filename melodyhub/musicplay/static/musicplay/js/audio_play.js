@@ -9,7 +9,7 @@ document.querySelectorAll('.play-btn').forEach(btn => {
         currentSong.textContent = this.parentElement.parentElement.querySelector('.music-title').textContent + ' - ' + this.parentElement.parentElement.querySelector('.music-artist').textContent;
         musicCover.src = this.dataset.cover;
         audioPlayer.play();
-        playPauseButton.classList.remove('play');
+        // playPauseButton.classList.remove('play');
         playPauseButton.classList.add('pause');
         playStatusBar.style.display = 'block';
 

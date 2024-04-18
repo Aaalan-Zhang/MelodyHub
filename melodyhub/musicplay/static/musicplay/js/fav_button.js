@@ -14,7 +14,7 @@ favButtons.forEach(btn => {
 });
 
 async function fetchFavoriteStatus(userId, musicId) {
-    console.log(userId, musicId)
+    // console.log(userId, musicId)
     const response = await fetch(`/get_favorite_status/?user_id=${userId}&music_id=${musicId}`);
     if (!response.ok) throw new Error('Failed to fetch favorite status');
     return await response.json();
