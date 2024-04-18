@@ -299,15 +299,15 @@ form {
     -webkit-animation-direction: alternate;
     animation-direction: alternate;
     display: none;
-    font-size: 1em;
+    font-size: 1vw;
     font-family: Comfortaa, cursive;
 }
 
 .play-status-bar p {
     margin-top: 5px;
-    font-size: 1.2em;
+    font-size: 1.2vw;
     font-family: Comfortaa, cursive;
-    line-height: 1em;
+    line-height: 1vw;
     margin-bottom: -20px;
     color: rgba(0, 0, 0, 0.8);
     /* mix-blend-mode: difference; */
