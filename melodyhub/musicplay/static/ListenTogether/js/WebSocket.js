@@ -1,6 +1,8 @@
 const syncScheme = window.location.protocol === "https:" ? "wss" : "ws";
 const syncSocket = new WebSocket(`${syncScheme}://${window.location.host}/ws${window.location.pathname}`);
 var userName = "";
+var hostTime;
+var hostSrc;
 
 document.addEventListener('DOMContentLoaded', () => {
     userName = document.getElementById('user-name').value;
@@ -86,14 +88,19 @@ function processHostSync() {
 
 function startListening(element) {
         if (element.innerHTML === "Start Listening") {
+            element.innerHTML = "Stop Listening";
             // processParticipantSync(syncSocket);
             syncSocket.send(JSON.stringify(
                 { 'msg_type' : 'sync_music_request_from_participant', 'msg_content': ''}
             ));
             // document.getElementById('music-bar').muted = false;
-            element.innerHTML = "Stop Listening";
+
         } else if (element.innerHTML === "Stop Listening") {
-            document.getElementById('music-bar').pause()
+            // document.getElementById('music-bar').muted = true;
+            // syncSocket.send(JSON.stringify(
+            //     { 'msg_type' : 'sync_music_request_from_participant', 'msg_content': ''}
+            // ));
+            document.getElementById('music-bar').muted = true;
             element.innerHTML = "Start Listening"; 
         }
 }
@@ -104,6 +111,10 @@ function sendMessage(element) {
     syncSocket.send(JSON.stringify(
         { 'msg_type' : 'sync_chat_request', 'msg_content': `${userName}: ` + message}
     ));
+
+}
+
+function outOfSyncMsg() {
 
 }
 
@@ -120,52 +131,70 @@ function processParticipantSync(syncSocket) {
         let cur_playing_source = audio.getAttribute('src');
         let cur_playing_name = audio.getAttribute('cur-name');
 
+
+
         switch (msg_type) {
             case 'sync_music_response_from_host':
                 const { volume, is_paused, cur_time, cur_src, cur_name } = msg_content;
-                if (is_paused || document.getElementById('participantCtrl').innerHTML === "Start Listening") {
-                    console.log('changing source');
-                    audio.setAttribute('src', cur_src + '#t=' + cur_time);
+                console.log("real cur time", cur_time)
+                hostTime = cur_time;
+                if (document.getElementById('participantCtrl').innerHTML === "Start Listening") {
+                    audio.setAttribute('src', cur_src);
                     audio.load();
                     audio.muted = true;
-                    audio.play();
-                    setTimeout(function() {
-                        audio.pause();  // Pause the audio after 10 milliseconds
-                    }, 10);
+                    audio.currentTime = cur_time;
+                    document.getElementById('participantCtrl').innerHTML === "Syncing..."
+                    if (audio.currentTime !== cur_time) {
+                        audio.currentTime = cur_time;
+                    }
+                    document.getElementById('participantCtrl').innerHTML === "Start Listening"
+
+                    // audio.play();
                 } else {          
                     if (cur_playing_source !== cur_src) {
                         console.log('changing source');
-                        audio.setAttribute('src', cur_src + '#t=' + cur_time);
+                        audio.setAttribute('src', cur_src);
                         audio.load();
-                        audio.play();
-                        audio.pause();
 
-                        audio.load();
-                        audio.play();
-                        audio.pause();
+                        // audio.oncanplaythrough = function() {
+                        console.log("play")
+                        audio.currentTime = cur_time;
+                        // console.log("Can play through audio without stopping");
+                        audio.muted = false;
+                        audio.volume = volume; 
+                        // };
+                        if (is_paused) {
+                            audio.pause();
+                        } else {
+                            audio.play();
+                        }
+ 
+                        // setTimeout(function() {
+                        //     audio.pause();  // Pause the audio after 10 milliseconds
+                        // }, 200);
                         // document.getElementById('music-info').innerHTML = `Now Streaming: ${cur_name}`;
                         // wait for 1 or 2 seconds to let the audio load
                         // display a message
+ 
+                    } else {
+
+                        audio.currentTime = cur_time;
+                        // audio.load();
+                        // console.log("Can play through audio without stopping");
                         audio.muted = false;
                         audio.volume = volume;
-                        audio.currentTime = cur_time;
-                        audio.play();    
-                    } else {
-                        audio.setAttribute('src', cur_src + '#t=' + cur_time);
-                        audio.load();
-                        audio.play();
-                        audio.pause();
+                        if (is_paused) {
+                            audio.pause();
+                        } else {
+                            audio.play();
+                        } 
                         // audio.setAttribute('src', cur_src + '#t=' + cur_time);
                         // audio.load();
                         // audio.on('canplaythrough', () => {
-
-                        audio.muted = false;
-                        audio.volume = volume;
-                        audio.currentTime = cur_time;
-                        audio.play();    
                         // });
                     }
                 }
+                console.log("audio", audio.currentTime);
                 break;
             case 'sync_chat_request':
                 // if (msg_content.includes("joined")) {
@@ -175,7 +204,7 @@ function processParticipantSync(syncSocket) {
                 // }
                 break;
             case 'active_connections':
-                document.getElementById('active-users').innerHTML = msg_content;
+                // document.getElementById('active-users').innerHTML = msg_content;
                 break;
         }
     };
