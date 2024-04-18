@@ -22,6 +22,7 @@ class ProfileForm(forms.ModelForm):
                 "placeholder": "Write something about yourself...",
                 "rows": "2",
                 "cols": "45",
+                "style": "resize: none;"
             }
         ),
         required=False,
@@ -39,6 +40,7 @@ class MusicUploadForm(forms.ModelForm):
                 "placeholder": "Write something about this music...",
                 "rows": "3",
                 "cols": "50",
+                "style": "resize: none;"
             }
         ),
         required=False,
