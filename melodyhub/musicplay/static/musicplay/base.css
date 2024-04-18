@@ -301,6 +301,8 @@ form {
     display: none;
     font-size: 1vw;
     font-family: Comfortaa, cursive;
+    z-index: 999;
+
 }
 
 .play-status-bar p {
