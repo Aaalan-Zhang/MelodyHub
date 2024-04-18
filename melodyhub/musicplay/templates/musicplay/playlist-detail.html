@@ -23,11 +23,10 @@
                 </h5>
             </div>
             <div>
-                <button class="fav-btn" data-user-id="{{ user_id }}" data-music-id="{{ song.id }}"
-                    style="width: 50px; height: 50px; border-radius: 4px; margin-right: 10px;">🤍</button>
-                <button class="play-btn" data-src="{{ song.file.url }}" data-user-id="{{ user_id }}"
-                    data-music-id="{{ song.id }}" data-cover="{{ song.image.url }}"
-                    style="width: 50px; height: 50px; border-radius: 4px;">▶</button>
+                <button class="fav-btn rectangle-button" data-user-id="{{ user_id }}" data-music-id="{{ song.id }}"
+                    style="margin-right: 10px;">🤍</button>
+                <button class="play-btn rectangle-button" data-src="{{ song.file.url }}" data-user-id="{{ user_id }}"
+                    data-music-id="{{ song.id }}" data-cover="{{ song.image.url }}">▶</button>
             </div>
         </div>
     </div>
