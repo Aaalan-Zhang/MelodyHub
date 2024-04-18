@@ -5,8 +5,19 @@ var currentTimeDisplay = document.getElementById('current-time');
 var totalTimeDisplay = document.getElementById('total-time');
 var volumeControl = document.getElementById('volume-control');
 
+// Load volume level from localStorage
+var savedVolume = localStorage.getItem('volume');
+if (savedVolume) {
+    audioPlayer.volume = savedVolume;
+    volumeControl.value = savedVolume;
+} else {
+    audioPlayer.volume = 1;
+    volumeControl.value = 1;
+}
+
 volumeControl.addEventListener('input', function () {
     audioPlayer.volume = volumeControl.value;
+    localStorage.setItem('volume', volumeControl.value);
 });
 
 // Update the progress bar and time display every time the audio time updates
@@ -46,4 +57,3 @@ playPauseButton.addEventListener('click', function () {
     }
 });
 progressBar.value = 0;
-volumeControl.value = 1;
