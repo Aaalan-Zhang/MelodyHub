@@ -15,17 +15,19 @@
         <div class="d-flex justify-content-between align-items-center custom-flex">
             <div class="d-flex">
                 <img src="{{ song.image.url }}" alt="Music image" style="height: 80px; width: 80px;">
-                <h5 class="mb-1 music-title" style="margin-left: 10px;">
-                    <a href="{% url 'musicplay:music_detail' song.id %}" style="color: black;">{{ song.name }}</a>
+                <h5 class="mb-1" style="margin-left: 10px;">
+                    <a class="music-title" href="{% url 'musicplay:music_detail' song.id %}" style="color: black;">
+                        {{ song.name }}</a>
                     <small class="ml-2 music-artist">{{ song.singer }}</small>
                     <div><small>{{ song.description }}</small></div>
                 </h5>
             </div>
             <div>
                 <button class="fav-btn" data-user-id="{{ user_id }}" data-music-id="{{ song.id }}"
-                        style="width: 50px; height: 50px; border-radius: 4px; margin-right: 10px;">🤍</button>
+                    style="width: 50px; height: 50px; border-radius: 4px; margin-right: 10px;">🤍</button>
                 <button class="play-btn" data-src="{{ song.file.url }}" data-user-id="{{ user_id }}"
-                        data-music-id="{{ song.id }}" style="width: 50px; height: 50px; border-radius: 4px;">▶</button>
+                    data-music-id="{{ song.id }}" data-cover="{{ song.image.url }}"
+                    style="width: 50px; height: 50px; border-radius: 4px;">▶</button>
             </div>
         </div>
     </div>
@@ -43,41 +45,19 @@
     <p>Now Playing: <span id="currentSong">Song Name - Artist</span></p>
     <audio id="audio-player" controls style="display: none;"></audio>
 
-    <div id="custom-controls">
+    <div class="custom-controls" id="custom-controls">
+        <img id="music-cover" src="" alt="Music cover">
         <button id="play-pause-button" class="play"></button>
         <input id="progress-bar" type="range" min="0" max="100" value="0">
-        <span id="current-time">00:00</span> / <span id="total-time">00:00</span>
+        <div id="music-time"><span id="current-time">00:00</span> / <span id="total-time">00:00</span></div>
+        <div id="volume-icon" class="volume-on">🔊</div>
+        <input id="volume-control" type="range" min="0" max="1" step="0.01" value="1">
     </div>
 </div>
 
 {% load static %}
 <script src="{% static 'musicplay/js/fav_button.js' %}"></script>
 <script src="{% static 'musicplay/js/play_status_bar.js' %}"></script>
-
-<script>
-    document.querySelectorAll('.play-btn').forEach(btn => {
-    btn.addEventListener('click', function () {
-        var audioPlayer = document.getElementById('audio-player');
-        var currentSong = document.getElementById('currentSong');
-        var playStatusBar = document.getElementById('play-status-bar');
-        var playPauseButton = document.querySelector('.play');
-        audioPlayer.src = this.dataset.src;
-        currentSong.textContent = this.parentElement.parentElement.querySelector('.music-title').textContent + ' - ' + this.parentElement.parentElement.querySelector('.music-artist').textContent;
-        audioPlayer.play();
-        playPauseButton.classList.remove('play');
-        playPauseButton.classList.add('pause');
-        playStatusBar.style.display = 'block';
-
-        fetch('/update_played_musics/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'X-CSRFToken': getCookie('csrftoken')
-            },
-            body: `user_id=${this.dataset.userId}&music_id=${this.dataset.musicId}`
-        });
-    });
-});
-</script>
+<script src="{% static 'musicplay/js/audio_play.js' %}"></script>
 
 {% endblock %}

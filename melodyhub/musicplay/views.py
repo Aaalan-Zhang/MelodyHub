@@ -399,7 +399,7 @@ def favorite_playlist(request):
     
     return render(
         request,
-        "musicplay/playlist_detail.html",
+        "musicplay/playlist-detail.html",
         {
             "playlist": favorite_playlist,
             "musics": musics,
@@ -419,7 +419,7 @@ def recent_playlist(request):
     
     return render(
         request,
-        "musicplay/playlist_detail.html",
+        "musicplay/playlist-detail.html",
         {
             "playlist": recent_playlist,
             "musics": musics,
@@ -454,7 +454,7 @@ def music_detail(request, song_id):
         "uploader": music.user,
     }
 
-    return render(request, "musicplay/music_detail.html", context)
+    return render(request, "musicplay/music-detail.html", context)
 
 
 @login_required

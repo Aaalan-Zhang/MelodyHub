@@ -6,7 +6,7 @@ document.querySelectorAll('.play-btn').forEach(btn => {
         var playPauseButton = document.querySelector('.play');
         var musicCover = document.getElementById('music-cover');
         audioPlayer.src = this.dataset.src;
-        currentSong.textContent = this.parentElement.querySelector('.music-title').textContent + ' - ' + this.parentElement.querySelector('.music-artist').textContent;
+        currentSong.textContent = this.parentElement.parentElement.querySelector('.music-title').textContent + ' - ' + this.parentElement.parentElement.querySelector('.music-artist').textContent;
         musicCover.src = this.dataset.cover;
         audioPlayer.play();
         playPauseButton.classList.remove('play');
