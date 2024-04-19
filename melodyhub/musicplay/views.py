@@ -46,13 +46,16 @@ def get_favorite_status(request):
 
 def update_playlist(playlist, music, is_add):
     if is_add:
-        if not PlaylistMusic.objects.filter(playlist=playlist, music=music).exists():
+        if not PlaylistMusic.objects.filter(
+                playlist=playlist, music=music).exists():
             playlist.musics.add(music)
             PlaylistMusic.objects.create(playlist=playlist, music=music)
     else:
-        if PlaylistMusic.objects.filter(playlist=playlist, music=music).exists():
+        if PlaylistMusic.objects.filter(
+                playlist=playlist, music=music).exists():
             playlist.musics.remove(music)
-            PlaylistMusic.objects.filter(playlist=playlist, music=music).delete()
+            PlaylistMusic.objects.filter(
+                playlist=playlist, music=music).delete()
 
 
 @csrf_exempt
@@ -68,10 +71,13 @@ def update_favorites(request):
             uploader_profile.total_favorites += 1
             music.favorites_count += 1
         elif action == "decrement":
-            if uploader_profile.total_favorites > 0:
-                uploader_profile.total_favorites -= 1
-            if music.favorites_count > 0:
-                music.favorites_count -= 1
+            uploader_profile.total_favorites -= 1
+            music.favorites_count -= 1
+
+        if uploader_profile.total_favorites < 0:
+            uploader_profile.total_favorites = 0
+        if music.favorites_count < 0:
+            music.favorites_count = 0
 
         favorite_playlist, created_fav = Playlist.objects.get_or_create(
             user=request.user,
@@ -111,6 +117,7 @@ def update_played_musics(request):
         return JsonResponse({"status": "ok"})
     else:
         return JsonResponse({"status": "error"})
+
 
 @transaction.atomic
 def register(request):
@@ -163,24 +170,24 @@ def log_in(request):
         try:
             login(request, user)
             return redirect(reverse("musicplay:home"))
-        except:
+        except BaseException:
             form = UserCreationForm()
             context = {
                 "form": form,
                 "error": "Username or Password is incorrect. Please try again.",
             }
             return render(request, "login/login.html", context)
-        
+
 
 def get_playlists(request):
     favorite_playlist, created_fav = Playlist.objects.get_or_create(
-            user=request.user,
-            is_favorites=True,
-            defaults={
-                "name": "My Favorites",
-                "description": "Your favorite musics.",
-            },
-        )
+        user=request.user,
+        is_favorites=True,
+        defaults={
+            "name": "My Favorites",
+            "description": "Your favorite musics.",
+        },
+    )
 
     recent_playlist, created_rec = Playlist.objects.get_or_create(
         user=request.user,
@@ -199,8 +206,9 @@ def main_action(request):
     try:
         google_auth = request.user.social_auth.get(provider="google-oauth2")
         request.session["picture"] = google_auth.extra_data.get("picture", "")
-    except:
-        user_profile_img = get_object_or_404(UserProfile, user=request.user).avatar.url
+    except BaseException:
+        user_profile_img = get_object_or_404(
+            UserProfile, user=request.user).avatar.url
         request.session["picture"] = user_profile_img
 
     user = request.user
@@ -228,7 +236,8 @@ def main_action(request):
 
 @login_required
 def my_profile(request):
-    user_profile, created = UserProfile.objects.get_or_create(user=request.user)
+    user_profile, created = UserProfile.objects.get_or_create(
+        user=request.user)
     musics = Music.objects.filter(user=request.user).order_by("-upload_time")
     request.session["title"] = "My Profile"
     favorite_playlist, recent_playlist = get_playlists(request)
@@ -252,13 +261,17 @@ def my_profile(request):
     )
 
     if request.method == "POST":
-        profile_form = ProfileForm(request.POST, request.FILES, instance=user_profile)
+        profile_form = ProfileForm(
+            request.POST,
+            request.FILES,
+            instance=user_profile)
         if profile_form.is_valid():
             profile_form.save()
             profile_form = ProfileForm(instance=user_profile)
 
         music = Music(user=request.user, upload_time=timezone.now())
-        music_upload_form = MusicUploadForm(request.POST, request.FILES, instance=music)
+        music_upload_form = MusicUploadForm(
+            request.POST, request.FILES, instance=music)
         if music_upload_form.is_valid():
             music_upload_form.save()
             music_file = request.FILES.get("file")
@@ -287,7 +300,8 @@ def my_profile(request):
 
 @login_required
 def update_profile(request):
-    user_profile, created = UserProfile.objects.get_or_create(user=request.user)
+    user_profile, created = UserProfile.objects.get_or_create(
+        user=request.user)
     musics = Music.objects.filter(user=request.user).order_by("-upload_time")
     request.session["title"] = "My Profile"
     favorite_playlist, recent_playlist = get_playlists(request)
@@ -311,7 +325,10 @@ def update_profile(request):
     )
 
     if request.method == "POST":
-        profile_form = ProfileForm(request.POST, request.FILES, instance=user_profile)
+        profile_form = ProfileForm(
+            request.POST,
+            request.FILES,
+            instance=user_profile)
         if profile_form.is_valid():
             profile_form.save()
             profile_form = ProfileForm(instance=user_profile)
@@ -333,7 +350,8 @@ def update_profile(request):
 
 @login_required
 def upload_music(request):
-    user_profile, created = UserProfile.objects.get_or_create(user=request.user)
+    user_profile, created = UserProfile.objects.get_or_create(
+        user=request.user)
     musics = Music.objects.filter(user=request.user).order_by("-upload_time")
     request.session["title"] = "My Profile"
     favorite_playlist, recent_playlist = get_playlists(request)
@@ -358,7 +376,8 @@ def upload_music(request):
 
     if request.method == "POST":
         music = Music(user=request.user, upload_time=timezone.now())
-        music_upload_form = MusicUploadForm(request.POST, request.FILES, instance=music)
+        music_upload_form = MusicUploadForm(
+            request.POST, request.FILES, instance=music)
         if music_upload_form.is_valid():
             music_upload_form.save()
             music_file = request.FILES.get("file")
@@ -393,9 +412,8 @@ def delete_music(request, song_id):
 
 
 def get_playlist_musics(playlist_id):
-    playlist_musics = PlaylistMusic.objects.filter(playlist_id=playlist_id).order_by(
-        "-added_at"
-    )
+    playlist_musics = PlaylistMusic.objects.filter(
+        playlist_id=playlist_id).order_by("-added_at")
     musics = [pm.music for pm in playlist_musics]
     return musics
 
@@ -406,7 +424,7 @@ def favorite_playlist(request):
     favorite_playlist, recent_playlist = get_playlists(request)
     request.session["title"] = "Playlist"
     musics = get_playlist_musics(favorite_playlist.id)
-    
+
     return render(
         request,
         "musicplay/playlist-detail.html",
@@ -426,7 +444,7 @@ def recent_playlist(request):
     favorite_playlist, recent_playlist = get_playlists(request)
     request.session["title"] = "Playlist"
     musics = get_playlist_musics(recent_playlist.id)
-    
+
     return render(
         request,
         "musicplay/playlist-detail.html",
@@ -470,7 +488,8 @@ def music_detail(request, song_id):
 @login_required
 def listen_together(request):
     request.session["title"] = "ListenTogether"
-    myListenTogetherRooms = ListenTogetherRoom.objects.filter(creator=request.user)
+    myListenTogetherRooms = ListenTogetherRoom.objects.filter(
+        creator=request.user)
     hasRoom = len(myListenTogetherRooms) >= 1
     everyRoom = ListenTogetherRoom.objects.all()
     favorite_playlist, recent_playlist = get_playlists(request)
@@ -486,14 +505,14 @@ def listen_together(request):
             link = hash[:16]
 
             newRoom = ListenTogetherRoom(
-                name=form.cleaned_data["name"], room_id=link, creator=request.user
-            )
+                name=form.cleaned_data["name"],
+                room_id=link,
+                creator=request.user)
             newRoom.save()
             return redirect(reverse("musicplay:inside_room", args=[link]))
         else:
             context = {"form": form, "error": "error"}
             return render(request, "ListenTogether/create.html", context)
-
 
     context = {
         "form": CreateRoomForm(),
@@ -532,7 +551,8 @@ def rooms_json(request):
 @login_required
 def lt_search(request):
     query = request.GET.get("q", "")
-    music_tracks = Music.objects.filter(name__icontains=query).order_by("-upload_time")
+    music_tracks = Music.objects.filter(
+        name__icontains=query).order_by("-upload_time")
     data = [
         {
             "user_id": request.user.id,  # instead of track.user.id
@@ -549,6 +569,7 @@ def lt_search(request):
         for track in music_tracks
     ]
     return JsonResponse(data, safe=False)
+
 
 @login_required
 def get_all_songs(request):
