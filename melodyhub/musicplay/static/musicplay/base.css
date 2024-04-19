@@ -170,7 +170,7 @@ form {
 }
 
 .search-bar {
-    width: 85%;
+    width: 100%;
     /* reduce width to make room for button */
     padding: 10px;
     border-radius: 5px;

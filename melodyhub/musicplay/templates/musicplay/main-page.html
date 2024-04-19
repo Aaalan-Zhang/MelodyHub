@@ -5,34 +5,13 @@
     <h1>Welcome to MelodyHub</h1>
 </div>
 <div class="container">
-    <form method="GET" action=".">
+    <div id="search-section">
         <div class="search-container">
-            <input type="text" name="q" class="search-bar" placeholder="Search Music...">
-            <button type="submit" class="search-button">Search</button>
+            <input type="text" name="q" class="search-bar" id="search-input" placeholder="Search Music...">
         </div>
-    </form>
-
-    <h4>All Songs</h4>
-    <br>
-
-    <div class="music-list">
-        {% for song in songs %}
-        <div class="music-card">
-            <img src="{{ song.image.url }}" alt="Music image">
-            <div class="music-info">
-                <span class="music-details">
-                    <a href="{% url 'musicplay:music_detail' song.id %}">
-                        <div class="music-title">{{ song.name }}</div>
-                    </a>
-                    <div class="music-artist">{{ song.singer }}</div>
-                </span>
-                <button class="fav-btn" data-user-id="{{ user_id }}" data-music-id="{{ song.id }}">🤍</button>
-                <button class="play-btn" data-src="{{ song.file.url }}" data-user-id="{{ user_id }}"
-                    data-music-id="{{ song.id }}" data-cover="{{ song.image.url }}">▶</button>
-            </div>
-        </div>
-        {% endfor %}
+        <div class="music-list" id="search-results"></div>
     </div>
+
 
 </div>
 <div class="play-status-bar" id="play-status-bar">
@@ -50,8 +29,7 @@
 </div>
 
 {% load static %}
-<script src="{% static 'musicplay/js/audio_play.js' %}"></script>
-<script src="{% static 'musicplay/js/fav_button.js' %}"></script>
 <script src="{% static 'musicplay/js/play_status_bar.js' %}"></script>
+<script src="{% static 'musicplay/js/search_ajax.js' %}"></script>
 
 {% endblock %}

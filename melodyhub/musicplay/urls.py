@@ -36,4 +36,5 @@ urlpatterns = [
     path('get_favorite_status/', views.get_favorite_status, name='get_favorite_status'),
     path('listentogether/rooms/json/', views.rooms_json, name='rooms_json'),
     path('lt-search/', views.lt_search, name='lt_search'),
+    path('get-all-songs/', views.get_all_songs, name='get_all_songs'),
 ]

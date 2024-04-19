@@ -209,8 +209,9 @@ def main_action(request):
     favorite_playlist, recent_playlist = get_playlists(request)
 
     request.session["title"] = "Main Page"
-    query = request.GET.get("q", "")
-    songs = Music.objects.filter(name__icontains=query).order_by("-upload_time")
+    # query = request.GET.get("q", "")
+    # songs = Music.objects.filter(name__icontains=query).order_by("-upload_time")
+    songs = Music.objects.all().order_by("-upload_time")
     # all_music = Music.objects.all().order_by("-upload_time")
     return render(
         request,
@@ -547,5 +548,24 @@ def lt_search(request):
         }
         for track in music_tracks
     ]
-    # data = list(songs.values('name', 'singer', 'image', 'file', 'upload_time', 'length'))
+    return JsonResponse(data, safe=False)
+
+@login_required
+def get_all_songs(request):
+    songs = Music.objects.all().order_by("-upload_time")
+    data = [
+        {
+            "user_id": request.user.id,  # instead of track.user.id
+            "id": track.id,
+            "name": track.name,
+            "image_url": (
+                track.image.url if track.image else None
+            ),  # Ensure image is handled correctly
+            "singer": track.singer,
+            "file_url": track.file.url,
+            "upload_time": track.upload_time,
+            "length": track.length,
+        }
+        for track in songs
+    ]
     return JsonResponse(data, safe=False)

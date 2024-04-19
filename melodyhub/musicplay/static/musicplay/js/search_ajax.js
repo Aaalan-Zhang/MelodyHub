@@ -34,8 +34,6 @@ function getCookie(name) {
 
 
 $(document).ready(function () {
-    let audio = document.getElementById('music-bar');
-    let isHost = audio.getAttribute('isHost');
     $("#search-input").keyup(function () {
         var query = $(this).val();
         var url = query.length >= 1 ? '/lt-search/' : '/get-all-songs/';
@@ -55,24 +53,35 @@ $(document).ready(function () {
                     musicDetails.append($('<div>', { 'class': 'music-title', 'text': song.name }));
                     musicDetails.append($('<div>', { 'class': 'music-artist', 'text': song.singer }));
                     musicInfo.append(musicDetails);
-                    musicInfo.append($('<button>', { 'class': 'btn btn-dark', 'id': 'fav-btn', 'data-user-id': song.user_id, 'data-music-id': song.id, 'text': 'Like' }));
-                    if (isHost === 'True') {
-                        musicInfo.append('<span> </span>')
-                        musicInfo.append($('<button>', { 'class': "btn btn-dark", 'id': 'play-btn', 'data-src': song.file_url, 'data-name': song.name, 'text': 'Play' }));
-                    }
+                    musicInfo.append($('<button>', { 'class': 'fav-btn', 'data-user-id': song.user_id, 'data-music-id': song.id, 'id': 'fav-btn', 'text': '🤍' }));
+                    musicInfo.append($('<button>', { 'class': 'play-btn', 'data-user-id': song.user_id, 'data-src': song.file_url, 'data-music-id': song.id, 'data-cover': song.image_url, 'id': 'play-btn', 'text': '▶' }));
                     musicCard.append(musicInfo);
                     $('#search-results').append(musicCard);
                 });
-                var playButtons = document.querySelectorAll('#play-btn');
 
-                playButtons.forEach(btn => {
-                    btn.addEventListener("click", function (event) {
-                        var newSrc = btn.getAttribute('data-src');
-                        var newName = btn.getAttribute('data-name');
-                        $('#music-bar').attr('src', newSrc);
-                        $('#music-bar').attr('curName', newName);
-                        $('#music-bar')[0].load();
-                        $('#music-bar')[0].play();
+                document.querySelectorAll('.play-btn').forEach(btn => {
+                    btn.addEventListener('click', function () {
+                        var audioPlayer = document.getElementById('audio-player');
+                        var currentSong = document.getElementById('currentSong');
+                        var playStatusBar = document.getElementById('play-status-bar');
+                        var playPauseButton = document.querySelector('.play');
+                        var musicCover = document.getElementById('music-cover');
+                        audioPlayer.src = this.dataset.src;
+                        currentSong.textContent = this.parentElement.parentElement.querySelector('.music-title').textContent + ' - ' + this.parentElement.parentElement.querySelector('.music-artist').textContent;
+                        musicCover.src = this.dataset.cover;
+                        audioPlayer.play();
+                        // playPauseButton.classList.remove('play');
+                        playPauseButton.classList.add('pause');
+                        playStatusBar.style.display = 'block';
+
+                        fetch('/update_played_musics/', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded',
+                                'X-CSRFToken': getCookie('csrftoken')
+                            },
+                            body: `user_id=${this.dataset.userId}&music_id=${this.dataset.musicId}`
+                        });
                     });
                 });
                 var favButtons = document.querySelectorAll('#fav-btn');
