@@ -16,7 +16,7 @@
             <div class="d-flex">
                 <img src="{{ song.image.url }}" alt="Music image" style="height: 80px; width: 80px;">
                 <h5 class="mb-1" style="margin-left: 10px;">
-                    <a class="music-title" href="{% url 'musicplay:music_detail' song.id %}" style="color: black;">
+                    <a class="music-title" href="{% url 'musicplay:music_detail' song.id %}">
                         {{ song.name }}</a>
                     <small class="ml-2 music-artist">{{ song.singer }}</small>
                     <div><small>{{ song.description }}</small></div>
