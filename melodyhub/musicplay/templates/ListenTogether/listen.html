@@ -26,7 +26,7 @@
             You are hosting {{ room.name }}
             {% endif %}
             {% if not isHost %}
-            You are listening to {{ room.name }} hosted by {{ room.creator }}
+            You are in room {{ room.name }} hosted by {{ room.creator }}
             {% endif %}
             <br><br>
             <!-- <div id="music-info">Now Streaming: Heat Waves</div> -->
@@ -50,11 +50,10 @@
                 <br>
                 <div id="chats"></div>
                 <div>
-                    <input type="text" id="chat-input" style="width: 100%;">
+                    <div><input type="text" id="chat-input" style="width: 100%;"></div>
+                    <div><button type="button" class="btn btn-dark" style="width: 100%;" onclick=sendMessage(this)>Send</button></div>
                 </div>
-                <div>
-                    <button type="button" class="btn btn-dark" style="width: 100%;" onclick=sendMessage(this)>Send</button>
-                </div>
+                <div id="chatErrMsg"></div>
         </div>
     </div>
 </div>

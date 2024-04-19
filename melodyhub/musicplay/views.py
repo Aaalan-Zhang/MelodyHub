@@ -489,11 +489,16 @@ def listen_together(request):
             )
             newRoom.save()
             return redirect(reverse("musicplay:inside_room", args=[link]))
+        else:
+            context = {"form": form, "error": "error"}
+            return render(request, "ListenTogether/create.html", context)
+
 
     context = {
         "form": CreateRoomForm(),
         "hasRoom": hasRoom,
         "rooms": myListenTogetherRooms,
+        "hasRooms": len(everyRoom) > 0,
         "allRooms": everyRoom,
         "favorite_playlist": favorite_playlist,
         "recent_playlist": recent_playlist,

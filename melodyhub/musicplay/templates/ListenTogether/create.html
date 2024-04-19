@@ -33,10 +33,17 @@ setInterval(updateRooms, 3000);
         </form>
     </div>
     {% endif %}
+    <div>
+        {% if form.name.errors %}
+            {% for error in form.name.errors %}
+                <div class="error" style="font-family:Comfortaa,cursive; display: flex; justify-content: center;">{{ error }}</div>
+            {% endfor %}
+        {% endif %}
+    </div>
     <br><br>
     <div class="card" id="room-container" style="width: 60%; height: 80%; margin: 0 auto;">
         All available rooms: <br><br>
-        {% if not allRooms %}
+        {% if not hasRooms %}
             <div id="no-rooms-message">No rooms available</div>
         {% endif %}
         <div id="rooms-list">

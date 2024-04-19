@@ -4,6 +4,22 @@ var userName = "";
 var hostTime;
 var hostSrc;
 
+function escapeHTML(text) {
+    let map = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+    };
+    return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+}
+
+function scrollToBottom() {
+    var div = document.getElementById("chats");
+    div.scrollTop = div.scrollHeight;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     
     userName = document.getElementById('user-name').value;
@@ -77,6 +93,7 @@ function processHostSync() {
             let message = response.msg_content;
             // if (message.includes("joined")) {
             document.getElementById('chats').innerHTML += (message + "<br>");
+            scrollToBottom();
             // } else {
                 // document.getElementById('chats').innerHTML += (message + "<br>");
             // }
@@ -107,12 +124,16 @@ function startListening(element) {
 }
 
 function sendMessage(element) {
-    let message = document.getElementById('chat-input').value;
-    document.getElementById('chat-input').value = "";
-    syncSocket.send(JSON.stringify(
-        { 'msg_type' : 'sync_chat_request', 'msg_content': `${userName}: ` + message}
-    ));
-
+    let message = escapeHTML(document.getElementById('chat-input').value);
+    if ((message === "" ) || (message === null)) {
+        document.getElementById('chatErrMsg').innerHTML = "Illigal or blank input.";
+    } else {
+        document.getElementById('chat-input').value = "";
+        document.getElementById('chatErrMsg').innerHTML = "";
+        syncSocket.send(JSON.stringify(
+            { 'msg_type' : 'sync_chat_request', 'msg_content': `${userName}: ` + message}
+        ));
+    }
 }
 
 // function outOfSyncMsg() {
@@ -210,7 +231,7 @@ function processParticipantSync(syncSocket) {
                     }
                     if (Math.abs(audio.currentTime - hostTime) > 1) {
                         document.getElementById("syncMsg").innerHTML = `Out of sync. You are at ${Math.floor(audio.currentTime)}s. Host is at ${Math.floor(hostTime)}s.`;
-                        document.getElementById("syncInstr").innerHTML = "Click on Stop and Start Listening again to sync.";
+                        document.getElementById("syncInstr").innerHTML = "Click on Stop then Start Listening again to sync.<br>If the problem persists after several tries, refresh the page.";
                     } else {
                         document.getElementById("syncMsg").innerHTML = `You are in sync with the host!`;
                         document.getElementById("syncInstr").innerHTML = "";
