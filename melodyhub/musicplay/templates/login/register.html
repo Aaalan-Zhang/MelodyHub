@@ -33,12 +33,26 @@
 </div>
 
 {% if error %}
-<div style="font-family:Comfortaa,cursive; color: rgb(0, 0, 0); display: flex; justify-content: center;">
-    {{error}}
+<div>
+    {% if form.username.errors %}
+        {% for error in form.username.errors %}
+            <div class="error" style="font-family:Comfortaa,cursive; display: flex; justify-content: center;">{{ error }}</div>
+        {% endfor %}
+    {% endif %}
 </div>
-<div style="font-family:Comfortaa,cursive; display: flex; justify-content: center;">
-        <div>The user name can only contain English characters and numbers without blank spaces.</div>
-        <!-- <div> The password should be at least 8-digit long with uppercase, lowercase letters, numbers, and special characters.</div> -->
+<div>
+    {% if form.password1.errors %}
+        {% for error in form.password1.errors %}
+            <div class="error" style="font-family:Comfortaa,cursive; display: flex; justify-content: center;">{{ error }}</div>
+        {% endfor %}
+    {% endif %}
+</div>
+<div>
+    {% if form.password2.errors %}
+        {% for error in form.password2.errors %}
+            <div class="error" style="font-family:Comfortaa,cursive; display: flex; justify-content: center;">{{ error }}</div>
+        {% endfor %}
+    {% endif %}
 </div>
 {% endif %}
 {% endblock %}

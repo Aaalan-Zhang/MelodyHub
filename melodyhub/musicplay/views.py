@@ -3,9 +3,12 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.utils import timezone
 from mutagen.mp3 import MP3
+from django.db import transaction
+
 
 from melodyhub.settings import MUSICPLAY_USERS, MUSICPLAY_TITLE
 from .models import UserProfile, Music, ListenTogetherRoom, Playlist, PlaylistMusic
+from django.contrib.auth.models import User
 from .forms import ProfileForm, MusicUploadForm, CreateRoomForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login, logout
@@ -109,25 +112,29 @@ def update_played_musics(request):
     else:
         return JsonResponse({"status": "error"})
 
-
+@transaction.atomic
 def register(request):
     if request.method == "GET":
         context = {"form": UserCreationForm()}
         return render(request, "login/register.html", context)
     form = UserCreationForm(request.POST)
     try:
-        new_user = form.save()
+        if form.is_valid():
+            new_user = form.save()
 
-        new_user = authenticate(
-            username=form.cleaned_data["username"],
-            password=form.cleaned_data["password1"],
-        )
-        login(request, new_user)
+            new_user = authenticate(
+                username=form.cleaned_data["username"],
+                password=form.cleaned_data["password1"],
+            )
+            login(request, new_user)
 
-        profile = UserProfile(user=new_user)
-        profile.save()
+            profile = UserProfile(user=new_user)
+            profile.save()
 
-        return redirect(reverse("musicplay:home"))
+            return redirect(reverse("musicplay:home"))
+        else:
+            context = {"form": form, "error": "error"}
+            return render(request, "login/register.html", context)
     except Exception as e:
         context = {"form": form, "error": e}
         return render(request, "login/register.html", context)
