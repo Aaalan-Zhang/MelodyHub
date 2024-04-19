@@ -23,9 +23,9 @@
                 </h5>
             </div>
             <div>
-                <button class="fav-btn rectangle-button" data-user-id="{{ user_id }}" data-music-id="{{ song.id }}"
+                <button id="fav-btn" class="fav-btn" data-user-id="{{ user_id }}" data-music-id="{{ song.id }}"
                     style="margin-right: 10px;">🤍</button>
-                <button class="play-btn rectangle-button" data-src="{{ song.file.url }}" data-user-id="{{ user_id }}"
+                <button id="play-btn" class="play-btn" data-src="{{ song.file.url }}" data-user-id="{{ user_id }}"
                     data-music-id="{{ song.id }}" data-cover="{{ song.image.url }}">▶</button>
             </div>
         </div>
@@ -56,5 +56,6 @@
 
 {% load static %}
 <script src="{% static 'musicplay/js/play_status_bar.js' %}"></script>
-<script src="{% static 'musicplay/js/search_ajax.js' %}"></script>
+<script src="{% static 'musicplay/js/fav_button.js' %}"></script>
+<script src="{% static 'musicplay/js/audio_play.js' %}"></script>
 {% endblock %}
