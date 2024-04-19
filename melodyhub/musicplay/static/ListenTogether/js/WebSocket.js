@@ -5,6 +5,7 @@ var hostTime;
 var hostSrc;
 
 document.addEventListener('DOMContentLoaded', () => {
+    
     userName = document.getElementById('user-name').value;
     let audio = document.getElementById('music-bar');
     let isHost = audio.getAttribute('isHost');
@@ -47,7 +48,7 @@ function processHostSync() {
                         'is_paused': audio.paused,
                         'cur_time': audio.currentTime,
                         'cur_src': audio.getAttribute('src'),
-                        // 'cur_name': audio.getAttribute('cur-name'),
+                        'cur_name': audio.getAttribute('curName'),
                     }
                 }
             ));
@@ -67,7 +68,7 @@ function processHostSync() {
                         'is_paused': audio.paused,
                         'cur_time': audio.currentTime,
                         'cur_src': audio.getAttribute('src'),
-                        // 'cur_name': audio.getAttribute('cur-name'),
+                        'cur_name': audio.getAttribute('curName'),
                     }
                 }
             ));
@@ -81,7 +82,7 @@ function processHostSync() {
             // }
         }
         else if (response.msg_type === 'active_connections') {
-            document.getElementById('active-users').innerHTML = response.msg_content;
+            // document.getElementById('active-users').innerHTML = response.msg_content;
         }
     };
 }
@@ -114,9 +115,9 @@ function sendMessage(element) {
 
 }
 
-function outOfSyncMsg() {
+// function outOfSyncMsg() {
 
-}
+// }
 
 function processParticipantSync(syncSocket) {
 	if (syncSocket.readyState === WebSocket.OPEN) {
@@ -129,7 +130,7 @@ function processParticipantSync(syncSocket) {
         const { msg_type, msg_content } = JSON.parse(e.data);
         var audio = document.getElementById('music-bar');
         let cur_playing_source = audio.getAttribute('src');
-        let cur_playing_name = audio.getAttribute('cur-name');
+        // let cur_playing_name = audio.getAttribute('curName');
 
 
 
@@ -138,22 +139,36 @@ function processParticipantSync(syncSocket) {
                 const { volume, is_paused, cur_time, cur_src, cur_name } = msg_content;
                 console.log("real cur time", cur_time)
                 hostTime = cur_time;
+                if (cur_name) {
+                    document.getElementById("audioName").innerHTML = `Host is currently playing ${cur_name}.`;
+                } else {
+                    document.getElementById("audioName").innerHTML = "There is no song playing currently.";
+                }
+                
                 if (document.getElementById('participantCtrl').innerHTML === "Start Listening") {
                     audio.setAttribute('src', cur_src);
+                    audio.setAttribute('curName', cur_name);
                     audio.load();
                     audio.muted = true;
                     audio.currentTime = cur_time;
+                    audio.play();
+                    console.log("background time", audio.currentTime);
                     document.getElementById('participantCtrl').innerHTML === "Syncing..."
-                    if (audio.currentTime !== cur_time) {
-                        audio.currentTime = cur_time;
-                    }
+                    // if (audio.currentTime !== cur_time) {
+                    //     audio.load();
+                    //     audio.currentTime = cur_time;
+                    //     audio.play();
+                    //     console.log("additional loading");
+                    // }
+                    console.log(audio.currentTime);
                     document.getElementById('participantCtrl').innerHTML === "Start Listening"
 
-                    // audio.play();
+
                 } else {          
                     if (cur_playing_source !== cur_src) {
                         console.log('changing source');
                         audio.setAttribute('src', cur_src);
+                        audio.setAttribute('curName', cur_name);
                         audio.load();
 
                         // audio.oncanplaythrough = function() {
@@ -192,6 +207,13 @@ function processParticipantSync(syncSocket) {
                         // audio.load();
                         // audio.on('canplaythrough', () => {
                         // });
+                    }
+                    if (Math.abs(audio.currentTime - hostTime) > 1) {
+                        document.getElementById("syncMsg").innerHTML = `Out of sync. You are at ${Math.floor(audio.currentTime)}s. Host is at ${Math.floor(hostTime)}s.`;
+                        document.getElementById("syncInstr").innerHTML = "Click on Stop and Start Listening again to sync.";
+                    } else {
+                        document.getElementById("syncMsg").innerHTML = `You are in sync with the host!`;
+                        document.getElementById("syncInstr").innerHTML = "";
                     }
                 }
                 console.log("audio", audio.currentTime);

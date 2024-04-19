@@ -33,13 +33,16 @@
             
             <!-- <div id="active-users"></div> -->
             <div>
-                <audio controls controller class="audio audio-control" preload="auto" isHost="{{ isHost }}" id="music-bar" src=""></audio>
+                <audio controls controller class="audio audio-control" preload="auto" isHost="{{ isHost }}" id="music-bar" src="" curName=""></audio>
             </div>
             <br><br>
             {% if not isHost %}
             <button type="button" class="btn btn-dark" onclick=startListening(this) id="participantCtrl">Start Listening</button>
             {% endif %}
         </div>
+        <div id="audioName" style="font-family:Comfortaa,cursive;"></div>
+        <div id="syncMsg" style="font-family:Comfortaa,cursive;"></div>
+        <div id="syncInstr" style="font-family:Comfortaa,cursive;"></div>
     </div>
     <div id="chat-section">
         <div class="card" style="width: 100%; height: 80%; margin: 0 auto;">

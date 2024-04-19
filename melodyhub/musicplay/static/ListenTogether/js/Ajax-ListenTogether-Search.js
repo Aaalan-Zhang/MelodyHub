@@ -58,7 +58,7 @@ $(document).ready(function() {
                         musicInfo.append($('<button>', { 'class': 'btn btn-dark', 'id': 'fav-btn', 'data-user-id': song.user_id, 'data-music-id': song.id, 'text': 'Like' }));
                         if (isHost === 'True') {
                             musicInfo.append('<span> </span>')
-                            musicInfo.append($('<button>', { 'class': "btn btn-dark", 'id': 'play-btn', 'data-src': song.file_url, 'text': 'Play' }));
+                            musicInfo.append($('<button>', { 'class': "btn btn-dark", 'id': 'play-btn', 'data-src': song.file_url, 'data-name': song.name,'text': 'Play' }));
                         }
                         musicCard.append(musicInfo);
                         // console.log(document.querySelectorAll('#play-btn')[0].data-src);
@@ -70,8 +70,11 @@ $(document).ready(function() {
                         // console.log('play button');
                         btn.addEventListener("click", function(event) {
                             var newSrc = btn.getAttribute('data-src');
+                            var newName = btn.getAttribute('data-name');
+                            // console.log(newName)
                             // console.log(newSrc);
                             $('#music-bar').attr('src', newSrc);
+                            $('#music-bar').attr('curName', newName);
                             $('#music-bar')[0].load();
                             // document.getElementById('music-info').innerHTML = `Now Streaming: ${song.name}`;
                             $('#music-bar')[0].play();
