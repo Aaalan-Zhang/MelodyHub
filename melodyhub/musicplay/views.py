@@ -197,13 +197,14 @@ def get_playlists(request):
 
 @login_required
 def main_action(request):
-    try:
-        google_auth = request.user.social_auth.get(provider="google-oauth2")
-        request.session["picture"] = google_auth.extra_data.get("picture", "")
-    except BaseException:
-        user_profile_img = get_object_or_404(
-            UserProfile, user=request.user).avatar.url
-        request.session["picture"] = user_profile_img
+    user_profile_img = get_object_or_404(UserProfile, user=request.user).avatar.url
+    if user_profile_img == "/media/default_avatar/avatar.png":
+        try:
+            google_auth = request.user.social_auth.get(provider="google-oauth2")
+            user_profile_img = google_auth.extra_data.get("picture", "")
+        except BaseException:
+            pass
+    request.session["picture"] = user_profile_img 
 
     favorite_playlist, recent_playlist = get_playlists(request)
     request.session["title"] = "Main Page"
