@@ -224,35 +224,6 @@ def main_action(request):
             "user_id": request.user.id,  # added for AJAX
         },
     )
-    # try:
-    #     google_auth = request.user.social_auth.get(provider="google-oauth2")
-    #     request.session["picture"] = google_auth.extra_data.get("picture", "")
-    # except BaseException:
-    #     user_profile_img = get_object_or_404(
-    #         UserProfile, user=request.user).avatar.url
-    #     request.session["picture"] = user_profile_img
-
-    # user = request.user
-
-    # user_profile, created = UserProfile.objects.get_or_create(user=user)
-    # favorite_playlist, recent_playlist = get_playlists(request)
-
-    # request.session["title"] = "Main Page"
-    # # query = request.GET.get("q", "")
-    # # songs = Music.objects.filter(name__icontains=query).order_by("-upload_time")
-    # songs = Music.objects.all().order_by("-upload_time")
-    # # all_music = Music.objects.all().order_by("-upload_time")
-    # return render(
-    #     request,
-    #     "musicplay/main-page.html",
-    #     {
-    #         "message": "Welcome to MelodyHub",
-    #         "songs": songs,
-    #         "favorite_playlist": favorite_playlist,
-    #         "recent_playlist": recent_playlist,
-    #         "user_id": request.user.id,  # added for AJAX
-    #     },
-    # )
 
 
 @login_required
