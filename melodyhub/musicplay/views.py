@@ -205,6 +205,7 @@ def main_action(request):
         except BaseException:
             pass
     request.session["picture"] = user_profile_img 
+    UserProfile.objects.get_or_create(user=request.user)
 
     favorite_playlist, recent_playlist = get_playlists(request)
     request.session["title"] = "Main Page"
