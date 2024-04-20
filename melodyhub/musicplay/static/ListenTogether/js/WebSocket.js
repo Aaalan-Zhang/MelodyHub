@@ -34,11 +34,6 @@ document.addEventListener('DOMContentLoaded', () => {
             ));
         }
         processHostSync();
-        // syncSocket.onclose = function() {
-        //     syncSocket.send(JSON.stringify(
-        //         { 'msg_type' : 'sync_chat_request', 'msg_content': `Host ${userName} has left!` }
-        //     ));
-        // }
     }
     else {
         audio.removeAttribute('controls');
@@ -91,12 +86,8 @@ function processHostSync() {
         }
         else if (response.msg_type === 'sync_chat_request') {
             let message = response.msg_content;
-            // if (message.includes("joined")) {
             document.getElementById('chats').innerHTML += (message + "<br>");
             scrollToBottom();
-            // } else {
-                // document.getElementById('chats').innerHTML += (message + "<br>");
-            // }
         }
         else if (response.msg_type === 'active_connections') {
             // document.getElementById('active-users').innerHTML = response.msg_content;
@@ -107,17 +98,11 @@ function processHostSync() {
 function startListening(element) {
         if (element.innerHTML === "Start Listening") {
             element.innerHTML = "Stop Listening";
-            // processParticipantSync(syncSocket);
             syncSocket.send(JSON.stringify(
                 { 'msg_type' : 'sync_music_request_from_participant', 'msg_content': ''}
             ));
-            // document.getElementById('music-bar').muted = false;
 
         } else if (element.innerHTML === "Stop Listening") {
-            // document.getElementById('music-bar').muted = true;
-            // syncSocket.send(JSON.stringify(
-            //     { 'msg_type' : 'sync_music_request_from_participant', 'msg_content': ''}
-            // ));
             document.getElementById('music-bar').muted = true;
             element.innerHTML = "Start Listening"; 
         }
@@ -151,7 +136,6 @@ function processParticipantSync(syncSocket) {
         const { msg_type, msg_content } = JSON.parse(e.data);
         var audio = document.getElementById('music-bar');
         let cur_playing_source = audio.getAttribute('src');
-        // let cur_playing_name = audio.getAttribute('curName');
 
 
 
@@ -224,10 +208,6 @@ function processParticipantSync(syncSocket) {
                         } else {
                             audio.play();
                         } 
-                        // audio.setAttribute('src', cur_src + '#t=' + cur_time);
-                        // audio.load();
-                        // audio.on('canplaythrough', () => {
-                        // });
                     }
                     if (Math.abs(audio.currentTime - hostTime) > 1) {
                         document.getElementById("syncMsg").innerHTML = `Out of sync. You are at ${Math.floor(audio.currentTime)}s. Host is at ${Math.floor(hostTime)}s.`;
@@ -242,6 +222,7 @@ function processParticipantSync(syncSocket) {
             case 'sync_chat_request':
                 // if (msg_content.includes("joined")) {
                 document.getElementById('chats').innerHTML += (msg_content + "<br>");
+                scrollToBottom();
                 // } else {
                 //     document.getElementById('chats').innerHTML += (`${userName}: ` + msg_content + "<br>");
                 // }
