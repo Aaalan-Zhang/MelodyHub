@@ -5,7 +5,10 @@ from django.utils.timezone import now
 
 # Create your models here.
 class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        related_name="profile")
     avatar = models.ImageField(
         upload_to="user_avatars/",
         blank=True,
@@ -19,8 +22,11 @@ class UserProfile(models.Model):
 
 class Music(models.Model):
     user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="uploaded_music", blank=True, null=True
-    )
+        User,
+        on_delete=models.CASCADE,
+        related_name="uploaded_music",
+        blank=True,
+        null=True)
     name = models.CharField(max_length=255)
     singer = models.CharField(max_length=255, null=True, blank=True)
     image = models.ImageField(
@@ -31,7 +37,8 @@ class Music(models.Model):
     description = models.TextField()
     file = models.FileField(upload_to="music_files/")
     upload_time = models.DateTimeField(auto_now_add=True)
-    length = models.IntegerField(help_text="Length of the song in seconds", default=0)
+    length = models.IntegerField(
+        help_text="Length of the song in seconds", default=0)
     favorites_count = models.IntegerField(default=0)
 
 
@@ -47,13 +54,22 @@ class PlaylistMusic(models.Model):
 
 class Playlist(models.Model):
     name = models.CharField(max_length=255)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="playlists")
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="playlists")
     musics = models.ManyToManyField(Music, related_name="playlists")
-    picture = models.ImageField(upload_to="playlist_pictures/", null=True, blank=True)
+    picture = models.ImageField(
+        upload_to="playlist_pictures/",
+        null=True,
+        blank=True)
     description = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    is_favorites = models.BooleanField(default=False)  # To distinguish "My Favorites"
-    is_recent = models.BooleanField(default=False)  # To distinguish "Recent" playlist
+    # To distinguish "My Favorites"
+    is_favorites = models.BooleanField(
+        default=False)
+    # To distinguish "Recent" playlist
+    is_recent = models.BooleanField(default=False)
 
 
 class ListenTogetherRoom(models.Model):

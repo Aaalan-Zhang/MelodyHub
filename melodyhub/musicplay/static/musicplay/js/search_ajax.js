@@ -56,7 +56,6 @@ $(document).ready(function () {
                         'href': '/music_detail/' + song.id,
                         'style': 'color: black;'
                     }));
-                    // musicDetails.append($('<div>', { 'class': 'music-title', 'text': song.name }));
                     musicDetails.append($('<div>', { 'class': 'music-artist', 'text': song.singer }));
                     musicInfo.append(musicDetails);
                     musicInfo.append($('<button>', { 'class': 'fav-btn', 'data-user-id': song.user_id, 'data-music-id': song.id, 'id': 'fav-btn', 'text': '🤍' }));

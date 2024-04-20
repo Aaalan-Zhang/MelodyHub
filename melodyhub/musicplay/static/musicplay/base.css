@@ -26,7 +26,6 @@ body {
 
 .user-info {
     position: absolute;
-    /* top: 2vw; */
     right: 2vw;
     text-align: right;
     padding-right: 10px;
@@ -59,16 +58,6 @@ body {
     padding: 3px;
 }
 
-.list-link {
-    text-decoration: underline;
-    color: blue;
-}
-
-.list-link:hover {
-    background-color: lightgray;
-    text-decoration: none;
-}
-
 th {
     font-weight: normal;
     text-align: left;
@@ -94,24 +83,6 @@ form {
     padding: 4px;
 }
 
-.blue-background {
-    background-color: lightblue;
-}
-
-.navlink {
-    background-color: lightgray;
-}
-
-.letter {
-    padding: 3px;
-    font-family: sans-serif;
-    font-size: x-large;
-
-}
-
-.letter:hover {
-    background-color: lightgray;
-}
 
 .dropbtn {
     background-color: #04AA6D;
@@ -123,6 +94,8 @@ form {
 
 .dropdown {
     text-align: right;
+    position: relative;
+    display: inline-block;
 }
 
 .dropdown-content {
@@ -155,6 +128,11 @@ form {
     background-color: #3e8e41;
 }
 
+.dropdown img {
+    border-radius: 50%;
+    height: 2em;
+}
+
 .container {
     padding: 20px;
     max-width: 800px;
@@ -171,26 +149,10 @@ form {
 
 .search-bar {
     width: 100%;
-    /* reduce width to make room for button */
     padding: 10px;
     border-radius: 5px;
     border: 1px solid #ccc;
     font-size: medium;
-}
-
-.search-button {
-    width: 10%;
-    /* assign width to button */
-    padding: 10px 0px;
-    border-radius: 5px;
-    border: none;
-    background-color: #ccc;
-    cursor: pointer;
-    font-size: medium;
-    transition: background-color 0.3s ease;
-    border-radius: 10%;
-    text-align: center;
-    /* center the button text */
 }
 
 .music-list {
@@ -218,7 +180,6 @@ form {
 }
 
 .fav-btn {
-    /* background-color: #6b2cea; */
     color: #fff;
     border: none;
     padding: 10px 15px;
@@ -227,7 +188,6 @@ form {
     transition: background-color 0.3s ease;
     margin-right: 10px;
 }
-
 
 .music-details {
     flex-grow: 1;
@@ -314,7 +274,6 @@ form {
     line-height: 1vw;
     margin-bottom: -20px;
     color: rgba(0, 0, 0, 0.8);
-    /* mix-blend-mode: difference; */
 }
 
 .custom-controls {
@@ -486,36 +445,6 @@ nav {
     left: 0;
     width: 100%;
     z-index: 100;
-}
-
-.dropdown {
-    position: relative;
-    display: inline-block;
-}
-
-.dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-    z-index: 1;
-}
-
-.dropdown-content a {
-    color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-}
-
-.dropdown:hover .dropdown-content {
-    display: block;
-}
-
-.dropdown img {
-    border-radius: 50%;
-    height: 2em;
 }
 
 .main-content {

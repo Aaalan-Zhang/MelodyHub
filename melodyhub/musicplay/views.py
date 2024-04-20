@@ -6,9 +6,7 @@ from mutagen.mp3 import MP3
 from django.db import transaction
 
 
-from melodyhub.settings import MUSICPLAY_USERS, MUSICPLAY_TITLE
 from .models import UserProfile, Music, ListenTogetherRoom, Playlist, PlaylistMusic
-from django.contrib.auth.models import User
 from .forms import ProfileForm, MusicUploadForm, CreateRoomForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login, logout
@@ -21,13 +19,9 @@ from django.http import JsonResponse
 @login_required
 def get_favorite_status(request):
     if request.method == "GET":
-        user_id = request.GET.get("user_id")
         music_id = request.GET.get("music_id")
-
-        user_profile = UserProfile.objects.get(user__id=user_id)
         music = Music.objects.get(id=music_id)
-
-        favorite_playlist, created_fav = Playlist.objects.get_or_create(
+        favorite_playlist, _ = Playlist.objects.get_or_create(
             user=request.user,
             is_favorites=True,
             defaults={
@@ -79,7 +73,7 @@ def update_favorites(request):
         if music.favorites_count < 0:
             music.favorites_count = 0
 
-        favorite_playlist, created_fav = Playlist.objects.get_or_create(
+        favorite_playlist, _ = Playlist.objects.get_or_create(
             user=request.user,
             is_favorites=True,
             defaults={
@@ -103,7 +97,7 @@ def update_played_musics(request):
         music_id = request.POST.get("music_id")
         music = Music.objects.get(id=music_id)
 
-        recent_playlist, created_rec = Playlist.objects.get_or_create(
+        recent_playlist, _ = Playlist.objects.get_or_create(
             user=request.user,
             is_recent=True,
             defaults={
@@ -180,7 +174,7 @@ def log_in(request):
 
 
 def get_playlists(request):
-    favorite_playlist, created_fav = Playlist.objects.get_or_create(
+    favorite_playlist, _ = Playlist.objects.get_or_create(
         user=request.user,
         is_favorites=True,
         defaults={
@@ -189,7 +183,7 @@ def get_playlists(request):
         },
     )
 
-    recent_playlist, created_rec = Playlist.objects.get_or_create(
+    recent_playlist, _ = Playlist.objects.get_or_create(
         user=request.user,
         is_recent=True,
         defaults={
@@ -211,16 +205,9 @@ def main_action(request):
             UserProfile, user=request.user).avatar.url
         request.session["picture"] = user_profile_img
 
-    user = request.user
-
-    user_profile, created = UserProfile.objects.get_or_create(user=user)
     favorite_playlist, recent_playlist = get_playlists(request)
-
     request.session["title"] = "Main Page"
-    # query = request.GET.get("q", "")
-    # songs = Music.objects.filter(name__icontains=query).order_by("-upload_time")
     songs = Music.objects.all().order_by("-upload_time")
-    # all_music = Music.objects.all().order_by("-upload_time")
     return render(
         request,
         "musicplay/main-page.html",
@@ -236,13 +223,13 @@ def main_action(request):
 
 @login_required
 def my_profile(request):
-    user_profile, created = UserProfile.objects.get_or_create(
+    user_profile, _ = UserProfile.objects.get_or_create(
         user=request.user)
     musics = Music.objects.filter(user=request.user).order_by("-upload_time")
     request.session["title"] = "My Profile"
     favorite_playlist, recent_playlist = get_playlists(request)
 
-    favorite_playlist, created_fav = Playlist.objects.get_or_create(
+    favorite_playlist, _ = Playlist.objects.get_or_create(
         user=request.user,
         is_favorites=True,
         defaults={
@@ -251,7 +238,7 @@ def my_profile(request):
         },
     )
 
-    recent_playlist, created_rec = Playlist.objects.get_or_create(
+    recent_playlist, _ = Playlist.objects.get_or_create(
         user=request.user,
         is_recent=True,
         defaults={
@@ -300,13 +287,13 @@ def my_profile(request):
 
 @login_required
 def update_profile(request):
-    user_profile, created = UserProfile.objects.get_or_create(
+    user_profile, _ = UserProfile.objects.get_or_create(
         user=request.user)
     musics = Music.objects.filter(user=request.user).order_by("-upload_time")
     request.session["title"] = "My Profile"
     favorite_playlist, recent_playlist = get_playlists(request)
 
-    favorite_playlist, created_fav = Playlist.objects.get_or_create(
+    favorite_playlist, _ = Playlist.objects.get_or_create(
         user=request.user,
         is_favorites=True,
         defaults={
@@ -315,7 +302,7 @@ def update_profile(request):
         },
     )
 
-    recent_playlist, created_rec = Playlist.objects.get_or_create(
+    recent_playlist, _ = Playlist.objects.get_or_create(
         user=request.user,
         is_recent=True,
         defaults={
@@ -356,7 +343,7 @@ def upload_music(request):
     request.session["title"] = "My Profile"
     favorite_playlist, recent_playlist = get_playlists(request)
 
-    favorite_playlist, created_fav = Playlist.objects.get_or_create(
+    favorite_playlist, _ = Playlist.objects.get_or_create(
         user=request.user,
         is_favorites=True,
         defaults={
@@ -365,7 +352,7 @@ def upload_music(request):
         },
     )
 
-    recent_playlist, created_rec = Playlist.objects.get_or_create(
+    recent_playlist, _ = Playlist.objects.get_or_create(
         user=request.user,
         is_recent=True,
         defaults={
@@ -538,7 +525,6 @@ def inside_room(request, token):
     context = {"room": thisRoom, "user": request.user}
     context["isHost"] = thisRoom.creator.id == request.user.id
     response = render(request, "ListenTogether/listen.html", context)
-    # response['Accept-Ranges'] = 'bytes'
     return response
 
 

@@ -13,8 +13,10 @@ class ProfileForm(forms.ModelForm):
     }
 
     avatar = forms.ImageField(
-        label="", required=False, error_messages=err_msg, widget=forms.FileInput()
-    )
+        label="",
+        required=False,
+        error_messages=err_msg,
+        widget=forms.FileInput())
 
     description = forms.CharField(
         widget=forms.Textarea(
@@ -60,13 +62,13 @@ class MusicUploadForm(forms.ModelForm):
         if not file.name.endswith((".mp3")):
             raise forms.ValidationError("Only mp3 is supported.")
         return file
-    
+
     def clean_singer(self):
         singer = self.cleaned_data.get("singer")
         if not singer:
             singer = "Anonymous"
         return singer
-    
+
     def clean_description(self):
         description = self.cleaned_data.get("description")
         if not description:
