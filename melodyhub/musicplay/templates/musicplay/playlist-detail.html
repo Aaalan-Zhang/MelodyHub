@@ -3,11 +3,11 @@
 {% block content %}
 
 <div class="container">
-    <h1>{{ playlist.name }}</h1>
+    <h1 style="font-family:Comfortaa,cursive">{{ playlist.name }}</h1>
     {% if playlist.picture %}
     <img src="{{ playlist.picture.url }}" alt="Playlist picture">
     {% endif %}
-    <p class="blockquote-footer" style="font-size: 25px;">{{ playlist.description }}</p>
+    <p class="blockquote-footer" style="font-size: 25px; font-family:Comfortaa,cursive">{{ playlist.description }}</p>
 
     {% if musics %}
     {% for song in musics %}

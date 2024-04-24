@@ -26,6 +26,12 @@ document.addEventListener('DOMContentLoaded', () => {
     let audio = document.getElementById('music-bar');
     let isHost = audio.getAttribute('isHost');
 
+    var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+    var chromeMsg = $('#chromeMsg');
+    if (!isChrome) {
+        chromeMsg.hide();
+    }
+
     if (isHost === 'True') {
         syncSocket.onopen = function() {
             console.log('Host is connected');

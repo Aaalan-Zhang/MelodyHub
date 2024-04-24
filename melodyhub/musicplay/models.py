@@ -76,7 +76,7 @@ class ListenTogetherRoom(models.Model):
     creator = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="listen_together_rooms"
     )
-    name = models.CharField(max_length=30, null=True, blank=True, unique=True)
+    name = models.CharField(max_length=30, unique=True, null=False, blank=False)
     current_music = models.ForeignKey(
         Music, on_delete=models.SET_NULL, null=True, blank=True
     )

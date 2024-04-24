@@ -29,6 +29,9 @@
             <button type="button" class="btn btn-dark" onclick=startListening(this) id="participantCtrl">Start Listening</button>
             {% endif %}
         </div>
+        {% if not isHost %}
+            <div id="chromeMsg" style="font-family:Comfortaa,cursive;">Browsers other than Chrome are suggested.</div>
+        {% endif %}
         <div id="audioName" style="font-family:Comfortaa,cursive;"></div>
         <div id="syncMsg" style="font-family:Comfortaa,cursive;"></div>
         <div id="syncInstr" style="font-family:Comfortaa,cursive;"></div>
