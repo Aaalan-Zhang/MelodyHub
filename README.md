@@ -1,6 +1,6 @@
-# s24_team_1
+# MelodyHub
 
-Repository for s24_team_1
+![screenshot](./melodyhub/media/imgs/screenshot.png)
 
 Best Project of S24 for CMU Web Application Development. But, overall, just a trivial one without any interesting ideas (I mean there might also be concurrency issues). For a more interesting one, I encourage you to check [web4me.org](web4me.org) (why do they not make it open-source?).
 
@@ -34,7 +34,7 @@ pip install -U pip
 pip install -r requirements.txt
 ```
 
-You will also need to make sure the redis service is running on port 6379. An easy way to check is simply running 
+You will also need to make sure the redis service is running on port 6379. An easy way to check is simply running
 
 ```
 redis-cli -p 6379 ping
