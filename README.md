@@ -2,7 +2,7 @@
 
 ![screenshot](./melodyhub/media/imgs/screenshot.png)
 
-Best Project of S24 for CMU Web Application Development. But, overall, just a trivial one without any interesting ideas (I mean there might also be concurrency issues). For a more interesting one, I encourage you to check [web4me.org](web4me.org) (why do they not make it open-source?).
+Best Project of S24 for CMU Web Application Development. But, overall, just a trivial one without any interesting ideas (I mean there might also be concurrency issues). For a more interesting one, I encourage you to check [web4me.org](https://www.web4me.org) (why do they not make it open-source?).
 
 You will need to create a config.ini file in the `./melodyhub` directory, the format is
 
