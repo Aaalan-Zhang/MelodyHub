@@ -4,3 +4,4 @@ mutagen
 Pillow
 daphne
 channels
+channels_redis
