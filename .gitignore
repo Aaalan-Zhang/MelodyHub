@@ -23,3 +23,5 @@ melodyhub/media/music_images/
 melodyhub/media/user_avatars/
 
 *.pem
+
+__pycache__/
