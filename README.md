@@ -2,14 +2,13 @@
 
 Repository for s24_team_1
 
-Best Project of S24 for CMU Web Application Development. But, overall, just a normal idea without any interesting ideas. For an more interesting one, I encourage you 
+Best Project of S24 for CMU Web Application Development. But, overall, just a trivial one without any interesting ideas (I mean there might also be concurrency issues). For a more interesting one, I encourage you to check [web4me.org](web4me.org) (why do they not make it open-source?).
 
 You will need to create a config.ini file in the `./melodyhub` directory, the format is
 
 ```
 [Django]
 Secret: <generate a random secret>
-
 
 # Generate the GoogleOAuth2 key (client_id) and secret at https://console.cloud.google.com
 # You will need to search for OAuth and go to the "Credentials" section
