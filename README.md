@@ -2,7 +2,9 @@
 
 ![screenshot](./melodyhub/media/imgs/screenshot.png)
 
-Best Project of S24 for CMU Web Application Development. But, overall, just a trivial one without any interesting ideas (I mean there might also be concurrency issues). For a more interesting one, I encourage you to check [web4me.org](https://www.web4me.org) (why do they not make it open-source?).
+Best Project of CMU Web Application Development S24. It is more than a toy Music playing platform like Spotify. It has a streaming feature implemented using WebSockets that users can listen to specific live-streaming music radio created by other users and chat. But, overall, this project is just a trivial one without any interesting ideas (I mean, there might also be concurrency issues, and could Cursor build this project within no time? Who knows). 
+
+There are always web application product ideas. For a more interesting one, I encourage you to check [web4me.org](https://www.web4me.org) (why do they not make it open-source?).
 
 You will need to create a config.ini file in the `./melodyhub` directory, the format is
 
